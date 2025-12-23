@@ -43,14 +43,15 @@ export default function ProfilePage() {
                 .single();
 
             if (data) {
-                setProfile(data);
+                const profileData = data as unknown as ProfileRow;
+                setProfile(profileData);
                 setFormData({
-                    first_name: data.first_name || "",
-                    last_name: data.last_name || "",
-                    date_of_birth: data.date_of_birth || "",
-                    height_cm: data.height_cm?.toString() || "",
-                    weight_kg: data.weight_kg?.toString() || "",
-                    gender: data.gender || ""
+                    first_name: profileData.first_name || "",
+                    last_name: profileData.last_name || "",
+                    date_of_birth: profileData.date_of_birth || "",
+                    height_cm: profileData.height_cm?.toString() || "",
+                    weight_kg: profileData.weight_kg?.toString() || "",
+                    gender: profileData.gender || ""
                 });
             }
             setLoadingData(false);
@@ -74,8 +75,8 @@ export default function ProfilePage() {
                 updated_at: new Date().toISOString(),
             };
 
-            const { data: updatedProfile, error } = await supabase
-                .from('gym_profiles')
+            const { data: updatedProfile, error } = await (supabase
+                .from('gym_profiles') as any)
                 .upsert(updates)
                 .select()
                 .single();
