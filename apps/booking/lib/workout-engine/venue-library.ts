@@ -104,10 +104,17 @@ async function fetchLibraryRows(type: LibraryType, venueId?: string | null) {
   const table = TABLE_MAP[type];
   const targetVenue = venueId ?? getActiveVenueId() ?? null;
 
-  const [masterResult, venueResult] = await Promise.all([
+  const promises = [
     supabase.from(table).select("*").is("venue_id", null),
-    supabase.from(table).select("*").eq("venue_id", targetVenue),
-  ]);
+  ] as unknown as Promise<any>[];
+
+  if (targetVenue) {
+    promises.push(supabase.from(table).select("*").eq("venue_id", targetVenue));
+  }
+
+  const results = await Promise.all(promises);
+  const masterResult = results[0];
+  const venueResult = results.length > 1 ? results[1] : { data: [], error: null };
 
   if (masterResult.error) throw masterResult.error;
   if (venueResult.error) throw venueResult.error;
@@ -142,7 +149,7 @@ export async function saveVenueLibraryRecord(
 
   const { data, error } = await supabase
     .from(table)
-    .upsert(payload, { onConflict: "slug, venue_id" })
+    .upsert(payload as any, { onConflict: "slug, venue_id" })
     .select()
     .single();
 
