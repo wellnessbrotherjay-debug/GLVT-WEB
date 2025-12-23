@@ -31,7 +31,7 @@ export function resolveExerciseMedia(
   return {
     name: exercise.name,
     equipment: exercise.equipment ?? fallbackMedia?.equipment ?? "Configured in Builder",
-    video: resolvedVideo,
+    video: resolvedVideo ?? "",
     muscles: exercise.muscles ?? fallbackMedia?.muscles,
     cues: exercise.cues ?? fallbackMedia?.cues,
   };
