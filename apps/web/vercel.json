@@ -1,0 +1,12 @@
+{
+  "rewrites": [
+    {
+      "source": "/glvt",
+      "destination": "https://exequte-hotel-1.vercel.app/glvt"
+    },
+    {
+      "source": "/glvt/:path*",
+      "destination": "https://exequte-hotel-1.vercel.app/glvt/:path*"
+    }
+  ]
+}

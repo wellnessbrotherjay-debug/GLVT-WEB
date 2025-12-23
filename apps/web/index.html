@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GLVT CLUB | Where the body is honored</title>
+
+  <!-- Google Fonts: Bodoni Moda (High contrast serif) and Montserrat (Geometric Sans) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,ital,wght@6..96,400;6..96,500;6..96,600;6..96,700&family=Montserrat:wght@200;300;400;500;600&display=swap"
+    rel="stylesheet">
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Tailwind Config -->
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            glvt: {
+              sand: '#E8DED2',      // Warm sand (replaces cream)
+              linen: '#F5F0EB',     // Soft linen
+              rose: '#D4B5A7',      // Dusty rose
+              skin: '#EFE3D8',      // Skin tone
+              stone: '#9C9288',     // Warm stone (kept)
+              charcoal: '#2A2A2A',  // Soft charcoal
+              black: '#1A1A1A',     // Softer black
+              white: '#FFFFFF',
+            }
+          },
+          fontFamily: {
+            serif: ['"Bodoni Moda"', 'serif'],
+            sans: ['"Montserrat"', 'sans-serif'],
+          },
+          letterSpacing: {
+            'tight': '-0.02em',
+            'wide': '0.05em',
+            'widest': '0.15em',
+            'super-wide': '0.25em',
+          },
+          backgroundImage: {
+            'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    /* Hide scrollbar for clean look */
+    ::-webkit-scrollbar {
+      width: 4px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: #0F0F0F;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: #2A2A2A;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      cursor: default;
+    }
+
+    ::selection {
+      background: #9C9288;
+      color: #fff;
+    }
+
+    .text-outline {
+      -webkit-text-stroke: 1px rgba(255, 255, 255, 0.3);
+      color: transparent;
+    }
+
+    .text-outline-dark {
+      -webkit-text-stroke: 1px rgba(15, 15, 15, 0.2);
+      color: transparent;
+    }
+  </style>
+  <script type="importmap">
+{
+  "imports": {
+    "lucide-react": "https://esm.sh/lucide-react@^0.561.0",
+    "react/": "https://esm.sh/react@^19.2.3/",
+    "react": "https://esm.sh/react@^19.2.3",
+    "react-dom/": "https://esm.sh/react-dom@^19.2.3/"
+  }
+}
+</script>
+</head>
+
+<body class="bg-glvt-sand text-glvt-black antialiased overflow-x-hidden selection:bg-glvt-stone selection:text-white">
+  <div id="root"></div>
+  <script type="module" src="/index.tsx"></script>
+</body>
+
+</html>

@@ -1,0 +1,399 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=Orbitron:wght@400;500;600;700;800;900&family=Poppins:wght@600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Import ALTA font - Replace with actual font file when available */
+@font-face {
+    font-family: 'ALTA';
+    src: url('/fonts/ALTA-Regular.woff2') format('woff2'),
+        url('/fonts/ALTA-Regular.woff') format('woff');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'ALTA';
+    src: url('/fonts/ALTA-Bold.woff2') format('woff2'),
+        url('/fonts/ALTA-Bold.woff') format('woff');
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+}
+
+@layer base {
+  :root {
+    color-scheme: dark;
+
+    /* Brand Palette - Default (Luxury Gold/Cyan) */
+    --brand-primary: #00BFFF;
+    --brand-secondary: #F4D03F;
+    --brand-accent: #FFD100;
+    --brand-background: #030712;
+    --brand-surface: #111827;
+    --brand-text: #FFFFFF;
+    --brand-text-muted: #9CA3AF;
+
+    /* Fonts */
+    --brand-font: "Inter", sans-serif;
+    --font-inter: "Inter", sans-serif;
+    --font-poppins: "Poppins", sans-serif;
+    --font-cormorant: "Cormorant Garamond", serif;
+    --font-orbitron: "Orbitron", sans-serif;
+
+    /* Spacing & Radius */
+    --radius: 0.5rem;
+
+    /* Effects */
+    --shadow-luxury: 0 0 45px rgba(244, 208, 63, 0.15);
+    --glow-gold: 0 0 20px rgba(244, 208, 63, 0.3);
+    --glow-blue: 0 0 20px rgba(0, 191, 255, 0.3);
+
+    /* GLVT Core Brand Colors */
+    --glvt-cream: #F4EDE5;
+    --glvt-beige: #D9C3B8;
+    --glvt-espresso: #2B2B2B;
+    --glvt-gold: #C8A96A;
+    --glvt-taupe: #B8AEA6;
+    --glvt-black: #000000;
+
+    /* GLVT Fonts */
+    --glvt-font-title: "ALTA", serif;
+    --glvt-font-body: "Montserrat", sans-serif;
+
+    /* GLVT Semantic Tokens */
+    --glvt-bg-primary: var(--glvt-cream);
+    --glvt-bg-secondary: var(--glvt-beige);
+    --glvt-bg-card: var(--glvt-beige);
+    --glvt-bg-modal: var(--glvt-beige);
+
+    --glvt-text-primary: var(--glvt-espresso);
+    --glvt-text-secondary: var(--glvt-taupe);
+    --glvt-text-disabled: var(--glvt-taupe);
+    --glvt-text-accent: var(--glvt-gold);
+
+    --glvt-border-default: rgba(184, 174, 166, 0.3);
+    --glvt-border-subtle: rgba(184, 174, 166, 0.15);
+    --glvt-border-accent: var(--glvt-gold);
+
+    /* GLVT Spacing */
+    --glvt-space-xs: 4px;
+    --glvt-space-sm: 8px;
+    --glvt-space-md: 16px;
+    --glvt-space-lg: 24px;
+    --glvt-space-xl: 32px;
+    --glvt-space-2xl: 48px;
+    --glvt-space-3xl: 64px;
+
+    /* GLVT Shadows */
+    --glvt-shadow-subtle: 0 2px 8px rgba(43, 43, 43, 0.08);
+    --glvt-shadow-medium: 0 4px 16px rgba(43, 43, 43, 0.12);
+
+    /* GLVT Transitions */
+    --glvt-transition-fast: 150ms ease;
+    --glvt-transition-normal: 250ms ease;
+    --glvt-transition-slow: 350ms ease;
+  }
+
+  body {
+    @apply antialiased;
+    font-family: var(--brand-font), sans-serif;
+    background:
+      radial-gradient(circle at top, rgba(0, 191, 255, 0.12), rgba(3, 7, 18, 0.9)),
+      linear-gradient(135deg, rgba(244, 208, 63, 0.05), rgba(0, 0, 0, 0.9));
+  }
+
+  ::selection {
+    background-color: rgba(244, 208, 63, 0.4);
+    color: #050505;
+  }
+
+  a {
+    @apply transition-colors;
+  }
+}
+
+@layer components {
+  .card-surface {
+    @apply rounded-[1.5rem] border border-white/10 bg-black/60 shadow-panel backdrop-blur-md;
+  }
+
+  .pill {
+    @apply rounded-full bg-cyan-500/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.25em] text-cyan-200;
+  }
+}
+
+@layer base {
+  body.nexus-mode {
+    background: none;
+    color: hsl(var(--foreground, 0 0% 100%));
+  }
+
+  body.nexus-mode .app-shell-chrome {
+    display: none;
+  }
+
+  body.nexus-mode .app-shell-content {
+    padding-top: 0;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   GLVT TYPOGRAPHY CLASSES
+   ═══════════════════════════════════════════════════════════════ */
+
+.glvt-display {
+    font-family: var(--glvt-font-title);
+    font-size: 48px;
+    font-weight: 400;
+    letter-spacing: 0.06em;
+    line-height: 1.2;
+}
+
+.glvt-h1 {
+    font-family: var(--glvt-font-title);
+    font-size: 36px;
+    font-weight: 400;
+    letter-spacing: 0.04em;
+    line-height: 1.3;
+}
+
+.glvt-h2 {
+    font-family: var(--glvt-font-title);
+    font-size: 28px;
+    font-weight: 400;
+    letter-spacing: 0.03em;
+    line-height: 1.4;
+}
+
+.glvt-h3 {
+    font-family: var(--glvt-font-title);
+    font-size: 20px;
+    font-weight: 400;
+    letter-spacing: 0.02em;
+    line-height: 1.4;
+}
+
+.glvt-body {
+    font-family: var(--glvt-font-body);
+    font-size: 16px;
+    font-weight: 400;
+    letter-spacing: 0;
+    line-height: 1.6;
+}
+
+.glvt-body-small {
+    font-family: var(--glvt-font-body);
+    font-size: 14px;
+    font-weight: 400;
+    letter-spacing: 0;
+    line-height: 1.5;
+}
+
+.glvt-caption {
+    font-family: var(--glvt-font-body);
+    font-size: 12px;
+    font-weight: 300;
+    letter-spacing: 0.01em;
+    line-height: 1.4;
+}
+
+.glvt-button-text {
+    font-family: var(--glvt-font-body);
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    line-height: 1;
+    text-transform: uppercase;
+}
+
+.glvt-label {
+    font-family: var(--glvt-font-body);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    line-height: 1;
+    text-transform: uppercase;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   GLVT COMPONENT CLASSES
+   ═══════════════════════════════════════════════════════════════ */
+
+.glvt-card {
+    background-color: var(--glvt-bg-card);
+    border: 1px solid var(--glvt-border-default);
+    border-radius: 0;
+    /* Sharp, architectural */
+    padding: var(--glvt-space-lg);
+    transition: border-color var(--glvt-transition-normal);
+}
+
+.glvt-card:hover {
+    border-color: var(--glvt-border-accent);
+}
+
+.glvt-button-primary {
+    background-color: var(--glvt-espresso);
+    color: var(--glvt-cream);
+    border: none;
+    padding: 12px 24px;
+    font-family: var(--glvt-font-body);
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all var(--glvt-transition-normal);
+    border-radius: 0;
+}
+
+.glvt-button-primary:hover {
+    background-color: var(--glvt-gold);
+    color: var(--glvt-espresso);
+}
+
+.glvt-button-secondary {
+    background-color: transparent;
+    color: var(--glvt-espresso);
+    border: 1px solid var(--glvt-espresso);
+    padding: 12px 24px;
+    font-family: var(--glvt-font-body);
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all var(--glvt-transition-normal);
+    border-radius: 0;
+}
+
+.glvt-button-secondary:hover {
+    background-color: var(--glvt-espresso);
+    color: var(--glvt-cream);
+}
+
+.glvt-button-accent {
+    background-color: var(--glvt-gold);
+    color: var(--glvt-espresso);
+    border: none;
+    padding: 12px 24px;
+    font-family: var(--glvt-font-body);
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all var(--glvt-transition-normal);
+    border-radius: 0;
+}
+
+.glvt-button-accent:hover {
+    background-color: var(--glvt-espresso);
+    color: var(--glvt-cream);
+}
+
+.glvt-input {
+    background-color: var(--glvt-bg-primary);
+    border: 1px solid var(--glvt-border-default);
+    color: var(--glvt-text-primary);
+    padding: 12px 16px;
+    font-family: var(--glvt-font-body);
+    font-size: 14px;
+    border-radius: 0;
+    transition: border-color var(--glvt-transition-normal);
+}
+
+.glvt-input:focus {
+    outline: none;
+    border-color: var(--glvt-gold);
+}
+
+.glvt-input::placeholder {
+    color: var(--glvt-taupe);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   GLVT UTILITY CLASSES
+   ═══════════════════════════════════════════════════════════════ */
+
+.glvt-bg-cream {
+    background-color: var(--glvt-cream);
+}
+
+.glvt-bg-beige {
+    background-color: var(--glvt-beige);
+}
+
+.glvt-bg-espresso {
+    background-color: var(--glvt-espresso);
+}
+
+.glvt-bg-gold {
+    background-color: var(--glvt-gold);
+}
+
+.glvt-bg-taupe {
+    background-color: var(--glvt-taupe);
+}
+
+.glvt-text-cream {
+    color: var(--glvt-cream);
+}
+
+.glvt-text-beige {
+    color: var(--glvt-beige);
+}
+
+.glvt-text-espresso {
+    color: var(--glvt-espresso);
+}
+
+.glvt-text-gold {
+    color: var(--glvt-gold);
+}
+
+.glvt-text-taupe {
+    color: var(--glvt-taupe);
+}
+
+.glvt-text-black {
+    color: var(--glvt-black);
+}
+
+.glvt-border-default {
+    border-color: var(--glvt-border-default);
+}
+
+.glvt-border-subtle {
+    border-color: var(--glvt-border-subtle);
+}
+
+.glvt-border-accent {
+    border-color: var(--glvt-border-accent);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   MOBILE OPTIMIZATIONS
+   ═══════════════════════════════════════════════════════════════ */
+
+@media (max-width: 768px) {
+    .glvt-display {
+        font-size: 36px;
+    }
+
+    .glvt-h1 {
+        font-size: 28px;
+    }
+
+    .glvt-h2 {
+        font-size: 24px;
+    }
+
+    .glvt-h3 {
+        font-size: 18px;
+    }
+}

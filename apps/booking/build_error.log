@@ -1,0 +1,108 @@
+
+> glvt-booking@0.1.0 build
+> next build
+
+⚠ Warning: Next.js inferred your workspace root, but it may not be correct.
+ We detected multiple lockfiles and selected the directory of /Users/a11/package-lock.json as the root directory.
+ To silence this warning, set `turbopack.root` in your Next.js config, or consider removing one of the lockfiles if it's not needed.
+   See https://nextjs.org/docs/app/api-reference/config/next-config-js/turbopack#root-directory for more information.
+ Detected additional lockfiles: 
+   * /Users/a11/exequte-hotel-1/package-lock.json
+
+▲ Next.js 16.1.0 (Turbopack)
+
+  Creating an optimized production build ...
+Error: Cannot apply unknown utility class `rounded-3xl`. Are you using CSS modules or similar and missing `@reference`? https://tailwindcss.com/docs/functions-and-directives#reference-directive
+    [2m[at onInvalidCandidate (/Users/a11/exequte-hotel-1/node_modules/@tailwindcss/node/node_modules/tailwindcss/dist/lib.js:21:1314)][0m
+    [2m[at Te (/Users/a11/exequte-hotel-1/node_modules/@tailwindcss/node/node_modules/tailwindcss/dist/lib.js:16:36652)][0m
+    [2m[at /Users/a11/exequte-hotel-1/node_modules/@tailwindcss/node/node_modules/tailwindcss/dist/lib.js:21:355][0m
+    [2m[at Rr (/Users/a11/exequte-hotel-1/node_modules/@tailwindcss/node/node_modules/tailwindcss/dist/lib.js:3:1718)][0m
+    [2m[at _ (/Users/a11/exequte-hotel-1/node_modules/@tailwindcss/node/node_modules/tailwindcss/dist/lib.js:3:1377)][0m
+    [2m[at $e (/Users/a11/exequte-hotel-1/node_modules/@tailwindcss/node/node_modules/tailwindcss/dist/lib.js:21:172)][0m
+    [2m[at un (/Users/a11/exequte-hotel-1/node_modules/@tailwindcss/node/node_modules/tailwindcss/dist/lib.js:38:294)][0m
+    [2m[at process.processTicksAndRejections (node:internal/process/task_queues:105:5)][0m
+    [2m[at async cn (/Users/a11/exequte-hotel-1/node_modules/@tailwindcss/node/node_modules/tailwindcss/dist/lib.js:38:631)][0m
+    [2m[at async Xr (/Users/a11/exequte-hotel-1/node_modules/@tailwindcss/node/dist/index.js:10:3417)][0m
+
+> Build error occurred
+Error: Turbopack build failed with 3 errors:
+./exequte-hotel-1/APPS/glvt-booking/app/globals.css
+Error evaluating Node.js code
+CssSyntaxError: tailwindcss: /Users/a11/exequte-hotel-1/APPS/glvt-booking/app/globals.css:1:1: Cannot apply unknown utility class `rounded-3xl`. Are you using CSS modules or similar and missing `@reference`? https://tailwindcss.com/docs/functions-and-directives#reference-directive
+    at Input.error (exequte-hotel-1/APPS/glvt-booking/node_modules/postcss/lib/input.js:106:16) [/Users/a11/exequte-hotel-1/APPS/glvt-booking/.next/build/chunks/exequte-hotel-1_1700d9cf._.js:4132:22]
+    at Root.error (exequte-hotel-1/APPS/glvt-booking/node_modules/postcss/lib/node.js:115:32) [/Users/a11/exequte-hotel-1/APPS/glvt-booking/.next/build/chunks/exequte-hotel-1_1700d9cf._.js:895:38]
+    [at Object.Once (/Users/a11/exequte-hotel-1/node_modules/@tailwindcss/postcss/dist/index.js:10:6911)]
+    [at process.processTicksAndRejections (node:internal/process/task_queues:105:5)]
+    at async LazyResult.runAsync (exequte-hotel-1/APPS/glvt-booking/node_modules/postcss/lib/lazy-result.js:261:11) [/Users/a11/exequte-hotel-1/APPS/glvt-booking/.next/build/chunks/exequte-hotel-1_1700d9cf._.js:6052:21]
+    at async transform (turbopack:///[turbopack-node]/transforms/postcss.ts:70:34) [/Users/a11/exequte-hotel-1/APPS/glvt-booking/.next/build/chunks/[root-of-the-server]__b2308c0a._.js:146:36]
+    at async run (turbopack:///[turbopack-node]/ipc/evaluate.ts:92:23) [/Users/a11/exequte-hotel-1/APPS/glvt-booking/.next/build/chunks/[root-of-the-server]__6e913e39._.js:443:31]
+
+Import trace:
+  Client Component Browser:
+    ./exequte-hotel-1/APPS/glvt-booking/app/globals.css [Client Component Browser]
+    ./exequte-hotel-1/APPS/glvt-booking/app/layout.tsx [Server Component]
+
+
+./exequte-hotel-1/APPS/glvt-booking/app/glvt/workouts/session/[sessionId]/page.tsx:10:1
+Module not found: Can't resolve '@/components/CloudflarePlayer'
+[0m [90m  8 |[39m [36mimport[39m { useParams[33m,[39m useRouter } [36mfrom[39m [32m"next/navigation"[39m[33m;[39m
+ [90m  9 |[39m [36mimport[39m { workoutService } [36mfrom[39m [32m"@/lib/services/workoutService"[39m[33m;[39m
+[31m[1m>[22m[39m[90m 10 |[39m [36mimport[39m [33mCloudflarePlayer[39m [36mfrom[39m [32m"@/components/CloudflarePlayer"[39m[33m;[39m
+ [90m    |[39m [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+ [90m 11 |[39m
+ [90m 12 |[39m [36mexport[39m [36mdefault[39m [36mfunction[39m [33mWorkoutSessionPage[39m() {
+ [90m 13 |[39m     [36mconst[39m params [33m=[39m useParams()[33m;[39m[0m
+
+Import map: aliased to relative './components/CloudflarePlayer' inside of [project]/exequte-hotel-1/APPS/glvt-booking
+
+
+Import traces:
+  Client Component Browser:
+    ./exequte-hotel-1/APPS/glvt-booking/app/glvt/workouts/session/[sessionId]/page.tsx [Client Component Browser]
+    ./exequte-hotel-1/APPS/glvt-booking/app/glvt/workouts/session/[sessionId]/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./exequte-hotel-1/APPS/glvt-booking/app/glvt/workouts/session/[sessionId]/page.tsx [Client Component SSR]
+    ./exequte-hotel-1/APPS/glvt-booking/app/glvt/workouts/session/[sessionId]/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+./exequte-hotel-1/APPS/glvt-booking/app/glvt/food-tracking/page.tsx:3:1
+Module not found: Can't resolve '@/components/NutritionDashboard'
+[0m [90m 1 |[39m [32m"use client"[39m[33m;[39m
+ [90m 2 |[39m
+[31m[1m>[22m[39m[90m 3 |[39m [36mimport[39m [33mNutritionDashboard[39m [36mfrom[39m [32m"@/components/NutritionDashboard"[39m[33m;[39m
+ [90m   |[39m [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+ [90m 4 |[39m
+ [90m 5 |[39m [36mexport[39m [36mdefault[39m [36mfunction[39m [33mFoodTrackingPage[39m() {
+ [90m 6 |[39m     [36mreturn[39m ([0m
+
+Import map: aliased to relative './components/NutritionDashboard' inside of [project]/exequte-hotel-1/APPS/glvt-booking
+
+
+Import traces:
+  Client Component Browser:
+    ./exequte-hotel-1/APPS/glvt-booking/app/glvt/food-tracking/page.tsx [Client Component Browser]
+    ./exequte-hotel-1/APPS/glvt-booking/app/glvt/food-tracking/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./exequte-hotel-1/APPS/glvt-booking/app/glvt/food-tracking/page.tsx [Client Component SSR]
+    ./exequte-hotel-1/APPS/glvt-booking/app/glvt/food-tracking/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+    at async transform (turbopack:///[turbopack-node]/transforms/postcss.ts:70:34) [/Users/a11/exequte-hotel-1/APPS/glvt-booking/.next/build/chunks/[root-of-the-server]__b2308c0a._.js:146:36])
+    at async run (turbopack:///[turbopack-node]/ipc/evaluate.ts:92:23) [/Users/a11/exequte-hotel-1/APPS/glvt-booking/.next/build/chunks/[root-of-the-server]__6e913e39._.js:443:31])
+    at <unknown> (./exequte-hotel-1/APPS/glvt-booking/app/glvt/workouts/session/[sessionId]/page.tsx:10:1)
+    at <unknown> (https://nextjs.org/docs/messages/module-not-found)
+    at <unknown> (./exequte-hotel-1/APPS/glvt-booking/app/glvt/food-tracking/page.tsx:3:1)
+    at <unknown> (https://nextjs.org/docs/messages/module-not-found)
+npm error Lifecycle script `build` failed with error:
+npm error code 1
+npm error path /Users/a11/exequte-hotel-1/APPS/glvt-booking
+npm error workspace glvt-booking@0.1.0
+npm error location /Users/a11/exequte-hotel-1/APPS/glvt-booking
+npm error command failed
+npm error command sh -c next build
