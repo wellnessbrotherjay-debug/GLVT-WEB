@@ -2,8 +2,8 @@ import { createClient } from '@supabase/supabase-js';
 import { type HRMMetrics, HR_ZONES } from '@/lib/workout-engine/hrm-types';
 
 // Initialize Supabase client (ensure env vars are set in real usage)
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://placeholder.supabase.co';
+const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'placeholder-key';
 const supabase = createClient(supabaseUrl, supabaseKey);
 
 // --- TYPES ---

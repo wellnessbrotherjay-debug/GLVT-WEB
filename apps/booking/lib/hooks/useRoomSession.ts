@@ -2,8 +2,8 @@ import { useState, useEffect, useRef, useCallback } from 'react';
 import { createClient } from '@supabase/supabase-js';
 
 const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+  process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://placeholder.supabase.co',
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'placeholder-key'
 );
 
 interface UseRoomSessionOptions {
@@ -26,7 +26,7 @@ export function useRoomSession({ roomId }: UseRoomSessionOptions) {
     const loadSession = async () => {
       try {
         setLoading(true);
-        
+
         // Get active session for room
         const { data: sessionData, error: sessionError } = await supabase
           .from('workout_sessions')
@@ -41,14 +41,14 @@ export function useRoomSession({ roomId }: UseRoomSessionOptions) {
 
         if (sessionData) {
           setSessionState(sessionData);
-          
+
           // Get session events
           const { data: eventsData } = await supabase
             .from('session_events')
             .select('*')
             .eq('session_id', sessionData.id)
             .order('created_at', { ascending: true });
-            
+
           setEvents(eventsData || []);
         }
 
@@ -64,7 +64,7 @@ export function useRoomSession({ roomId }: UseRoomSessionOptions) {
 
     // Subscribe to session changes
     const channel = supabase.channel(`room-${roomId}`)
-      .on('postgres_changes', 
+      .on('postgres_changes',
         { event: '*', schema: 'public', table: 'workout_sessions', filter: `room_id=eq.${roomId}` },
         payload => {
           if (payload.new) {
@@ -91,7 +91,7 @@ export function useRoomSession({ roomId }: UseRoomSessionOptions) {
     const currentLevel = session.difficulty_level;
     const levels = ['easy', 'medium', 'hard'];
     const currentIndex = levels.indexOf(currentLevel);
-    
+
     let newLevel = currentLevel;
     if (direction === 'easier' && currentIndex > 0) {
       newLevel = levels[currentIndex - 1];
@@ -131,7 +131,7 @@ export function useRoomSession({ roomId }: UseRoomSessionOptions) {
     try {
       const { error: sessionError } = await supabase
         .from('workout_sessions')
-        .update({ 
+        .update({
           status: 'completed',
           completed_at: new Date().toISOString()
         })
