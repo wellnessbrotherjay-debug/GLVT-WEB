@@ -346,7 +346,7 @@ const Navigation: React.FC = () => {
               <EditableText defaultText="Inquire" tag="span" />
             </button>
             <button
-              onClick={() => window.location.href = 'https://app.glvt.site'}
+              onClick={() => window.location.href = 'https://glvt-web-booking.vercel.app/glvt/launch'}
               className={`ml-2 px-6 py-2 bg-glvt-stone text-white text-[9px] font-sans font-medium tracking-super-wide uppercase transition-all duration-500 hover:bg-glvt-black flex items-center justify-center`}
             >
               <EditableText defaultText="Enter Portal" tag="span" />
@@ -378,7 +378,7 @@ const Navigation: React.FC = () => {
             </button>
           ))}
           <button
-            onClick={() => window.location.href = 'https://app.glvt.site'}
+            onClick={() => window.location.href = 'https://glvt-web-booking.vercel.app/glvt/launch'}
             className={`w-full group py-4 transition-all duration-700 ease-out border-b border-glvt-black/5 last:border-0 ${isMenuOpen ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'}`}
             style={{ transitionDelay: `${navItems.length * 0.08}s` }}
           >
