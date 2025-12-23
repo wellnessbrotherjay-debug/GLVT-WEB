@@ -459,6 +459,23 @@ export type Database = {
           updated_at?: string | null
         }
       }
+      guest_sessions: {
+        Row: {
+          id: string
+          room_number: string
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          room_number: string
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          room_number?: string
+          created_at?: string
+        }
+      }
     }
     Views: {}
     Functions: {}
