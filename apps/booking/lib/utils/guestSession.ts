@@ -10,8 +10,8 @@ export async function ensureGuestSession(roomHint?: string) {
 
   const roomNumber = roomHint ?? window.localStorage.getItem("room_number") ?? "Suite-000";
 
-  const { data, error } = await supabase
-    .from("guest_sessions")
+  const { data, error } = await (supabase
+    .from("guest_sessions") as any)
     .insert({ room_number: roomNumber })
     .select("id")
     .single();
