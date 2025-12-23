@@ -1,7 +1,9 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { User, Activity, Dumbbell, Flame, ChevronRight, Calendar, Home, Building2, Ticket } from "lucide-react";
+import { useRef } from "react";
+import { Activity, Dumbbell, Flame, Calendar, Home, Building2, Ticket } from "lucide-react";
+import { RouterBottomNav } from "../_components/RouterBottomNav";
 import Link from "next/link";
 import Image from "next/image";
 import { GLVT_THEME, commonStyles } from "../theme";
@@ -222,28 +224,7 @@ export default function GlvtHome() {
             </main>
 
             {/* TAB BAR NAVIGATION */}
-            <div className="fixed bottom-0 left-0 right-0 bg-[#1a1a1a]/95 backdrop-blur-md border-t border-[#D7D5D2]/5 pb-6 pt-4 px-6 z-50">
-                <div className="flex justify-between items-center max-w-md mx-auto">
-                    <TabItem icon={Home} label="Home" active href="/glvt/home" />
-                    <TabItem icon={Calendar} label="Diary" href="/glvt/diary" />
-                    <TabItem icon={Building2} label="Facility" href="/glvt/facility" />
-                    <TabItem icon={User} label="Profile" href="/glvt/profile" />
-                </div>
-            </div>
-
+            <RouterBottomNav />
         </div>
-    );
-}
-
-function TabItem({ icon: Icon, label, active, href }: { icon: any, label: string, active?: boolean, href: string }) {
-    return (
-        <Link href={href} className="flex flex-col items-center gap-1 group">
-            <div className={`w-10 h-10 rounded-full flex items-center justify-center transition-colors ${active ? 'bg-[#C8A871] text-black' : 'text-[#D7D5D2]/40 group-hover:text-[#F1EDE5]'}`}>
-                <Icon className="w-5 h-5" />
-            </div>
-            <span className={`text-[9px] uppercase tracking-wider ${active ? 'text-[#C8A871]' : 'text-[#D7D5D2]/40 group-hover:text-[#F1EDE5]'}`}>
-                {label}
-            </span>
-        </Link>
     );
 }
