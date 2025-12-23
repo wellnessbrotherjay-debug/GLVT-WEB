@@ -109,7 +109,7 @@ async function fetchLibraryRows(type: LibraryType, venueId?: string | null) {
   ] as unknown as Promise<any>[];
 
   if (targetVenue) {
-    promises.push(supabase.from(table).select("*").eq("venue_id", targetVenue));
+    promises.push(supabase.from(table).select("*").eq("venue_id", targetVenue) as any);
   }
 
   const results = await Promise.all(promises);
