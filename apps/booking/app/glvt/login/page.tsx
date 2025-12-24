@@ -24,12 +24,12 @@ export default function GlvtLoginPage() {
                 .single();
 
             if (data) {
-                router.push("/glvt/book");
+                router.replace("/glvt/home");
             } else {
-                router.push("/glvt/onboarding");
+                router.replace("/glvt/onboarding");
             }
         } catch (e) {
-            router.push("/glvt/onboarding");
+            router.replace("/glvt/onboarding");
         }
     };
 
@@ -46,11 +46,7 @@ export default function GlvtLoginPage() {
             const { error } = await supabase.auth.signInWithOAuth({
                 provider: 'google',
                 options: {
-                    redirectTo: `${window.location.origin}/glvt/book`, // Or a generic callback route if needed
-                    queryParams: {
-                        access_type: 'offline',
-                        prompt: 'consent',
-                    },
+                    redirectTo: `${window.location.origin}/glvt/home`,
                 },
             });
             if (error) throw error;
@@ -79,14 +75,12 @@ export default function GlvtLoginPage() {
                     password,
                 });
                 if (error) throw error;
-                // router.push("/glvt/book"); // REPLACE
-
                 // Get the user we just logged in as
                 const { data: { user } } = await supabase.auth.getUser();
                 if (user) {
                     await checkProfileAndRedirect(user.id);
                 } else {
-                    router.push("/glvt/book"); // Fallback
+                    router.replace("/glvt/home"); // Fallback
                 }
             }
         } catch (err: any) {
@@ -95,6 +89,15 @@ export default function GlvtLoginPage() {
             setLoading(false);
         }
     };
+
+    // If user exists, don't show the login form to prevent flicker during redirect
+    if (user) {
+        return (
+            <div className="min-h-screen bg-[#0a0a0a] flex items-center justify-center">
+                <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-white"></div>
+            </div>
+        );
+    }
 
     return (
         <div className="min-h-screen bg-[#0a0a0a] text-white flex flex-col justify-center p-8 font-sans">
