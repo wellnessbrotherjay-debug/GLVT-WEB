@@ -168,13 +168,39 @@ export default function GlvtLoginPage() {
             </div>
 
             <div className="mt-8 text-center">
-                <button
-                    onClick={() => setIsSignUp(!isSignUp)}
-                    className="text-xs text-gray-500 underline decoration-gray-700 hover:text-white transition-colors"
-                >
-                    {isSignUp ? "Already have an account? Sign In" : "First time? Create Account"}
-                </button>
+                <div className="flex flex-col gap-4">
+                    <button
+                        onClick={() => setIsSignUp(!isSignUp)}
+                        className="text-xs text-gray-500 underline decoration-gray-700 hover:text-white transition-colors"
+                    >
+                        {isSignUp ? "Already have an account? Sign In" : "First time? Create Account"}
+                    </button>
+
+                    <button
+                        onClick={() => {
+                            // @ts-ignore - Login as guest added to context but TS might complain without restart
+                            user === null && window.location.reload(); // Force reload if needed
+                            // We access the context capability via a clean button click
+                            const guestLogin = (window as any).glvtLoginAsGuest;
+                            if (guestLogin) guestLogin();
+                        }}
+                        className="text-[10px] uppercase tracking-widest text-[#C8A871] hover:text-[#d4b57a] transition-colors"
+                    >
+                        — Continue as Guest (Demo) —
+                    </button>
+                </div>
             </div>
+
+            {/* Hidden guest trigger handler since we can't easily access context function outside hook in button onClick inline without proper wrapping */}
+            <GuestLoginTrigger />
         </div>
     );
+}
+
+function GuestLoginTrigger() {
+    const { loginAsGuest } = useAuth();
+    useEffect(() => {
+        (window as any).glvtLoginAsGuest = loginAsGuest;
+    }, [loginAsGuest]);
+    return null;
 }

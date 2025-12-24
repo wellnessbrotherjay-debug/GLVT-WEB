@@ -36,8 +36,10 @@ export async function middleware(request: NextRequest) {
 
     const url = request.nextUrl.clone();
 
-    // 1. Redirect to /glvt/home if user is signed in and tries to access login or launch pages
-    if (user) {
+    // 1. Redirect to /glvt/home if user is signed in OR has guest session and tries to access login or launch pages
+    const hasGuestSession = request.cookies.get('glvt_guest_session')?.value === 'true';
+
+    if (user || hasGuestSession) {
         if (url.pathname === "/glvt/login" || url.pathname === "/glvt/launch") {
             url.pathname = "/glvt/home";
             return NextResponse.redirect(url);
