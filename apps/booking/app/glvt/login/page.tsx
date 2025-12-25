@@ -242,7 +242,7 @@ export default function GlvtLoginPage() {
                         onClick={() => {
                             console.log("Demo Mode: Bypassing auth, setting cookie and redirecting");
                             document.cookie = "glvt_guest_session=true; path=/; max-age=86400";
-                            window.location.href = "/glvt/home";
+                            window.location.href = "/glvt/launch";
                         }}
                         className="text-[10px] uppercase tracking-widest text-[#C8A871] hover:text-[#d4b57a] transition-colors"
                     >
