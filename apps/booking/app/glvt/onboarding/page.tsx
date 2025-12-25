@@ -58,21 +58,6 @@ export default function OnboardingPage() {
 
             // Upsert to supabase
             if (user) {
-                // SKIP DB for Guest User or Test User - Check isGuest boolean first!
-                if (isGuest || user.id === '00000000-0000-0000-0000-000000000000' || user.id === 'guest-user-id') {
-                    localStorage.setItem(`glvt_profile_${user.id}`, JSON.stringify({
-                        id: user.id,
-                        first_name: formData.firstName,
-                        last_name: formData.lastName,
-                        gender: formData.gender,
-                        date_of_birth: formData.dob,
-                        height_cm: height,
-                        weight_kg: weight,
-                    }));
-                    router.replace("/glvt/home");
-                    return;
-                }
-
                 try {
                     const { error: upsertError } = await supabase.from('gym_profiles').upsert({
                         id: user.id,

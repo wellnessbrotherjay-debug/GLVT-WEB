@@ -35,19 +35,6 @@ export default function GlvtHome() {
         }
 
         const loadProfile = async () => {
-            // GUEST GUARD: Skip DB fetch for guest users to avoid UUID syntax errors
-            if (isGuest || user.id === 'guest-user-id' || user.id === '00000000-0000-0000-0000-000000000000') {
-                const localData = localStorage.getItem(`glvt_profile_${user.id}`);
-                if (localData) {
-                    setProfile(JSON.parse(localData));
-                } else {
-                    // Default mock profile for guest if no local data
-                    setProfile({ first_name: "Guest", last_name: "User" });
-                }
-                setLoading(false);
-                return;
-            }
-
             try {
                 const { data, error } = await supabase
                     .from('gym_profiles')

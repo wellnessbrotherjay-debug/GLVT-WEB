@@ -66,19 +66,43 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     return () => subscription.unsubscribe();
   }, []);
 
-  const loginAsGuest = () => {
-    // Set cookie for middleware
-    document.cookie = "glvt_guest_session=true; path=/; max-age=86400"; // 24 hours
-    setIsGuest(true);
-    setUser({
-      id: '00000000-0000-0000-0000-000000000000',
-      email: 'guest@glvt.club',
-      app_metadata: {},
-      user_metadata: {},
-      aud: 'authenticated',
-      created_at: new Date().toISOString()
-    } as User);
-    router.replace("/glvt/home");
+  const loginAsGuest = async () => {
+    try {
+      setLoading(true);
+      // 1. Try Anonymous Sign In (if enabled in Supabase)
+      const { data, error } = await supabase.auth.signInAnonymously();
+
+      if (error) throw error;
+
+      // Success - session/user will be updated by onAuthStateChange
+      // Force redirect handled by auth listener
+      document.cookie = "glvt_guest_session=true; path=/; max-age=86400"; // Keep cookie for middleware
+      setIsGuest(true);
+
+    } catch (err) {
+      console.warn("Anonymous login failed, falling back to auto-provisioned guest account:", err);
+
+      // 2. Fallback: Create a real "Guest" account with random email
+      const guestId = Math.random().toString(36).substring(7);
+      const email = `guest-${Date.now()}-${guestId}@glvt.temp`;
+      const password = `guest-${Date.now()}-${guestId}`; // Secure enough for tmp account
+
+      const { data, error } = await supabase.auth.signUp({
+        email,
+        password,
+      });
+
+      if (error) {
+        console.error("Critical: Failed to provision guest account", error);
+        alert("Could not start guest session. Please try again.");
+        setLoading(false);
+        return;
+      }
+
+      // Success - session/user will be updated by onAuthStateChange
+      document.cookie = "glvt_guest_session=true; path=/; max-age=86400";
+      setIsGuest(true);
+    }
   };
 
   const signOut = async () => {
