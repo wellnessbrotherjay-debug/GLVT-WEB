@@ -96,23 +96,35 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   };
 
   const signOut = async () => {
+    console.log("AuthContext: signOut called");
     try {
       if (isGuest) {
+        console.log("AuthContext: clearing guest session cookie");
         document.cookie = "glvt_guest_session=; path=/; max-age=0";
       } else {
-        // Fire and forget to prevent hanging if network is slow/offline
-        supabase.auth.signOut();
+        console.log("AuthContext: calling supabase.auth.signOut()");
+        // Await this to ensure Supabase clears its local storage properly
+        await supabase.auth.signOut();
       }
     } catch (error) {
-      console.error("Sign out error:", error);
+      console.error("AuthContext: Sign out error:", error);
     } finally {
+      console.log("AuthContext: executing finally cleanup");
       // ALWAYS cleanup and redirect, even if network fails
       setIsGuest(false);
       setUser(null);
       setSession(null);
+
+      console.log("AuthContext: redirecting to login");
       router.replace("/glvt/login");
-      // Fallback: Force hard reload if router fails
-      window.location.href = "/glvt/login";
+      // Fallback: Force hard reload if router fails after a short delay
+      // This is a safety net in case next/navigation is stuck
+      setTimeout(() => {
+        if (window.location.pathname !== '/glvt/login') {
+          console.log("AuthContext: router replace seemingly failed, forcing window.location");
+          window.location.href = "/glvt/login";
+        }
+      }, 500);
     }
   };
 

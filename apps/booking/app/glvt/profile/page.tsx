@@ -273,7 +273,9 @@ export default function ProfilePage() {
                 <div className="space-y-4 pt-8 pb-8">
                     <button
                         onClick={async () => {
+                            console.log("ProfilePage: Sign Out clicked");
                             await signOut();
+                            console.log("ProfilePage: signOut promise resolved");
                             // signOut function redirects, so we don't need to do anything here
                             // but the context implementation handles the redirect.
                         }}

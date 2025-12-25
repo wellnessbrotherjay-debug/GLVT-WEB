@@ -1,17 +1,18 @@
 
 import { Home, User, Calendar, Building2 } from "lucide-react";
+import Link from "next/link";
 
 interface BottomNavProps {
     activeView: string;
     onNavigate: (view: string) => void;
 }
 
-export function BottomNav({ activeView, onNavigate }: BottomNavProps) {
+export function BottomNav({ activeView }: Omit<BottomNavProps, 'onNavigate'>) {
     const navItems = [
-        { id: 'dashboard', icon: Home, label: 'HOME' },
-        { id: 'log', icon: Calendar, label: 'DIARY' },
-        { id: 'workouts', icon: Building2, label: 'FACILITY' },
-        { id: 'profile', icon: User, label: 'PROFILE' }
+        { id: 'dashboard', icon: Home, label: 'HOME', href: '/glvt/home' },
+        { id: 'log', icon: Calendar, label: 'DIARY', href: '/glvt/diary' },
+        { id: 'workouts', icon: Building2, label: 'FACILITY', href: '/glvt/book' },
+        { id: 'profile', icon: User, label: 'PROFILE', href: '/glvt/profile' }
     ];
 
     return (
@@ -20,9 +21,9 @@ export function BottomNav({ activeView, onNavigate }: BottomNavProps) {
                 {navItems.map((item) => {
                     const isActive = activeView === item.id || (item.id === 'log' && activeView === 'recipes'); // mapping recipes to diary
                     return (
-                        <button
+                        <Link
                             key={item.id}
-                            onClick={() => onNavigate(item.id)}
+                            href={item.href}
                             className="flex flex-col items-center gap-2 w-16"
                         >
                             <div className={`p-3 rounded-full transition-all duration-300 ${isActive
@@ -35,7 +36,7 @@ export function BottomNav({ activeView, onNavigate }: BottomNavProps) {
                                 }`}>
                                 {item.label}
                             </span>
-                        </button>
+                        </Link>
                     );
                 })}
             </div>

@@ -1,6 +1,6 @@
 "use client";
 
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { BottomNav } from "@/components/dashboard/BottomNav";
 
 export function RouterBottomNav() {
@@ -18,30 +18,8 @@ export function RouterBottomNav() {
         return '';
     };
 
-    // Handle navigation
-    const handleNavigate = (viewId: string) => {
-        switch (viewId) {
-            case 'dashboard':
-                router.push('/glvt/home');
-                break;
-            case 'log':
-                router.push('/glvt/diary');
-                break;
-            case 'workouts':
-                // The browser agent said booking is at /glvt/book, but FacilityView is new.
-                // Let's assume /glvt/book is where the FacilityView is mounted or redirected.
-                router.push('/glvt/book');
-                break;
-            case 'profile':
-                router.push('/glvt/profile');
-                break;
-            default:
-                break;
-        }
-    };
-
     // Hide on login/onboarding if needed, but for now show if we are deep in app
     // if (pathname === '/glvt/login') return null;
 
-    return <BottomNav activeView={getActiveView()} onNavigate={handleNavigate} />;
+    return <BottomNav activeView={getActiveView()} />;
 }

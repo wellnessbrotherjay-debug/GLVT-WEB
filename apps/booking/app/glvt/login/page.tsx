@@ -16,6 +16,7 @@ export default function GlvtLoginPage() {
     const { user, session } = useAuth(); // Use AuthContext
 
     const checkProfileAndRedirect = async (userId: string) => {
+        console.log("LoginPage: checkProfileAndRedirect", userId);
         try {
             const { data, error } = await supabase
                 .from('gym_profiles')
@@ -24,11 +25,14 @@ export default function GlvtLoginPage() {
                 .single();
 
             if (data) {
+                console.log("LoginPage: Profile found, redirecting to home");
                 router.replace("/glvt/home");
             } else {
+                console.log("LoginPage: Profile not found, redirecting to onboarding");
                 router.replace("/glvt/onboarding");
             }
         } catch (e) {
+            console.error("LoginPage: checkProfileAndRedirect error", e);
             router.replace("/glvt/onboarding");
         }
     };
@@ -36,12 +40,14 @@ export default function GlvtLoginPage() {
     // Check if checks session on mount
     useEffect(() => {
         if (user) {
+            console.log("LoginPage: User already present on mount", user.id);
             checkProfileAndRedirect(user.id);
         }
     }, [user, router]); // Dependency on user from context
 
     const handleGoogleLogin = async () => {
         setLoading(true);
+        console.log("LoginPage: Starting Google Login");
         try {
             const { error } = await supabase.auth.signInWithOAuth({
                 provider: 'google',
@@ -51,6 +57,7 @@ export default function GlvtLoginPage() {
             });
             if (error) throw error;
         } catch (err: any) {
+            console.error("LoginPage: Google Login error", err);
             setError(err.message);
             setLoading(false);
         }
@@ -60,6 +67,7 @@ export default function GlvtLoginPage() {
         e.preventDefault();
         setLoading(true);
         setError(null);
+        console.log("LoginPage: Starting Auth (SignUp:", isSignUp, ")");
 
         try {
             if (isSignUp) {
@@ -75,15 +83,19 @@ export default function GlvtLoginPage() {
                     password,
                 });
                 if (error) throw error;
+
+                console.log("LoginPage: Sign in successful, fetching user");
                 // Get the user we just logged in as
                 const { data: { user } } = await supabase.auth.getUser();
                 if (user) {
                     await checkProfileAndRedirect(user.id);
                 } else {
+                    console.log("LoginPage: No user returned after sign in??");
                     router.replace("/glvt/home"); // Fallback
                 }
             }
         } catch (err: any) {
+            console.error("LoginPage: Auth Error", err);
             setError(err.message);
         } finally {
             setLoading(false);
