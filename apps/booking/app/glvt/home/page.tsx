@@ -48,6 +48,8 @@ export default function GlvtHome() {
         }
 
         const loadProfile = async () => {
+            if (!user) return; // Safety check for TypeScript
+
             try {
                 const { data, error } = await supabase
                     .from('gym_profiles')
