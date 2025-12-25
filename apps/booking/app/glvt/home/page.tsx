@@ -10,7 +10,7 @@ import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { format } from "date-fns";
 import { GLVT_THEME, commonStyles } from "../theme";
-import { format } from "date-fns";
+
 import { supabase } from "@/lib/supabase";
 
 // EXTERNAL SUPABASE ASSETS
