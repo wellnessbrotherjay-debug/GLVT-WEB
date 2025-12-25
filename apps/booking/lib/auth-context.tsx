@@ -39,7 +39,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       setIsGuest(true);
       // Create a mock guest user so components don't crash
       setUser({
-        id: 'guest-user-id',
+        id: '00000000-0000-0000-0000-000000000000',
         email: 'guest@glvt.club',
         app_metadata: {},
         user_metadata: {},
@@ -71,7 +71,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     document.cookie = "glvt_guest_session=true; path=/; max-age=86400"; // 24 hours
     setIsGuest(true);
     setUser({
-      id: 'guest-user-id',
+      id: '00000000-0000-0000-0000-000000000000',
       email: 'guest@glvt.club',
       app_metadata: {},
       user_metadata: {},
