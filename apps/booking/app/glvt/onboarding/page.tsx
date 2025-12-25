@@ -21,7 +21,7 @@ export default function OnboardingPage() {
     });
     const [loading, setLoading] = useState(false);
     const router = useRouter();
-    const { user, loading: authLoading } = useAuth(); // Use AuthContext
+    const { user, loading: authLoading, isGuest } = useAuth(); // Use AuthContext
 
     useEffect(() => {
         if (!authLoading && !user) {
@@ -58,8 +58,8 @@ export default function OnboardingPage() {
 
             // Upsert to supabase
             if (user) {
-                // SKIP DB for Guest User or Test User
-                if (user.id === '00000000-0000-0000-0000-000000000000') {
+                // SKIP DB for Guest User or Test User - Check isGuest boolean first!
+                if (isGuest || user.id === '00000000-0000-0000-0000-000000000000' || user.id === 'guest-user-id') {
                     localStorage.setItem(`glvt_profile_${user.id}`, JSON.stringify({
                         id: user.id,
                         first_name: formData.firstName,
