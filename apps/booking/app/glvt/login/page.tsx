@@ -102,8 +102,45 @@ export default function GlvtLoginPage() {
         }
     };
 
+    // Connection Status Check
+    const [connectionStatus, setConnectionStatus] = useState<'checking' | 'connected' | 'error'>('checking');
+    const [connectionError, setConnectionError] = useState<string | null>(null);
+
+    useEffect(() => {
+        const checkConnection = async () => {
+            try {
+                // Determine if we are on localhost vs production to hint user
+                const isLocal = window.location.hostname === 'localhost';
+
+                // Simple query to public table or rpc to check connection
+                // Selecting count from a likely public table, or just checking if client throws immediately
+                const { error } = await supabase.from('gym_profiles').select('count', { count: 'exact', head: true });
+
+                if (error) {
+                    // Check for specific auth/key errors
+                    if (error.message.includes('JWT') || error.code === 'PGRST301') {
+                        setConnectionError("Invalid Supabase Anon Key. Please check Vercel Env Vars.");
+                    } else if (error.message.includes('fetch')) {
+                        setConnectionError("Network Error: Cannot reach Supabase. Check URL.");
+                    } else {
+                        setConnectionError(`Database Error: ${error.message}`);
+                    }
+                    setConnectionStatus('error');
+                } else {
+                    setConnectionStatus('connected');
+                }
+            } catch (err: any) {
+                setConnectionError(`Client Error: ${err.message}`);
+                setConnectionStatus('error');
+            }
+        };
+
+        checkConnection();
+    }, []);
+
     // If user exists, don't show the login form to prevent flicker during redirect
-    if (user) {
+    // BUT if there is a checking error, show it!
+    if (user && connectionStatus !== 'error') {
         return (
             <div className="min-h-screen bg-[#0a0a0a] flex items-center justify-center">
                 <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-white"></div>
@@ -117,6 +154,19 @@ export default function GlvtLoginPage() {
                 <h1 className="text-4xl font-serif tracking-widest mb-2">GLVT</h1>
                 <p className="text-xs uppercase tracking-[0.4em] text-gray-500">Member Access</p>
             </div>
+
+            {/* Connection Error Banner */}
+            {connectionStatus === 'error' && (
+                <div className="mb-6 p-4 bg-red-900/20 border border-red-500/50 rounded-lg text-center">
+                    <p className="text-red-400 font-bold text-xs uppercase tracking-widest mb-1">Connection Failed</p>
+                    <p className="text-red-300/80 text-[10px]">{connectionError}</p>
+                    <p className="text-red-300/60 text-[10px] mt-2">
+                        {window.location.hostname === 'localhost'
+                            ? "Check apps/booking/.env.local"
+                            : "Check Vercel Project Settings -> Environment Variables"}
+                    </p>
+                </div>
+            )}
 
             <div className="space-y-6">
                 <button

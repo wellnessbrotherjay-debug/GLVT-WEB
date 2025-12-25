@@ -23,9 +23,17 @@ export async function GET(request: Request) {
 
         const response = NextResponse.redirect(redirectUrl)
 
+        const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://bwndbccgzjdgtcyornwn.supabase.co';
+        const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
+
+        if (!supabaseAnonKey) {
+            console.error("Auth Callback Missing NEXT_PUBLIC_SUPABASE_ANON_KEY");
+            return NextResponse.redirect(`${origin}/glvt/login?error=missing-env-vars`)
+        }
+
         const supabase = createServerClient(
-            process.env.NEXT_PUBLIC_SUPABASE_URL!,
-            process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+            supabaseUrl,
+            supabaseAnonKey,
             {
                 cookies: {
                     getAll() {
