@@ -16,14 +16,13 @@ export default function GLVTLaunchPage() {
     const router = useRouter();
     const { user, loading: authLoading } = useAuth();
 
-    useEffect(() => {
-        if (!authLoading && user) {
-            router.replace("/glvt/home");
-        }
-    }, [user, authLoading, router]);
+    // Don't auto-redirect - let users click "Enter the Club" button
 
     const handleEnter = () => {
-        if (user) {
+        // Check for guest session cookie
+        const isGuest = document.cookie.includes('glvt_guest_session=true');
+
+        if (user || isGuest) {
             router.replace("/glvt/home");
         } else {
             router.replace("/glvt/login");
