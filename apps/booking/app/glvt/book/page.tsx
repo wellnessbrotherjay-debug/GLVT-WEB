@@ -307,15 +307,17 @@ export default function BookingPage() {
 
     // Class Detail View - THE GOLD STANDARD REFERENCE
     if (showClassDetail && selectedClass) {
-        const coach = COACHES[selectedClass.coachId];
+        const classData = selectedClass.studio_class || {};
+        const coachData = selectedClass.coach || {};
+        const scheduledTime = new Date(selectedClass.scheduled_time);
 
         return (
             <div className={`min-h-screen bg-[#2D2D2D] text-[#F1EDE5] relative overflow-hidden flex flex-col`}>
                 {/* Full-Page Hero Image */}
                 <div className="absolute inset-0 z-0">
                     <Image
-                        src={selectedClass.coverImage}
-                        alt={selectedClass.name}
+                        src={classData.cover_image_url || '/class-covers/glutes-workout.png'}
+                        alt={classData.name || 'Class'}
                         fill
                         className="object-cover"
                         priority
@@ -343,13 +345,13 @@ export default function BookingPage() {
                         {/* Badge */}
                         <div className="mb-4">
                             <span className="inline-block px-3 py-1 bg-[#C8A871] text-[#2D2D2D] text-[10px] uppercase tracking-widest rounded-sm font-bold shadow-lg">
-                                {selectedClass.focus} Series
+                                {classData.focus_area || 'Fitness'} Series
                             </span>
                         </div>
 
                         {/* Class Name */}
                         <h1 className="text-5xl md:text-6xl text-white mb-6 leading-[0.9] font-serif tracking-tight drop-shadow-lg">
-                            {selectedClass.name}
+                            {classData.name || 'Class'}
                         </h1>
 
                         {/* Stats Strip */}
@@ -358,7 +360,7 @@ export default function BookingPage() {
                                 <Clock className="w-4 h-4 text-[#C8A871]" />
                                 <div className="flex flex-col">
                                     <span className="text-[9px] uppercase text-[#D7D5D2]/60 tracking-wider">Start</span>
-                                    <span className="text-sm font-bold text-[#F1EDE5]">{format(selectedClass.time, 'h:mm a')}</span>
+                                    <span className="text-sm font-bold text-[#F1EDE5]">{format(scheduledTime, 'h:mm a')}</span>
                                 </div>
                             </div>
                             <div className="w-px h-8 bg-white/10"></div>
@@ -366,7 +368,7 @@ export default function BookingPage() {
                                 <Users className="w-4 h-4 text-[#C8A871]" />
                                 <div className="flex flex-col">
                                     <span className="text-[9px] uppercase text-[#D7D5D2]/60 tracking-wider">Spots</span>
-                                    <span className="text-sm font-bold text-[#F1EDE5]">{selectedClass.availableSpots} left</span>
+                                    <span className="text-sm font-bold text-[#F1EDE5]">{selectedClass.available_spots} left</span>
                                 </div>
                             </div>
                             <div className="w-px h-8 bg-white/10"></div>
@@ -374,7 +376,7 @@ export default function BookingPage() {
                                 <span className="text-lg">🔥</span>
                                 <div className="flex flex-col">
                                     <span className="text-[9px] uppercase text-[#D7D5D2]/60 tracking-wider">Intensity</span>
-                                    <span className="text-sm font-bold text-[#F1EDE5]">{selectedClass.intensity}</span>
+                                    <span className="text-sm font-bold text-[#F1EDE5]">{classData.intensity || 'Medium'}</span>
                                 </div>
                             </div>
                         </div>
@@ -382,7 +384,7 @@ export default function BookingPage() {
                         {/* Description */}
                         <div className="mb-8">
                             <p className="text-[#D7D5D2]/90 leading-relaxed text-sm max-w-lg font-light">
-                                {selectedClass.description}
+                                {classData.description}
                             </p>
                         </div>
 
@@ -390,13 +392,13 @@ export default function BookingPage() {
                         <div className="mb-8">
                             <div className="text-[10px] uppercase tracking-[0.2em] text-[#D7D5D2]/60 mb-3 font-bold">Led By</div>
                             <button
-                                onClick={() => handleCoachClick(selectedClass.coachId)}
+                                onClick={() => handleCoachClick(selectedClass.coach_id)}
                                 className="flex items-center gap-4 group bg-[#3a3a3a]/40 p-3 rounded-xl border border-white/5 hover:bg-[#3a3a3a]/60 transition-all backdrop-blur-md"
                             >
                                 <div className="relative w-12 h-12 rounded-full overflow-hidden border border-[#C8A871]/30">
                                     <Image
-                                        src={coach.image}
-                                        alt={coach.name}
+                                        src={coachData.image_url || '/coaches/mike-chen.png'}
+                                        alt={coachData.name || 'Coach'}
                                         fill
                                         className="object-cover"
                                     />
