@@ -34,8 +34,16 @@ export default function GlvtHome() {
     useEffect(() => {
         if (authLoading) return;
 
-        if (!user) {
+        // Allow guests to view the home page without a user account
+        if (!user && !isGuest) {
             router.replace("/glvt/launch");
+            return;
+        }
+
+        // Skip profile loading for guests
+        if (isGuest) {
+            setProfile({ name: "Guest User" });
+            setLoading(false);
             return;
         }
 
