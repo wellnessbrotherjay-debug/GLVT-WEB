@@ -194,7 +194,7 @@ export default function ProfilePage() {
                         <h2 className="text-2xl text-[#F1EDE5] font-serif">
                             {profile?.first_name} {profile?.last_name}
                         </h2>
-                        <p className="text-xs text-[#D7D5D2]/40 uppercase tracking-widest mt-1">{user.email}</p>
+                        <p className="text-xs text-[#D7D5D2]/40 uppercase tracking-widest mt-1">{user?.email || 'Guest Account'}</p>
                     </div>
                 </div>
 
