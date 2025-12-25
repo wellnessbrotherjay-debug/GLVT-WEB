@@ -5,7 +5,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { ChevronRight } from "lucide-react";
 
-import launchHero from "../../assets/images/glvt-launch-hero.jpg"; // Bullet-proof import
+// EXTERNAL SUPABASE ASSET (Bullet-proof)
+const launchHero = "https://bwndbccgzjdgtcyornwn.supabase.co/storage/v1/object/public/public-assets/glvt-launch-hero.jpg";
 
 import { supabase } from "@/lib/supabase";
 import { useRouter } from "next/navigation";
@@ -20,7 +21,7 @@ return (
                 fill
                 className="object-contain"
                 priority
-                placeholder="blur"
+            // placeholder="blur" // Removed placeholder as it requires local file or base64 
             />
             {/* Strong Dark Gradient Overlay ... */}
             <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/30 to-black/70"></div>

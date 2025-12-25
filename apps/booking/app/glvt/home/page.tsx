@@ -11,9 +11,11 @@ import Image from "next/image";
 import { GLVT_THEME, commonStyles } from "../theme";
 import { format } from "date-fns";
 import { supabase } from "@/lib/supabase";
-import launchHero from "../../assets/images/glvt-launch-hero.jpg";
-import pilatesCover from "../../assets/images/class-covers/pilates-core.png";
-import glutesCover from "../../assets/images/class-covers/glutes-workout.png";
+
+// EXTERNAL SUPABASE ASSETS
+const launchHero = "https://bwndbccgzjdgtcyornwn.supabase.co/storage/v1/object/public/public-assets/glvt-launch-hero.jpg";
+const pilatesCover = "https://bwndbccgzjdgtcyornwn.supabase.co/storage/v1/object/public/public-assets/class-covers/pilates-core.png";
+const glutesCover = "https://bwndbccgzjdgtcyornwn.supabase.co/storage/v1/object/public/public-assets/class-covers/glutes-workout.png";
 
 export default function GlvtHome() {
     const [profile, setProfile] = useState<any>(null);
