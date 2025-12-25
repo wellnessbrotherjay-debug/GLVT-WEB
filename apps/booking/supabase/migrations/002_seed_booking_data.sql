@@ -6,22 +6,23 @@
 -- ============================================================================
 INSERT INTO public.coaches (name, specialty, bio, certifications, image_url) VALUES
 ('Coach Mike Chen', 'Glute Activation & Power', '10+ years specializing in lower body biomechanics and glute development. Former Olympic weightlifting coach.', 
- '["NASM-CPT", "CSCS", "Olympic Lifting L2"]', '/coaches/mike-chen.png'),
+ '["NASM-CPT", "CSCS", "Olympic Lifting L2"]'::jsonb, '/coaches/mike-chen.png'),
 
 ('Sarah Liu', 'Core Stability & Pilates', 'Pilates master instructor with expertise in core rehabilitation and functional movement patterns.',
- '["Pilates Master", "Physical Therapy", "Yoga RYT-500"]', '/coaches/sarah-liu.png'),
+ '["Pilates Master", "Physical Therapy", "Yoga RYT-500"]'::jsonb, '/coaches/sarah-liu.png'),
 
 ('Coach Alex Wong', 'Functional Core Training', 'Sports performance specialist focusing on core strength for athletic performance and injury prevention.',
- '["CSCS", "FMS", "TRX Master"]', '/coaches/alex-wong.png'),
+ '["CSCS", "FMS", "TRX Master"]'::jsonb, '/coaches/alex-wong.png'),
 
 ('Emma Park', 'Glute Sculpting', 'Body composition expert specializing in glute hypertrophy and aesthetic development.',
- '["NASM-CPT", "Nutrition Coach", "Bodybuilding Specialist"]', '/coaches/emma-park.png'),
+ '["NASM-CPT", "Nutrition Coach", "Bodybuilding Specialist"]'::jsonb, '/coaches/emma-park.png'),
 
 ('Coach Danny Kim', 'High-Intensity Core', 'Former MMA fighter bringing explosive core training techniques to maximize power and endurance.',
- '["CrossFit L2", "Kettlebell Master", "MMA Conditioning"]', '/coaches/danny-kim.png'),
+ '["CrossFit L2", "Kettlebell Master", "MMA Conditioning"]'::jsonb, '/coaches/danny-kim.png'),
 
 ('Jessica Tan', 'Lower Body Power', 'Powerlifting champion with focus on glute and hamstring strength development.',
- '["USAPL Coach", "Starting Strength", "Biomechanics Specialist"]', '/coaches/jessica-tan.png');
+ '["USAPL Coach", "Starting Strength", "Biomechanics Specialist"]'::jsonb, '/coaches/jessica-tan.png');
+
 
 -- ============================================================================
 -- SEED STUDIO CLASSES
