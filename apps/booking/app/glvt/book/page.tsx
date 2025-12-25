@@ -199,14 +199,40 @@ const generateSchedule = () => {
 };
 
 export default function BookingPage() {
-    const [schedule] = useState(generateSchedule());
+    const [schedule, setSchedule] = useState<ClassSchedule[]>([]);
+    const [loading, setLoading] = useState(true);
     const [selectedDay, setSelectedDay] = useState(0);
     const [selectedClass, setSelectedClass] = useState<any>(null);
     const [showClassDetail, setShowClassDetail] = useState(false);
     const [showCoachProfile, setShowCoachProfile] = useState(false);
     const [selectedCoach, setSelectedCoach] = useState<any>(null);
 
-    const currentDaySchedule = schedule[selectedDay];
+    // Fetch real schedules from database
+    useEffect(() => {
+        const fetchSchedules = async () => {
+            try {
+                setLoading(true);
+                const schedules = await getUpcomingClasses(new Date(), 7);
+                setSchedule(schedules);
+            } catch (error) {
+                console.error("Failed to fetch schedules:", error);
+            } finally {
+                setLoading(false);
+            }
+        };
+        fetchSchedules();
+    }, []);
+
+    // Group schedules by day
+    const schedulesByDay = schedule.reduce((acc: any, item) => {
+        const day = format(new Date(item.scheduled_time), 'yyyy-MM-dd');
+        if (!acc[day]) acc[day] = [];
+        acc[day].push(item);
+        return acc;
+    }, {});
+
+    const days = Object.keys(schedulesByDay).sort();
+    const currentDaySchedule = days[selectedDay] ? schedulesByDay[days[selectedDay]] : [];
 
     const handleClassClick = (classItem: any) => {
         setSelectedClass(classItem);
@@ -384,7 +410,7 @@ export default function BookingPage() {
 
                         {/* Book Button */}
                         <Link
-                            href={`/glvt/book/confirm?class=${selectedClass.id}&time=${selectedClass.time.toISOString()}`}
+                            href={`/glvt/book/confirm?class=${selectedClass.studio_class?.slug || selectedClass.id}&time=${selectedClass.scheduled_time}&scheduleId=${selectedClass.id}`}
                             className="w-full bg-[#C8A871] hover:bg-[#d4b57a] text-[#2D2D2D] text-center text-sm uppercase tracking-[0.2em] font-bold py-5 rounded-xl shadow-[0_0_30px_rgba(200,168,113,0.3)] hover:scale-[1.01] transition-all"
                         >
                             Reserve Spot
@@ -443,35 +469,53 @@ export default function BookingPage() {
                 </div>
 
                 <div className="space-y-10 pb-20">
-                    {/* Morning Section */}
-                    <section>
-                        <div className="flex items-center gap-3 mb-4">
-                            <div className="h-px flex-1 bg-[#D7D5D2]/10"></div>
-                            <span className="text-[10px] uppercase tracking-[0.2em] text-[#D7D5D2]/40 font-bold">Morning</span>
-                            <div className="h-px flex-1 bg-[#D7D5D2]/10"></div>
+                    {loading ? (
+                        <div className="text-center py-20 text-[#D7D5D2]/60">
+                            Loading schedules...
                         </div>
+                    ) : currentDaySchedule.length === 0 ? (
+                        <div className="text-center py-20 text-[#D7D5D2]/60">
+                            No classes scheduled for this day
+                        </div>
+                    ) : (
+                        <>
+                            {/* Morning Classes (before 12pm) */}
+                            {currentDaySchedule.filter((item: ClassSchedule) => new Date(item.scheduled_time).getHours() < 12).length > 0 && (
+                                <section>
+                                    <div className="flex items-center gap-3 mb-4">
+                                        <div className="h-px flex-1 bg-[#D7D5D2]/10"></div>
+                                        <span className="text-[10px] uppercase tracking-[0.2em] text-[#D7D5D2]/40 font-bold">Morning</span>
+                                        <div className="h-px flex-1 bg-[#D7D5D2]/10"></div>
+                                    </div>
+                                    <div className="space-y-4">
+                                        {currentDaySchedule
+                                            .filter((item: ClassSchedule) => new Date(item.scheduled_time).getHours() < 12)
+                                            .map((classItem: ClassSchedule, idx: number) => (
+                                                <ClassCardButton key={idx} classItem={classItem} onClick={() => handleClassClick(classItem)} />
+                                            ))}
+                                    </div>
+                                </section>
+                            )}
 
-                        <div className="space-y-4">
-                            {currentDaySchedule.morning.map((classItem: any, idx: number) => (
-                                <ClassCardButton key={idx} classItem={classItem} onClick={() => handleClassClick(classItem)} />
-                            ))}
-                        </div>
-                    </section>
-
-                    {/* Evening Section */}
-                    <section>
-                        <div className="flex items-center gap-3 mb-4">
-                            <div className="h-px flex-1 bg-[#D7D5D2]/10"></div>
-                            <span className="text-[10px] uppercase tracking-[0.2em] text-[#D7D5D2]/40 font-bold">Evening</span>
-                            <div className="h-px flex-1 bg-[#D7D5D2]/10"></div>
-                        </div>
-
-                        <div className="space-y-4">
-                            {currentDaySchedule.evening.map((classItem: any, idx: number) => (
-                                <ClassCardButton key={idx} classItem={classItem} onClick={() => handleClassClick(classItem)} />
-                            ))}
-                        </div>
-                    </section>
+                            {/* Evening Classes (12pm and after) */}
+                            {currentDaySchedule.filter((item: ClassSchedule) => new Date(item.scheduled_time).getHours() >= 12).length > 0 && (
+                                <section>
+                                    <div className="flex items-center gap-3 mb-4">
+                                        <div className="h-px flex-1 bg-[#D7D5D2]/10"></div>
+                                        <span className="text-[10px] uppercase tracking-[0.2em] text-[#D7D5D2]/40 font-bold">Evening</span>
+                                        <div className="h-px flex-1 bg-[#D7D5D2]/10"></div>
+                                    </div>
+                                    <div className="space-y-4">
+                                        {currentDaySchedule
+                                            .filter((item: ClassSchedule) => new Date(item.scheduled_time).getHours() >= 12)
+                                            .map((classItem: ClassSchedule, idx: number) => (
+                                                <ClassCardButton key={idx} classItem={classItem} onClick={() => handleClassClick(classItem)} />
+                                            ))}
+                                    </div>
+                                </section>
+                            )}
+                        </>
+                    )}
                 </div>
 
             </main>
@@ -481,16 +525,20 @@ export default function BookingPage() {
 
 // Sub-component for clean rendering inside the main file without import loops
 function ClassCardButton({ classItem, onClick }: { classItem: any, onClick: () => void }) {
+    const classData = classItem.studio_class || {};
+    const coachData = classItem.coach || {};
+    const scheduledTime = new Date(classItem.scheduled_time);
+
     return (
         <button
             onClick={onClick}
             className="w-full group relative overflow-hidden rounded-2xl bg-[#3a3a3a] border border-[#D7D5D2]/10 text-left transition-all hover:border-[#C8A871]/50 shadow-[0_0_20px_rgba(0,0,0,0.2)]"
         >
-            {/* Image Vingette Background */}
+            {/* Image Vignette Background */}
             <div className="absolute inset-0 z-0">
                 <Image
-                    src={classItem.coverImage}
-                    alt={classItem.name}
+                    src={classData.cover_image_url || '/class-covers/glutes-workout.png'}
+                    alt={classData.name || 'Class'}
                     fill
                     className="object-cover opacity-20 group-hover:opacity-30 transition-opacity duration-700 grayscale-[0.3] group-hover:grayscale-0"
                 />
@@ -501,17 +549,17 @@ function ClassCardButton({ classItem, onClick }: { classItem: any, onClick: () =
                 <div>
                     <div className="flex items-center gap-2 mb-2">
                         <span className="bg-[#C8A871]/10 text-[#C8A871] text-[9px] uppercase tracking-widest px-2 py-0.5 rounded border border-[#C8A871]/20 font-bold">
-                            {classItem.focus}
+                            {classData.focus_area || 'Fitness'}
                         </span>
-                        <span className="text-[9px] text-[#D7D5D2]/50 uppercase tracking-wider">{classItem.duration}</span>
+                        <span className="text-[9px] text-[#D7D5D2]/50 uppercase tracking-wider">{classData.duration_minutes || 60} min</span>
                     </div>
-                    <h3 className="text-xl text-[#F1EDE5] font-serif mb-1 group-hover:text-[#C8A871] transition-colors">{classItem.name}</h3>
-                    <p className="text-xs text-[#D7D5D2]/60">with {classItem.instructor}</p>
+                    <h3 className="text-xl text-[#F1EDE5] font-serif mb-1 group-hover:text-[#C8A871] transition-colors">{classData.name || 'Class'}</h3>
+                    <p className="text-xs text-[#D7D5D2]/60">with {coachData.name || 'Instructor'}</p>
                 </div>
 
                 <div className="text-right pl-4 border-l border-[#D7D5D2]/10">
-                    <div className="text-xl font-bold text-[#F1EDE5] font-serif">{format(classItem.time, 'h:mm')}</div>
-                    <div className="text-[9px] uppercase text-[#D7D5D2]/40 tracking-wider text-right">{format(classItem.time, 'a')}</div>
+                    <div className="text-xl font-bold text-[#F1EDE5] font-serif">{format(scheduledTime, 'h:mm')}</div>
+                    <div className="text-[9px] uppercase text-[#D7D5D2]/40 tracking-wider text-right">{format(scheduledTime, 'a')}</div>
                 </div>
             </div>
         </button>
