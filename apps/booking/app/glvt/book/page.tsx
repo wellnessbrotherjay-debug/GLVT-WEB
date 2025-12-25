@@ -1,12 +1,13 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { ChevronLeft, ChevronRight, Calendar, Clock, Users, X } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import { format, addDays, startOfWeek, isSameDay } from "date-fns";
 import { GLVT_THEME, commonStyles } from "../theme";
 import { DayPill, FilterChip } from "./_components/shared";
+import { getUpcomingClasses, type ClassSchedule } from "@/lib/services/bookingService";
 
 // Coach profiles with real images
 const COACHES: any = {

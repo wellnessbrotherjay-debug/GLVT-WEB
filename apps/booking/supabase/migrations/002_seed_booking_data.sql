@@ -29,22 +29,22 @@ INSERT INTO public.coaches (name, specialty, bio, certifications, image_url) VAL
 -- ============================================================================
 INSERT INTO public.studio_classes (slug, name, description, duration_minutes, intensity, max_spots, cover_image_url, focus_area) VALUES
 ('glute-activation', 'Glute Activation', 'Wake up dormant glutes with targeted activation exercises. Perfect for building mind-muscle connection and preparing for heavier lifts.', 
- 60, 'Medium', 12, '/class-covers/glutes-workout.png', 'Glutes'),
+ 60, 'Medium', 12, 'https://i.ibb.co.com/jPttMqX2/glvt-class-1.png', 'Glutes'),
 
 ('core-foundation', 'Core Foundation', 'Build a rock-solid core foundation with controlled movements. Focus on stability, breathing, and proper engagement.',
- 75, 'Low', 15, '/class-covers/core-strength.png', 'Core'),
+ 75, 'Low', 15, 'https://i.ibb.co.com/jPttMqX2/glvt-class-1.png', 'Core'),
 
 ('pilates-core', 'Pilates Core', 'Classical pilates movements targeting deep core muscles. Improve posture, stability, and body awareness.',
- 60, 'Medium', 12, '/class-covers/pilates-core.png', 'Core'),
+ 60, 'Medium', 12, 'https://i.ibb.co.com/jPttMqX2/glvt-class-1.png', 'Core'),
 
 ('glute-sculpt', 'Glute Sculpt', 'Hypertrophy-focused glute training with progressive overload. Build rounder, stronger glutes.',
- 50, 'High', 10, '/class-covers/glute-sculpt.png', 'Glutes'),
+ 50, 'High', 10, 'https://i.ibb.co.com/jPttMqX2/glvt-class-1.png', 'Glutes'),
 
 ('abs-blast', 'Abs Blast', 'High-intensity core workout combining static holds and dynamic movements. Get shredded abs.',
- 45, 'High', 15, '/class-covers/abs-blast.png', 'Core'),
+ 45, 'High', 15, 'https://i.ibb.co.com/jPttMqX2/glvt-class-1.png', 'Core'),
 
 ('lower-body-power', 'Lower Body Power', 'Build explosive glute and hamstring power with compound lifts. Deadlifts, hip thrusts, and more.',
- 60, 'High', 10, '/class-covers/lower-body-power.png', 'Glutes');
+ 60, 'High', 10, 'https://i.ibb.co.com/jPttMqX2/glvt-class-1.png', 'Glutes');
 
 -- ============================================================================
 -- SEED CLASS SCHEDULES (7 days starting from today)
