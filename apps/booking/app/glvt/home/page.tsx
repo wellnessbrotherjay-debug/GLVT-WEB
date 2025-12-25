@@ -281,7 +281,7 @@ export default function GlvtHome() {
                     <Link href="/glvt/book" className="group block relative h-40 rounded-2xl overflow-hidden shadow-lg border border-[#D7D5D2]/10 bg-[#3a3a3a]">
                         <div className="absolute inset-0 z-0">
                             <Image
-                                src={glutesCover}
+                                src="/glvt-launch-hero.jpg"
                                 alt="Studio"
                                 fill
                                 className="object-cover opacity-40 group-hover:opacity-50 transition-opacity duration-700 grayscale group-hover:grayscale-0"
