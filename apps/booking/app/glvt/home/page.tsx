@@ -78,24 +78,69 @@ export default function GlvtHome() {
         loadProfile();
     }, [user, authLoading, router, isGuest]);
 
+
+    // Fetch active booking from database
     useEffect(() => {
-        const isCancelled = localStorage.getItem("glvt_booking_cancelled");
-        if (isCancelled === "true") {
-            setHasActiveBooking(false);
-        } else {
-            // Load active booking data
-            const activeBooking = localStorage.getItem("glvt_active_booking");
-            if (activeBooking) {
-                try {
-                    const booking = JSON.parse(activeBooking);
-                    setBookingData(booking);
+        const fetchActiveBooking = async () => {
+            // Skip for guests
+            if (isGuest || !user) {
+                // Check localStorage for guest bookings
+                const activeBooking = localStorage.getItem("glvt_active_booking");
+                if (activeBooking) {
+                    try {
+                        const booking = JSON.parse(activeBooking);
+                        setBookingData(booking);
+                        setHasActiveBooking(true);
+                    } catch (e) {
+                        console.error("Failed to parse booking data", e);
+                    }
+                }
+                return;
+            }
+
+            try {
+                // Import the booking service
+                const { getNextUpcomingBooking } = await import("@/lib/services/bookingService");
+                const booking = await getNextUpcomingBooking(user.id);
+
+                if (booking && booking.class_schedule) {
+                    // Transform database booking to match UI format
+                    const schedule = booking.class_schedule;
+                    const classData = schedule.studio_class;
+                    const coachData = schedule.coach;
+
+                    setBookingData({
+                        id: booking.id,
+                        classId: classData?.slug || '',
+                        className: classData?.name || 'Class',
+                        coach: coachData?.name || 'Instructor',
+                        time: schedule.scheduled_time,
+                        image: classData?.cover_image_url || '/class-covers/glutes-workout.png',
+                        location: schedule.location,
+                        scheduleId: schedule.id
+                    });
                     setHasActiveBooking(true);
-                } catch (e) {
-                    console.error("Failed to parse booking data", e);
+                } else {
+                    setHasActiveBooking(false);
+                }
+            } catch (error) {
+                console.error("Failed to fetch booking:", error);
+                // Fallback to localStorage
+                const activeBooking = localStorage.getItem("glvt_active_booking");
+                if (activeBooking) {
+                    try {
+                        const booking = JSON.parse(activeBooking);
+                        setBookingData(booking);
+                        setHasActiveBooking(true);
+                    } catch (e) {
+                        console.error("Failed to parse booking data", e);
+                    }
                 }
             }
-        }
-    }, []);
+        };
+
+        fetchActiveBooking();
+    }, [user, isGuest]);
 
     return (
         <div className={`min-h-screen flex flex-col ${commonStyles.pageContainer} pb-24`} style={{ fontFamily: GLVT_THEME.fonts.sans }}>
