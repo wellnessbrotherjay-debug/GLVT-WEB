@@ -1,4 +1,3 @@
-```typescript
 import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 
@@ -21,16 +20,46 @@ export async function middleware(request: NextRequest) {
 
     // Only check Supabase auth if NOT a guest session
     try {
-        const response = NextResponse.next({
-            request: {
-                headers: request.headers,
-            },
-       url.pathname = '/glvt/login';
-       return NextResponse.redirect(url);
-    }
-    */
+        let supabaseResponse = NextResponse.next({
+            request,
+        });
 
-    return supabaseResponse;
+        const supabase = createServerClient(
+            process.env.NEXT_PUBLIC_SUPABASE_URL!,
+            process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+            {
+                cookies: {
+                    getAll() {
+                        return request.cookies.getAll();
+                    },
+                    setAll(cookiesToSet) {
+                        cookiesToSet.forEach(({ name, value, options }) =>
+                            request.cookies.set(name, value)
+                        );
+                        supabaseResponse = NextResponse.next({
+                            request,
+                        });
+                        cookiesToSet.forEach(({ name, value, options }) =>
+                            supabaseResponse.cookies.set(name, value, options)
+                        );
+                    },
+                },
+            }
+        );
+
+        const { data: { user } } = await supabase.auth.getUser();
+
+        // Redirect authenticated users away from login/launch
+        if (user && (pathname === '/glvt/login' || pathname === '/glvt/launch')) {
+            return NextResponse.redirect(new URL('/glvt/home', request.url));
+        }
+
+        return supabaseResponse;
+    } catch (error) {
+        console.error('Middleware error:', error);
+        // On error, just let the request through
+        return NextResponse.next();
+    }
 }
 
 export const config = {
