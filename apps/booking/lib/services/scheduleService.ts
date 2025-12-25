@@ -6,17 +6,54 @@ export type ScheduleItem = Database['public']['Tables']['user_schedule']['Row'];
 export const scheduleService = {
 
     async getScheduleForDate(userId: string, date: string) {
-        // Fetch schedule items
-        const { data: scheduleItems, error } = await supabase
+        // 1. Fetch generic schedule items (workouts, meals)
+        const { data: scheduleItems, error: scheduleError } = await supabase
             .from('user_schedule')
             .select('*')
             .eq('user_id', userId)
             .eq('scheduled_date', date);
 
-        if (error) throw error;
+        if (scheduleError) throw scheduleError;
 
-        // Enrich with workout details if applicable
-        const enrichedItems = await Promise.all(scheduleItems.map(async (item: any) => {
+        // 2. Fetch class bookings for this date
+        // Note: We need to filter by the date part of scheduled_time
+        // This requires a range query for the whole day
+        const startOfDay = `${date}T00:00:00`;
+        const endOfDay = `${date}T23:59:59`;
+
+        const { data: classBookings, error: bookingError } = await supabase
+            .from('class_bookings')
+            .select(`
+                id,
+                booking_status,
+                class_schedule:class_schedules!inner(
+                    id,
+                    scheduled_time,
+                    studio_class:studio_classes(name)
+                )
+            `)
+            .eq('user_id', userId)
+            .eq('booking_status', 'confirmed')
+            .gte('class_schedule.scheduled_time', startOfDay)
+            .lte('class_schedule.scheduled_time', endOfDay);
+
+        if (bookingError) console.error("Error fetching class bookings for diary:", bookingError);
+
+        // 3. Transform class bookings to ScheduleItem format
+        const classItems = (classBookings || []).map((booking: any) => ({
+            id: booking.id,
+            user_id: userId,
+            scheduled_date: date,
+            item_type: 'class',
+            reference_id: booking.class_schedule.id,
+            status: booking.booking_status,
+            // Custom fields for UI helper
+            title: booking.class_schedule.studio_class?.name || 'Studio Class',
+            start_time: booking.class_schedule.scheduled_time
+        }));
+
+        // 4. Enrich generic items with titles
+        const enrichedScheduleItems = await Promise.all((scheduleItems || []).map(async (item: any) => {
             if (item.item_type === 'workout') {
                 const { data: workout } = await (supabase
                     .from('workouts') as any)
@@ -28,7 +65,8 @@ export const scheduleService = {
             return { ...item, title: item.item_type === 'meal' ? 'Meal' : 'Activity' };
         }));
 
-        return enrichedItems;
+        // 5. Merge and return
+        return [...enrichedScheduleItems, ...classItems];
     },
 
     async addToSchedule(userId: string, date: string, itemType: 'workout' | 'class', referenceId: string) {
