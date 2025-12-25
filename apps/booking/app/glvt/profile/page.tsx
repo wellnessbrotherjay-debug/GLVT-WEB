@@ -33,17 +33,24 @@ export default function ProfilePage() {
     });
 
     useEffect(() => {
+        console.log("Profile: useEffect triggered", { authLoading, user: !!user, isGuest });
+
         // 1. Wait for Auth to initialize
-        if (authLoading) return;
+        if (authLoading) {
+            console.log("Profile: Still loading auth");
+            return;
+        }
 
         // 2. If no user AND not guest, redirect
         if (!user && !isGuest) {
+            console.log("Profile: No user and not guest, redirecting to launch");
             router.replace("/glvt/launch");
             return;
         }
 
         // 3. If guest, show guest profile
         if (isGuest) {
+            console.log("Profile: Guest detected, setting guest profile");
             setProfile({
                 id: 'guest',
                 first_name: 'Guest',
@@ -64,6 +71,7 @@ export default function ProfilePage() {
                 gender: ""
             });
             setLoadingData(false);
+            console.log("Profile: Guest profile set, loadingData set to false");
             return;
         }
 
