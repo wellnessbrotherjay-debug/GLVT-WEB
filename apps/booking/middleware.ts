@@ -8,13 +8,13 @@ export async function middleware(request: NextRequest) {
     const guestCookie = request.cookies.get('glvt_guest_session');
     if (guestCookie?.value === 'true') {
         console.log('Middleware: Guest session detected, bypassing auth checks');
-        // Allow guest to access any /glvt/* route except login/launch
-        if (pathname.startsWith('/glvt/') && !pathname.startsWith('/glvt/login') && !pathname.startsWith('/glvt/launch')) {
+        // Allow guest to access any /glvt/* route
+        if (pathname.startsWith('/glvt/')) {
+            // Only redirect from login page
+            if (pathname === '/glvt/login') {
+                return NextResponse.redirect(new URL('/glvt/launch', request.url));
+            }
             return NextResponse.next();
-        }
-        // Redirect guest from login/launch to home
-        if (pathname === '/glvt/login' || pathname === '/glvt/launch') {
-            return NextResponse.redirect(new URL('/glvt/home', request.url));
         }
     }
 
