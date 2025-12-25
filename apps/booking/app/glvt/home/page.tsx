@@ -13,7 +13,7 @@ import { format } from "date-fns";
 import { supabase } from "@/lib/supabase";
 
 // EXTERNAL SUPABASE ASSETS
-const launchHero = "https://bwndbccgzjdgtcyornwn.supabase.co/storage/v1/object/public/public-assets/glvt-launch-hero.jpg";
+const launchHero = "https://i.ibb.co.com/ZR658C1W/Chat-GPT-Image-Dec-20-2025-04-07-37-PM.png";
 const pilatesCover = "https://bwndbccgzjdgtcyornwn.supabase.co/storage/v1/object/public/public-assets/class-covers/pilates-core.png";
 const glutesCover = "https://bwndbccgzjdgtcyornwn.supabase.co/storage/v1/object/public/public-assets/class-covers/glutes-workout.png";
 

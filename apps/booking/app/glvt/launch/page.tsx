@@ -5,8 +5,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { ChevronRight } from "lucide-react";
 
-// EXTERNAL SUPABASE ASSET (Bullet-proof)
-const launchHero = "https://bwndbccgzjdgtcyornwn.supabase.co/storage/v1/object/public/public-assets/glvt-launch-hero.jpg";
+// EXTERNAL USER-PROVIDED ASSET (Bullet-proof)
+const launchHero = "https://i.ibb.co.com/ZR658C1W/Chat-GPT-Image-Dec-20-2025-04-07-37-PM.png";
 
 import { supabase } from "@/lib/supabase";
 import { useRouter } from "next/navigation";
