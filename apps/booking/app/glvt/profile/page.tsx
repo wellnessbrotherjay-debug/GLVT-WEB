@@ -15,7 +15,7 @@ type ProfileRow = Database['public']['Tables']['gym_profiles']['Row'];
 
 export default function ProfilePage() {
     const router = useRouter();
-    const { user, signOut, loading: authLoading } = useAuth(); // Use auth context for user state
+    const { user, signOut, loading: authLoading, isGuest } = useAuth(); // Add isGuest
 
     const [loadingData, setLoadingData] = useState(true);
     const [saving, setSaving] = useState(false);
@@ -36,14 +36,41 @@ export default function ProfilePage() {
         // 1. Wait for Auth to initialize
         if (authLoading) return;
 
-        // 2. If no user, kick them out
-        if (!user) {
+        // 2. If no user AND not guest, redirect
+        if (!user && !isGuest) {
             router.replace("/glvt/launch");
             return;
         }
 
-        // 3. If user exists, fetch profile
+        // 3. If guest, show guest profile
+        if (isGuest) {
+            setProfile({
+                id: 'guest',
+                first_name: 'Guest',
+                last_name: 'User',
+                date_of_birth: null,
+                height_cm: null,
+                weight_kg: null,
+                gender: null,
+                created_at: new Date().toISOString(),
+                updated_at: new Date().toISOString()
+            } as ProfileRow);
+            setFormData({
+                first_name: "Guest",
+                last_name: "User",
+                date_of_birth: "",
+                height_cm: "",
+                weight_kg: "",
+                gender: ""
+            });
+            setLoadingData(false);
+            return;
+        }
+
+        // 4. If user exists, fetch profile
         const loadProfile = async () => {
+            if (!user) return;
+
             const { data, error } = await supabase
                 .from('gym_profiles')
                 .select('*')
