@@ -15,7 +15,7 @@ type ProfileRow = Database['public']['Tables']['gym_profiles']['Row'];
 
 export default function ProfilePage() {
     const router = useRouter();
-    const { user, signOut } = useAuth(); // Use auth context for user state
+    const { user, signOut, loading: authLoading } = useAuth(); // Use auth context for user state
 
     const [loadingData, setLoadingData] = useState(true);
     const [saving, setSaving] = useState(false);
@@ -33,9 +33,17 @@ export default function ProfilePage() {
     });
 
     useEffect(() => {
-        const loadProfile = async () => {
-            if (!user) return; // Wait for user from context
+        // 1. Wait for Auth to initialize
+        if (authLoading) return;
 
+        // 2. If no user, kick them out
+        if (!user) {
+            router.replace("/glvt/launch");
+            return;
+        }
+
+        // 3. If user exists, fetch profile
+        const loadProfile = async () => {
             const { data, error } = await supabase
                 .from('gym_profiles')
                 .select('*')
@@ -58,7 +66,7 @@ export default function ProfilePage() {
         };
 
         loadProfile();
-    }, [user]);
+    }, [user, authLoading, router]);
 
     const handleSave = async () => {
         if (!user) return;
