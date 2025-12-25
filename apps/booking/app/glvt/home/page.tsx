@@ -11,6 +11,9 @@ import Image from "next/image";
 import { GLVT_THEME, commonStyles } from "../theme";
 import { format } from "date-fns";
 import { supabase } from "@/lib/supabase";
+import launchHero from "../../assets/images/glvt-launch-hero.jpg";
+import pilatesCover from "../../assets/images/class-covers/pilates-core.png";
+import glutesCover from "../../assets/images/class-covers/glutes-workout.png";
 
 export default function GlvtHome() {
     const [profile, setProfile] = useState<any>(null);
@@ -194,10 +197,11 @@ export default function GlvtHome() {
                     <Link href="/glvt/training" className="group block relative h-40 rounded-2xl overflow-hidden shadow-lg border border-[#D7D5D2]/10 bg-[#3a3a3a]">
                         <div className="absolute inset-0 z-0">
                             <Image
-                                src="/glvt-launch-hero.jpg"
+                                src={launchHero}
                                 alt="Training"
                                 fill
                                 className="object-cover opacity-80 group-hover:opacity-90 transition-opacity duration-700 grayscale-[0.2] group-hover:grayscale-0"
+                                placeholder="blur"
                             />
                             {/* Lighter Gradient Overlay */}
                             <div className="absolute inset-0 bg-gradient-to-r from-[#1a1a1a]/80 via-transparent to-transparent"></div>
@@ -218,10 +222,11 @@ export default function GlvtHome() {
                     <Link href="/glvt/book" className="group block relative h-40 rounded-2xl overflow-hidden shadow-lg border border-[#D7D5D2]/10 bg-[#3a3a3a]">
                         <div className="absolute inset-0 z-0">
                             <Image
-                                src="/class-covers/glutes-workout.png" // Reusing asset from booking page
+                                src={glutesCover}
                                 alt="Studio"
                                 fill
                                 className="object-cover opacity-40 group-hover:opacity-50 transition-opacity duration-700 grayscale group-hover:grayscale-0"
+                                placeholder="blur"
                             />
                             <div className="absolute inset-0 bg-gradient-to-r from-[#1a1a1a] via-[#1a1a1a]/80 to-transparent"></div>
                         </div>
