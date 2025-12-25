@@ -5,7 +5,7 @@ import { BottomNav } from "@/components/dashboard/BottomNav";
 
 export function RouterBottomNav() {
     const pathname = usePathname();
-    const pathname = usePathname();
+
 
     // Map current path to active view ID
     const getActiveView = () => {
