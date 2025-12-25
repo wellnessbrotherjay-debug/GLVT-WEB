@@ -8,6 +8,9 @@ import { GLVT_THEME, commonStyles } from "../../theme";
 import { format } from "date-fns";
 import Image from "next/image";
 
+import { useAuth } from "@/lib/auth-context";
+import { createBooking } from "@/lib/services/bookingService";
+
 // Class data mapping - matches the booking page
 const CLASS_DATA: any = {
     "glute-activation": {
@@ -51,9 +54,15 @@ const CLASS_DATA: any = {
 export default function BookingConfirmPage() {
     const searchParams = useSearchParams();
     const router = useRouter();
+    const { user, isGuest } = useAuth();
+
     const classId = searchParams.get('class');
     const timeStr = searchParams.get('time');
+    const scheduleId = searchParams.get('scheduleId'); // Real schedule ID from database
+
     const [confirmed, setConfirmed] = useState(false);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState<string | null>(null);
 
     // Get the actual class data based on classId
     const classData = classId && CLASS_DATA[classId] ? CLASS_DATA[classId] : {
@@ -66,26 +75,46 @@ export default function BookingConfirmPage() {
     // Parse time
     const date = timeStr ? new Date(timeStr) : new Date();
 
-    const handleConfirm = () => {
-        setConfirmed(true);
-        // Persistence Logic for Home Page
-        // 1. Reset the cancellation flag so the "Up Next" card shows again
-        localStorage.removeItem("glvt_booking_cancelled");
+    const handleConfirm = async () => {
+        // Check if user is a guest
+        if (isGuest || !user) {
+            setError("Please sign up to book classes. Guest users cannot make real bookings.");
+            return;
+        }
 
-        // 2. Store the actual booking details so home page can display them
-        localStorage.setItem("glvt_active_booking", JSON.stringify({
-            classId,
-            className: classData.name,
-            coach: classData.coach,
-            time: timeStr,
-            image: classData.image,
-            location: classData.location
-        }));
+        // Check if we have a schedule ID
+        if (!scheduleId) {
+            setError("Invalid booking request. Please try again from the schedule page.");
+            return;
+        }
 
-        // Simulate API
-        setTimeout(() => {
-            // In a real app, maybe navigate to a "Ticket" view, but here we show success state in-place
-        }, 1500);
+        try {
+            setLoading(true);
+            setError(null);
+
+            // Create booking in database
+            const booking = await createBooking(user.id, scheduleId);
+
+            // Also update localStorage for immediate UI feedback on home page
+            localStorage.removeItem("glvt_booking_cancelled");
+            localStorage.setItem("glvt_active_booking", JSON.stringify({
+                id: booking.id,
+                classId,
+                className: classData.name,
+                coach: classData.coach,
+                time: timeStr,
+                image: classData.image,
+                location: classData.location,
+                scheduleId: scheduleId
+            }));
+
+            setConfirmed(true);
+        } catch (err: any) {
+            console.error("Booking error:", err);
+            setError(err.message || "Failed to create booking. Please try again.");
+        } finally {
+            setLoading(false);
+        }
     };
 
     if (confirmed) {
@@ -172,11 +201,28 @@ export default function BookingConfirmPage() {
                         <span className="text-[#F1EDE5]">2 Credits</span>
                     </div>
 
+                    {/* Error Message */}
+                    {error && (
+                        <div className="bg-red-500/10 border border-red-500/30 rounded-lg p-4 text-red-400 text-sm">
+                            {error}
+                        </div>
+                    )}
+
                     <button
                         onClick={handleConfirm}
-                        className="w-full bg-[#C8A871] hover:bg-[#d4b57a] text-[#2D2D2D] font-bold text-sm uppercase tracking-[0.2em] py-4 rounded-xl shadow-[0_0_30px_rgba(200,168,113,0.3)] transition-all hover:scale-[1.01] flex items-center justify-center gap-2"
+                        disabled={loading}
+                        className="w-full bg-[#C8A871] hover:bg-[#d4b57a] disabled:bg-[#666] disabled:cursor-not-allowed text-[#2D2D2D] font-bold text-sm uppercase tracking-[0.2em] py-4 rounded-xl shadow-[0_0_30px_rgba(200,168,113,0.3)] transition-all hover:scale-[1.01] disabled:hover:scale-100 flex items-center justify-center gap-2"
                     >
-                        Confirm Booking <ArrowRight className="w-4 h-4" />
+                        {loading ? (
+                            <>
+                                <div className="w-4 h-4 border-2 border-[#2D2D2D] border-t-transparent rounded-full animate-spin"></div>
+                                Processing...
+                            </>
+                        ) : (
+                            <>
+                                Confirm Booking <ArrowRight className="w-4 h-4" />
+                            </>
+                        )}
                     </button>
                     <p className="text-center text-[10px] text-[#D7D5D2]/30 max-w-xs mx-auto">
                         Cancellation is free up to 12 hours before the session start time.
