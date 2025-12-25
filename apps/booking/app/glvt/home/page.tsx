@@ -209,7 +209,7 @@ export default function GlvtHome() {
                 )}
 
                 {/* Next Session - The 'Golden Ticket' Aesthetic */}
-                {hasActiveBooking && (
+                {hasActiveBooking && bookingData && (
                     <section>
                         <div className="flex justify-between items-baseline mb-3">
                             <h3 className={commonStyles.subHeaderSans}>Up Next</h3>
@@ -219,7 +219,7 @@ export default function GlvtHome() {
                         <Link href="/glvt/book/manage" className="block w-full group relative overflow-hidden rounded-2xl bg-[#3a3a3a] border border-[#D7D5D2]/10 transition-all shadow-[0_0_30px_rgba(200,168,113,0.08)] hover:shadow-[0_0_40px_rgba(200,168,113,0.15)]">
                             <div className="absolute inset-0 z-0">
                                 <Image
-                                    src={bookingData.image}
+                                    src={bookingData.image || '/class-covers/glutes-workout.png'}
                                     alt="Next Class"
                                     fill
                                     className="object-cover opacity-60 group-hover:opacity-70 transition-opacity duration-700"
