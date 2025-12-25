@@ -96,14 +96,21 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   };
 
   const signOut = async () => {
-    if (isGuest) {
-      document.cookie = "glvt_guest_session=; path=/; max-age=0";
+    try {
+      if (isGuest) {
+        document.cookie = "glvt_guest_session=; path=/; max-age=0";
+      } else {
+        // Fire and forget to prevent hanging if network is slow/offline
+        supabase.auth.signOut();
+      }
+    } catch (error) {
+      console.error("Sign out error:", error);
+    } finally {
+      // ALWAYS cleanup and redirect, even if network fails
       setIsGuest(false);
       setUser(null);
-      router.push("/glvt/login");
-    } else {
-      await supabase.auth.signOut();
-      router.push("/glvt/login");
+      setSession(null);
+      router.replace("/glvt/login");
     }
   };
 
