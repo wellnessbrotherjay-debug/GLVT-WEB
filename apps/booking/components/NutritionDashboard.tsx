@@ -207,7 +207,7 @@ export default function NutritionDashboard() {
             <div className="h-24" />
 
             {/* Fixed Bottom Navigation */}
-            <BottomNav activeView={activeView === 'settings' ? 'profile' : activeView} onNavigate={(view) => setActiveView(view as any)} />
+            <BottomNav activeView={activeView === 'settings' ? 'profile' : activeView} />
         </div>
     );
 }
