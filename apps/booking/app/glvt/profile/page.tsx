@@ -93,7 +93,7 @@ export default function ProfilePage() {
         };
 
         loadProfile();
-    }, [user, authLoading, router]);
+    }, [user, authLoading, router, isGuest]);
 
     const handleSave = async () => {
         if (!user) return;
