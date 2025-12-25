@@ -5,6 +5,8 @@ import { useRef } from "react";
 import { Activity, Dumbbell, Flame, Calendar, Home, Building2, Ticket } from "lucide-react";
 import { RouterBottomNav } from "../_components/RouterBottomNav";
 import Link from "next/link";
+import { useAuth } from "@/lib/auth-context";
+import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { GLVT_THEME, commonStyles } from "../theme";
 import { format } from "date-fns";
@@ -13,6 +15,8 @@ import { supabase } from "@/lib/supabase";
 export default function GlvtHome() {
     const [profile, setProfile] = useState<any>(null);
     const [loading, setLoading] = useState(true);
+    const { user, loading: authLoading, isGuest } = useAuth();
+    const router = useRouter();
 
     // Feature Flags (Default false as requested)
     const [hasNutritionPlan, setHasNutritionPlan] = useState(false);
@@ -23,30 +27,56 @@ export default function GlvtHome() {
     const [bookingData, setBookingData] = useState<any>(null);
 
     useEffect(() => {
+        if (authLoading) return;
+
+        if (!user) {
+            router.replace("/glvt/launch");
+            return;
+        }
+
         const loadProfile = async () => {
-            const { data: { session } } = await supabase.auth.getSession();
-            if (!session) {
-                window.location.href = "/glvt/launch";
+            // GUEST GUARD: Skip DB fetch for guest users to avoid UUID syntax errors
+            if (isGuest || user.id === 'guest-user-id' || user.id === '00000000-0000-0000-0000-000000000000') {
+                const localData = localStorage.getItem(`glvt_profile_${user.id}`);
+                if (localData) {
+                    setProfile(JSON.parse(localData));
+                } else {
+                    // Default mock profile for guest if no local data
+                    setProfile({ first_name: "Guest", last_name: "User" });
+                }
+                setLoading(false);
                 return;
             }
 
-            const { data, error } = await supabase
-                .from('gym_profiles')
-                .select('*')
-                .eq('id', session.user.id)
-                .single();
+            try {
+                const { data, error } = await supabase
+                    .from('gym_profiles')
+                    .select('*')
+                    .eq('id', user.id)
+                    .single();
 
-            if (data) {
-                setProfile(data);
+                if (data) {
+                    setProfile(data);
+                    setLoading(false);
+                    return;
+                }
+            } catch (err) {
+                console.warn("DB profile load failed, checking local storage.");
+            }
+
+            // Fallback to local storage
+            const localData = localStorage.getItem(`glvt_profile_${user.id}`);
+            if (localData) {
+                setProfile(JSON.parse(localData));
                 setLoading(false);
             } else {
-                // No profile found? Go to onboarding
-                window.location.href = "/glvt/onboarding";
+                router.replace("/glvt/onboarding");
             }
         };
         loadProfile();
+    }, [user, authLoading, router, isGuest]);
 
-        // Check if booking was cancelled
+    useEffect(() => {
         const isCancelled = localStorage.getItem("glvt_booking_cancelled");
         if (isCancelled === "true") {
             setHasActiveBooking(false);
