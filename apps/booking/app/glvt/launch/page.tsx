@@ -14,18 +14,20 @@ import { useAuth } from "@/lib/auth-context";
 
 export default function GLVTLaunchPage() {
     const router = useRouter();
-    const { user, loading: authLoading } = useAuth();
+    const { user, loading: authLoading, isGuest } = useAuth();
 
     // Don't auto-redirect - let users click "Enter the Club" button
 
     const handleEnter = () => {
-        // Check for guest session cookie
-        const isGuest = document.cookie.includes('glvt_guest_session=true');
+        console.log("Launch: handleEnter called", { user: !!user, isGuest });
 
+        // Allow both authenticated users AND guests to proceed
         if (user || isGuest) {
-            router.replace("/glvt/home");
+            console.log("Launch: Redirecting to home");
+            router.push("/glvt/home");
         } else {
-            router.replace("/glvt/login");
+            console.log("Launch: Redirecting to login");
+            router.push("/glvt/login");
         }
     };
 
