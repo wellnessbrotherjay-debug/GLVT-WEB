@@ -177,7 +177,6 @@ export default function GlvtHome() {
                                     alt="Next Class"
                                     fill
                                     className="object-cover opacity-60 group-hover:opacity-70 transition-opacity duration-700"
-                                    placeholder="blur"
                                 />
                                 <div className="absolute inset-0 bg-gradient-to-t from-[#1a1a1a] via-[#1a1a1a]/60 to-transparent"></div>
                             </div>
