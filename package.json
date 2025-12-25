@@ -5,7 +5,7 @@
     "scripts": {
         "dev:web": "npm run dev --workspace=@glvt/web",
         "dev:booking": "npm run dev --workspace=@glvt/booking",
-        "build": "npm run build --workspaces"
+        "build": "npm run build --workspace=glvt-booking"
     },
     "workspaces": [
         "apps/*"
