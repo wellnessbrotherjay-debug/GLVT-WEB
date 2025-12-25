@@ -8,6 +8,7 @@ import Link from "next/link";
 import { useAuth } from "@/lib/auth-context";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
+import { format } from "date-fns";
 import { GLVT_THEME, commonStyles } from "../theme";
 import { format } from "date-fns";
 import { supabase } from "@/lib/supabase";
@@ -218,7 +219,7 @@ export default function GlvtHome() {
                         <Link href="/glvt/book/manage" className="block w-full group relative overflow-hidden rounded-2xl bg-[#3a3a3a] border border-[#D7D5D2]/10 transition-all shadow-[0_0_30px_rgba(200,168,113,0.08)] hover:shadow-[0_0_40px_rgba(200,168,113,0.15)]">
                             <div className="absolute inset-0 z-0">
                                 <Image
-                                    src={pilatesCover}
+                                    src={bookingData.image}
                                     alt="Next Class"
                                     fill
                                     className="object-cover opacity-60 group-hover:opacity-70 transition-opacity duration-700"
@@ -227,8 +228,10 @@ export default function GlvtHome() {
                             </div>
 
                             <div className="relative z-10 p-6 pt-24">
-                                <h4 className="text-3xl text-[#F1EDE5] mb-2 group-hover:text-[#C8A871] transition-colors" style={{ fontFamily: 'serif' }}>Pilates Core</h4>
-                                <p className="text-xs text-[#D7D5D2]/90 uppercase tracking-wider mb-4 font-medium">Coach Sarah • 5:00 PM</p>
+                                <h4 className="text-3xl text-[#F1EDE5] mb-2 group-hover:text-[#C8A871] transition-colors" style={{ fontFamily: 'serif' }}>{bookingData.className}</h4>
+                                <p className="text-xs text-[#D7D5D2]/90 uppercase tracking-wider mb-4 font-medium">
+                                    {bookingData.coach} • {bookingData.time ? format(new Date(bookingData.time), 'h:mm a') : ''}
+                                </p>
 
                                 <div className="flex items-center justify-between border-t border-white/10 pt-4">
                                     <div className="flex -space-x-2">
