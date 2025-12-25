@@ -136,7 +136,8 @@ export default function ProfilePage() {
         }
     };
 
-    if (!user || loadingData) {
+    // Show loading only if data is loading AND user is not a guest
+    if (loadingData || (!user && !isGuest)) {
         return (
             <div className={`min-h-screen flex items-center justify-center ${commonStyles.pageContainer}`}>
                 <div className="animate-pulse text-[#C8A871] font-serif text-xl">Loading Profile...</div>
