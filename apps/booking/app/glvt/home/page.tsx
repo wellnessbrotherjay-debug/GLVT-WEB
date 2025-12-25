@@ -213,7 +213,6 @@ export default function GlvtHome() {
                                 alt="Training"
                                 fill
                                 className="object-cover opacity-80 group-hover:opacity-90 transition-opacity duration-700 grayscale-[0.2] group-hover:grayscale-0"
-                                placeholder="blur"
                             />
                             {/* Lighter Gradient Overlay */}
                             <div className="absolute inset-0 bg-gradient-to-r from-[#1a1a1a]/80 via-transparent to-transparent"></div>
@@ -238,7 +237,6 @@ export default function GlvtHome() {
                                 alt="Studio"
                                 fill
                                 className="object-cover opacity-40 group-hover:opacity-50 transition-opacity duration-700 grayscale group-hover:grayscale-0"
-                                placeholder="blur"
                             />
                             <div className="absolute inset-0 bg-gradient-to-r from-[#1a1a1a] via-[#1a1a1a]/80 to-transparent"></div>
                         </div>
