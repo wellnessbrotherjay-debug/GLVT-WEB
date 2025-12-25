@@ -60,16 +60,20 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     try {
       setLoading(true);
       // 1. Try Anonymous Sign In (if enabled in Supabase)
+      console.log("AuthContext: Attempting signInAnonymously");
       const { data, error } = await supabase.auth.signInAnonymously();
 
-      if (error) throw error;
+      if (error) {
+        console.warn("signInAnonymously failed:", error.message);
+        throw error;
+      };
 
       // Success - session/user will be updated by onAuthStateChange
-      // Force redirect handled by auth listener
+      console.log("AuthContext: Access granted via Anonymous Sign In");
       document.cookie = "glvt_guest_session=true; path=/; max-age=86400"; // Keep cookie for middleware
       setIsGuest(true);
 
-    } catch (err) {
+    } catch (err: any) {
       console.warn("Anonymous login failed, falling back to auto-provisioned guest account:", err);
 
       // 2. Fallback: Create a real "Guest" account with random email
@@ -84,12 +88,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
       if (error) {
         console.error("Critical: Failed to provision guest account", error);
-        alert("Could not start guest session. Please try again.");
+        // CRITICAL: SHOW USER THE ERROR
+        alert(`Guest Login Failed: ${error.message}\n\nHint: Check if 'Enable Email Signups' is on, or if connection is blocked.`);
         setLoading(false);
         return;
       }
 
       // Success - session/user will be updated by onAuthStateChange
+      console.log("AuthContext: Created temporary guest account");
       document.cookie = "glvt_guest_session=true; path=/; max-age=86400";
       setIsGuest(true);
     }
