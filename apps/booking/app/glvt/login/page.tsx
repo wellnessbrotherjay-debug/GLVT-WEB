@@ -240,11 +240,9 @@ export default function GlvtLoginPage() {
 
                     <button
                         onClick={() => {
-                            // @ts-ignore - Login as guest added to context but TS might complain without restart
-                            user === null && window.location.reload(); // Force reload if needed
-                            // We access the context capability via a clean button click
-                            const guestLogin = (window as any).glvtLoginAsGuest;
-                            if (guestLogin) guestLogin();
+                            console.log("Demo Mode: Bypassing auth, setting cookie and redirecting");
+                            document.cookie = "glvt_guest_session=true; path=/; max-age=86400";
+                            window.location.href = "/glvt/home";
                         }}
                         className="text-[10px] uppercase tracking-widest text-[#C8A871] hover:text-[#d4b57a] transition-colors"
                     >
