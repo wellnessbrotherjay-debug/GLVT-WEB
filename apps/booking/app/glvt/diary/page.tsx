@@ -7,8 +7,11 @@ import { glvtTheme } from "../config/theme";
 import { scheduleService } from "@/lib/services/scheduleService";
 import { useRouter } from "next/navigation";
 
+import { useAuth } from "@/lib/auth-context";
+
 export default function DiaryPage() {
     const router = useRouter();
+    const { isGuest } = useAuth();
     const [loading, setLoading] = useState(true);
     const [schedule, setSchedule] = useState<any[]>([]);
 
@@ -23,6 +26,13 @@ export default function DiaryPage() {
         setLoading(true);
 
         try {
+            // Skip for guests - show empty schedule
+            if (isGuest) {
+                setSchedule([]);
+                setLoading(false);
+                return;
+            }
+
             // Get real user
             const { data: { user } } = await import("@/lib/supabase").then(m => m.supabase.auth.getUser());
             if (!user) return; // or redirect to login
