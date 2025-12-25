@@ -444,12 +444,12 @@ export default function BookingPage() {
                 {/* Day Horizontal Scroll */}
                 <div className="mb-8 overflow-x-auto scrollbar-hide -mx-6 px-6 no-scrollbar pb-4">
                     <div className="flex gap-3">
-                        {schedule.map((day, idx) => (
+                        {days.map((day, idx) => (
                             <DayPill
                                 key={idx}
-                                date={day.date}
+                                date={new Date(day)}
                                 isSelected={idx === selectedDay}
-                                isToday={isSameDay(day.date, new Date())}
+                                isToday={isSameDay(new Date(day), new Date())}
                                 onClick={() => setSelectedDay(idx)}
                             />
                         ))}
