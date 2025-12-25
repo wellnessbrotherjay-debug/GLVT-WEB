@@ -111,6 +111,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       setUser(null);
       setSession(null);
       router.replace("/glvt/login");
+      // Fallback: Force hard reload if router fails
+      window.location.href = "/glvt/login";
     }
   };
 
