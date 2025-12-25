@@ -33,21 +33,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const router = useRouter();
 
   useEffect(() => {
-    // Check for guest session first
+    // Check for guest session cookie but DO NOT overwrite user with mock data
+    // We rely on Supabase session for the real user object.
     const isGuestSession = document.cookie.includes('glvt_guest_session=true');
     if (isGuestSession) {
       setIsGuest(true);
-      // Create a mock guest user so components don't crash
-      setUser({
-        id: '00000000-0000-0000-0000-000000000000',
-        email: 'guest@glvt.club',
-        app_metadata: {},
-        user_metadata: {},
-        aud: 'authenticated',
-        created_at: new Date().toISOString()
-      } as User);
-      setLoading(false);
-      return;
     }
 
     const {
