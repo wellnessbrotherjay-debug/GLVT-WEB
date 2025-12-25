@@ -29,7 +29,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(true);
-  const [isGuest, setIsGuest] = useState(false);
+  const [isGuest, setIsGuest] = useState(() => {
+    // Initialize isGuest synchronously from cookie on mount
+    if (typeof window !== 'undefined') {
+      return document.cookie.includes('glvt_guest_session=true');
+    }
+    return false;
+  });
   const router = useRouter();
 
   useEffect(() => {
@@ -37,12 +43,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     // We rely on Supabase session for the real user object.
     const isGuestSession = document.cookie.includes('glvt_guest_session=true');
     if (isGuestSession) {
+      console.log("AuthContext: Guest session detected on mount");
       setIsGuest(true);
     }
 
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((event, session) => {
+      console.log("AuthContext: Auth state changed", event, { hasSession: !!session });
       setSession(session);
       setUser(session?.user ?? null);
       setLoading(false);
