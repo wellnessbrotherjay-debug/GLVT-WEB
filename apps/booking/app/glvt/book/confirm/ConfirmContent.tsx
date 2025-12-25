@@ -16,13 +16,13 @@ const CLASS_DATA: any = {
     "glute-activation": {
         name: "Glute Activation",
         coach: "Coach Mike Chen",
-        image: "/class-covers/glutes-workout.png",
+        image: "/class-covers/glute-activation.png",
         location: "Studio A",
     },
     "core-foundation": {
         name: "Core Foundation",
         coach: "Sarah Liu",
-        image: "/class-covers/core-strength.png",
+        image: "/class-covers/core-foundation.png",
         location: "Studio B",
     },
     "pilates-core": {

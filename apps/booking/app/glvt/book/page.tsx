@@ -65,7 +65,7 @@ const CLASS_TEMPLATES = [
         intensity: "Medium",
         spots: 12,
         description: "Wake up dormant glutes with targeted activation exercises. Perfect for building mind-muscle connection and preparing for heavier lifts.",
-        coverImage: "/class-covers/glutes-workout.png",
+        coverImage: "/class-covers/glute-activation.png",
         focus: "Glutes"
     },
     {
@@ -76,7 +76,7 @@ const CLASS_TEMPLATES = [
         intensity: "Low",
         spots: 15,
         description: "Build a rock-solid core foundation with controlled movements. Focus on stability, breathing, and proper engagement.",
-        coverImage: "/class-covers/core-strength.png",
+        coverImage: "/class-covers/core-foundation.png",
         focus: "Core"
     },
     {
@@ -404,8 +404,8 @@ export default function BookingPage() {
                                     />
                                 </div>
                                 <div className="text-left flex-1">
-                                    <div className="text-base font-serif text-[#F1EDE5] group-hover:text-[#C8A871] transition-colors">{coach.name}</div>
-                                    <div className="text-xs text-[#D7D5D2]/60 uppercase tracking-wider">{coach.specialty}</div>
+                                    <div className="text-base font-serif text-[#F1EDE5] group-hover:text-[#C8A871] transition-colors">{coachData.name}</div>
+                                    <div className="text-xs text-[#D7D5D2]/60 uppercase tracking-wider">{coachData.specialty}</div>
                                 </div>
                             </button>
                         </div>
