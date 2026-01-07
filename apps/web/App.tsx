@@ -509,6 +509,7 @@ const SpaceSection: React.FC = () => {
         <div className="container mx-auto max-w-[1600px]">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2 px-4">
             {/* Merged Visuals from Ladies Gym & Club */}
+            {/* Row 1 */}
             <div className="lg:col-span-2 group relative h-[70vh] overflow-hidden bg-glvt-charcoal cursor-pointer">
               <EditableImage
                 defaultSrc="/ladies-gym/gym-reception.jpg"
@@ -541,6 +542,7 @@ const SpaceSection: React.FC = () => {
               </div>
             </div>
 
+            {/* Row 2 */}
             <div className="group relative h-[70vh] overflow-hidden bg-glvt-charcoal cursor-pointer">
               <EditableImage
                 defaultSrc="/ladies-gym/gym-lady-1.jpg"
@@ -557,7 +559,23 @@ const SpaceSection: React.FC = () => {
               </div>
             </div>
 
-            <div className="lg:col-span-2 group relative h-[70vh] overflow-hidden bg-glvt-charcoal cursor-pointer">
+            <div className="group relative h-[70vh] overflow-hidden bg-glvt-charcoal cursor-pointer">
+              <EditableImage
+                defaultSrc="/ladies-gym/gym-lady-2.jpg"
+                alt="Elegance"
+                className="opacity-50 grayscale-[30%] group-hover:scale-102 transition-all duration-[2s]"
+                isBackground={true}
+              />
+              <div className="absolute bottom-10 left-10 z-10">
+                <Reveal delay={0.5}>
+                  <h3 className="font-serif text-3xl text-white tracking-widest uppercase opacity-80">
+                    <EditableText defaultText="ELEGANCE" tag="span" />
+                  </h3>
+                </Reveal>
+              </div>
+            </div>
+
+            <div className="group relative h-[70vh] overflow-hidden bg-glvt-charcoal cursor-pointer">
               <EditableImage
                 defaultSrc="/ladies-gym/gym-lounge.jpg"
                 alt="Lounge"
@@ -565,8 +583,8 @@ const SpaceSection: React.FC = () => {
                 isBackground={true}
               />
               <div className="absolute bottom-10 left-10 z-10">
-                <Reveal delay={0.5}>
-                  <h3 className="font-serif text-4xl text-white tracking-widest uppercase opacity-80">
+                <Reveal delay={0.6}>
+                  <h3 className="font-serif text-3xl text-white tracking-widest uppercase opacity-80">
                     <EditableText defaultText="REST" tag="span" />
                   </h3>
                 </Reveal>
