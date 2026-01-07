@@ -396,7 +396,7 @@ const HeroSection: React.FC = () => {
   return (
     <section className="relative h-screen w-full flex items-center justify-center bg-glvt-black overflow-hidden">
       <EditableImage
-        defaultSrc="https://ibb.co.com/9m96Tj3s"
+        defaultSrc="/ladies-gym/gym-exterior.jpg"
         alt="Hero Background"
         className="absolute inset-0 w-full h-full opacity-40"
         isBackground={true}
