@@ -317,7 +317,7 @@ const Navigation: React.FC = () => {
       <nav
         className={`fixed top-0 left-0 w-full z-40 transition-all duration-700 ease-in-out border-b ${isScrolled
           ? 'bg-glvt-sand/95 backdrop-blur-md pt-4 pb-4 border-glvt-black/5'
-          : (currentPage === 'home' || currentPage === 'club') ? 'bg-transparent pt-10 pb-6 border-transparent' : 'bg-glvt-sand pt-6 pb-6 border-glvt-black/5'
+          : (currentPage === 'home') ? 'opacity-0 -translate-y-full pointer-events-none' : (currentPage === 'club') ? 'bg-transparent pt-10 pb-6 border-transparent' : 'bg-glvt-sand pt-6 pb-6 border-glvt-black/5'
           }`}
       >
         <div className="container mx-auto px-6 md:px-12 flex justify-between items-center max-w-[1600px]">
