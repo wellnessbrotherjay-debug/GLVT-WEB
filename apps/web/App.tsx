@@ -9,7 +9,7 @@ interface EditContextType {
 }
 const EditContext = createContext<EditContextType>({ isEditing: false });
 
-type PageType = 'home' | 'club' | 'partner' | 'technology' | 'classes' | 'membership' | 'contact';
+type PageType = 'home' | 'philosophy' | 'practice' | 'space' | 'ritual' | 'journal' | 'enter';
 
 interface NavContextType {
   currentPage: PageType;
@@ -300,13 +300,12 @@ const Navigation: React.FC = () => {
   }, []);
 
   const navItems: { label: string; value: PageType }[] = [
-    { label: 'Home', value: 'home' },
-    { label: 'Facilities', value: 'club' },
-    { label: 'Partner Facilities', value: 'partner' },
-    { label: 'Bio-Circuit', value: 'technology' },
-    { label: 'Training', value: 'classes' },
-    { label: 'Membership', value: 'membership' },
-
+    { label: 'The State', value: 'home' },
+    { label: 'Philosophy', value: 'philosophy' },
+    { label: 'Practice', value: 'practice' },
+    { label: 'Space', value: 'space' },
+    { label: 'Ritual', value: 'ritual' },
+    { label: 'Journal', value: 'journal' },
   ];
 
   const isLogoBlack = isMenuOpen || isScrolled || (currentPage !== 'home' && currentPage !== 'club');
@@ -406,51 +405,75 @@ const HeroSection: React.FC = () => {
       <div className="relative z-10 text-center px-6 max-w-6xl">
         <Reveal direction="up" delay={0.3}>
           <h1 className="text-white font-serif text-6xl md:text-9xl lg:text-[12rem] leading-[0.9] tracking-tight">
-            <EditableText defaultText="WHERE THE BODY" tag="div" className="mb-8" />
-            <span className="italic font-light opacity-60 block"><EditableText defaultText="IS HONORED" tag="span" /></span>
+            <EditableText defaultText="GLVT" tag="div" className="mb-8 font-light tracking-[0.2em]" />
+            <span className="italic font-light opacity-60 block text-4xl md:text-6xl tracking-normal mt-4"><EditableText defaultText="Where the body is honored." tag="span" /></span>
           </h1>
+          <button className="mt-12 group cursor-pointer py-4 px-12 transition-all duration-700 relative overflow-hidden inline-block">
+            <span className="font-sans text-[11px] md:text-sm text-white tracking-[0.4em] uppercase border-b border-white/20 group-hover:border-white pb-4 transition-all relative z-10">
+              Enter GLVT
+            </span>
+          </button>
         </Reveal>
       </div>
     </section>
   );
 };
 
-const IntroSection: React.FC = () => {
+const PhilosophySection: React.FC = () => {
   return (
-    <section className="bg-glvt-sand pt-40 pb-40 px-6 md:px-12">
-      <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-24 md:gap-32 items-start">
-        <div className="md:sticky md:top-32">
-          <Reveal>
-            <h2 className="font-serif text-5xl md:text-6xl lg:text-7xl text-glvt-black leading-[1.1] mb-20">
-              <EditableText defaultText="The woman does not come to become someone else." tag="span" />
-            </h2>
+    <section className="bg-glvt-sand pt-32 pb-40 px-6 md:px-12">
+      <div className="max-w-4xl mx-auto text-center mb-32">
+        <Reveal>
+          <EditableText defaultText="THE PHILOSOPHY" tag="div" className="font-sans text-[10px] tracking-[0.4em] uppercase text-glvt-stone mb-8" />
+          <h2 className="font-serif text-4xl md:text-5xl text-glvt-black leading-tight mb-8">
+            <EditableText defaultText="GLVT is not a method. It is a return." tag="span" />
+          </h2>
+        </Reveal>
+      </div>
 
-            <div className="hidden md:block w-full h-[550px] relative overflow-hidden">
-              <EditableImage
-                defaultSrc="https://images.unsplash.com/photo-1550345332-09e3ac987658?q=80&w=2787&auto=format&fit=crop"
-                alt="Philosophy Visual"
-                className="grayscale hover:grayscale-0 transition-all duration-[1.5s] object-cover"
-              />
-            </div>
-          </Reveal>
-        </div>
-
-        <div className="pt-6 md:pt-32">
-          <Reveal delay={0.3}>
-            <div className="space-y-16">
-              <div className="w-16 h-[1px] bg-glvt-stone/30"></div>
-              <p className="italic font-serif text-2xl md:text-3xl text-glvt-charcoal/70 leading-[1.6]">
-                <EditableText defaultText="“The body is not a problem to fix. It is a place to live.”" tag="span" />
+      <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 md:gap-8">
+        {[
+          {
+            letter: "G",
+            title: "GROUNDED",
+            desc: "Presence. Root. Calm. Strength begins when you are grounded. Nothing aggressive. Nothing loud."
+          },
+          {
+            letter: "L",
+            title: "LONGEVITY",
+            desc: "Movement that honors time. Built for a long life. We do not train for today."
+          },
+          {
+            letter: "V",
+            title: "VITALITY",
+            desc: "Real energy. Vitality is the new power. You leave more alive than you arrived."
+          },
+          {
+            letter: "T",
+            title: "TRUTH",
+            desc: "Honoring the body. Train in truth. No punishment. No pressure. No masks."
+          }
+        ].map((item, idx) => (
+          <Reveal key={idx} delay={idx * 0.1}>
+            <div className="text-center group hover:-translate-y-2 transition-transform duration-700">
+              <div className="font-serif text-8xl md:text-9xl text-glvt-stone/10 mb-6 group-hover:text-glvt-stone/20 transition-colors duration-500">
+                {item.letter}
+              </div>
+              <h3 className="font-sans text-xs font-bold tracking-[0.3em] text-glvt-black uppercase mb-4">
+                <EditableText defaultText={item.title} tag="span" />
+              </h3>
+              <p className="font-sans text-[11px] leading-relaxed text-glvt-charcoal/70 max-w-[200px] mx-auto">
+                <EditableText defaultText={item.desc} tag="span" />
               </p>
             </div>
           </Reveal>
-        </div>
+        ))}
       </div>
     </section>
   );
 };
 
-const ClubSection: React.FC = () => {
+const SpaceSection: React.FC = () => {
   return (
     <div className="bg-glvt-black text-glvt-cream">
       {/* Immersive Intro */}
@@ -464,13 +487,16 @@ const ClubSection: React.FC = () => {
         />
         <div className="relative z-10 text-center px-6 max-w-5xl">
           <Reveal direction="up">
-            <EditableText defaultText="FACILITIES" tag="div" className="font-sans text-[10px] tracking-[0.8em] uppercase text-glvt-stone mb-10" />
+            <EditableText defaultText="THE SANCTUARY" tag="div" className="font-sans text-[10px] tracking-[0.8em] uppercase text-glvt-stone mb-10" />
             <h1 className="font-serif text-5xl md:text-[10rem] leading-none tracking-tighter mb-12">
-              <EditableText defaultText="THE CLUB" tag="div" />
+              <EditableText defaultText="THE SPACE" tag="div" />
             </h1>
             <p className="font-sans text-sm md:text-lg font-light tracking-wide max-w-2xl mx-auto opacity-60 leading-relaxed">
-              <EditableText defaultText="An architectural synthesis of raw strength and refined elegance. Designed for the woman who demands excellence from her environment." tag="span" />
+              <EditableText defaultText="The space holds you so your body can let go." tag="span" />
             </p>
+            <button className="mt-12 px-8 py-3 border border-glvt-stone text-glvt-stone text-[10px] tracking-super-wide uppercase hover:bg-glvt-stone hover:text-glvt-black transition-all duration-500">
+              <EditableText defaultText="Arrange your visit" tag="span" />
+            </button>
           </Reveal>
         </div>
         <div className="absolute bottom-12 left-1/2 -translate-x-1/2 animate-bounce opacity-20">
@@ -482,127 +508,69 @@ const ClubSection: React.FC = () => {
       <section className="py-40 px-6 md:px-12 bg-[#0A0A0A]">
         <div className="container mx-auto max-w-[1600px]">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2 px-4">
-            {/* Item 1: The Main Floor */}
+            {/* Merged Visuals from Ladies Gym & Club */}
             <div className="lg:col-span-2 group relative h-[70vh] overflow-hidden bg-glvt-charcoal cursor-pointer">
               <EditableImage
-                defaultSrc="https://images.unsplash.com/photo-1540497077202-7c8a3999166f?q=80&w=2940&auto=format&fit=crop"
-                alt="Main Performance Floor"
-                className="opacity-50 grayscale group-hover:grayscale-0 group-hover:scale-102 transition-all duration-[2s]"
+                defaultSrc="/ladies-gym/gym-reception.jpg"
+                alt="Reception"
+                className="opacity-60 grayscale-[30%] group-hover:grayscale-0 group-hover:scale-102 transition-all duration-[2s]"
                 isBackground={true}
               />
               <div className="absolute bottom-10 left-10 z-10">
                 <Reveal delay={0.2}>
                   <h3 className="font-serif text-4xl text-white tracking-widest uppercase opacity-80">
-                    <EditableText defaultText="THE MAIN FLOOR" tag="span" />
+                    <EditableText defaultText="ARRIVAL" tag="span" />
                   </h3>
                 </Reveal>
               </div>
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-1000"></div>
             </div>
 
-            {/* Item 2: Private Studio */}
             <div className="group relative h-[70vh] overflow-hidden bg-glvt-charcoal cursor-pointer">
               <EditableImage
-                defaultSrc="https://images.unsplash.com/photo-1518611012118-696072aa579a?q=80&w=2940&auto=format&fit=crop"
-                alt="Private Studio"
-                className="opacity-40 group-hover:scale-102 transition-all duration-[2s]"
+                defaultSrc="/ladies-gym/gym-interior.jpg"
+                alt="Interior"
+                className="opacity-60 grayscale-[30%] group-hover:scale-102 transition-all duration-[2s]"
                 isBackground={true}
               />
               <div className="absolute bottom-10 left-10 z-10">
                 <Reveal delay={0.3}>
                   <h3 className="font-serif text-3xl text-white tracking-widest uppercase opacity-80">
-                    <EditableText defaultText="REFORMER SUITE" tag="span" />
+                    <EditableText defaultText="INTERIOR" tag="span" />
                   </h3>
                 </Reveal>
               </div>
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-1000"></div>
             </div>
 
-            {/* Item 3: Luxury Recovery */}
             <div className="group relative h-[70vh] overflow-hidden bg-glvt-charcoal cursor-pointer">
               <EditableImage
-                defaultSrc="https://images.unsplash.com/photo-1515377905703-c4788e51af15?q=80&w=2940&auto=format&fit=crop"
-                alt="Steam & Recovery"
-                className="opacity-40 group-hover:scale-102 transition-all duration-[2s]"
+                defaultSrc="/ladies-gym/gym-lady-1.jpg"
+                alt="Ritual"
+                className="opacity-50 grayscale-[30%] group-hover:scale-102 transition-all duration-[2s]"
                 isBackground={true}
               />
               <div className="absolute bottom-10 left-10 z-10">
                 <Reveal delay={0.4}>
                   <h3 className="font-serif text-3xl text-white tracking-widest uppercase opacity-80">
-                    <EditableText defaultText="STEAM & SAUNA" tag="span" />
+                    <EditableText defaultText="RITUAL" tag="span" />
                   </h3>
                 </Reveal>
               </div>
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-1000"></div>
             </div>
 
-            {/* Item 4: Locker Room */}
             <div className="lg:col-span-2 group relative h-[70vh] overflow-hidden bg-glvt-charcoal cursor-pointer">
               <EditableImage
-                defaultSrc="https://images.unsplash.com/photo-1590402494610-2c378a9114c6?q=80&w=2940&auto=format&fit=crop"
-                alt="Vanity & Spa"
-                className="opacity-40 grayscale group-hover:grayscale-0 group-hover:scale-102 transition-all duration-[2s]"
+                defaultSrc="/ladies-gym/gym-lounge.jpg"
+                alt="Lounge"
+                className="opacity-50 grayscale-[30%] group-hover:grayscale-0 group-hover:scale-102 transition-all duration-[2s]"
                 isBackground={true}
               />
               <div className="absolute bottom-10 left-10 z-10">
                 <Reveal delay={0.5}>
                   <h3 className="font-serif text-4xl text-white tracking-widest uppercase opacity-80">
-                    <EditableText defaultText="VANITY LOUNGE" tag="span" />
+                    <EditableText defaultText="REST" tag="span" />
                   </h3>
                 </Reveal>
               </div>
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-1000"></div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Feature Highlights */}
-      <section className="py-40 bg-glvt-black overflow-hidden">
-        <div className="container mx-auto px-6 md:px-12 max-w-[1400px]">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-32 items-center">
-            <div className="relative">
-              <Reveal direction="right">
-                <div className="relative z-10">
-                  <EditableImage
-                    defaultSrc="https://images.unsplash.com/photo-1621334698544-783424ba7b10?q=80&w=2836&auto=format&fit=crop"
-                    alt="Detail facility"
-                    className="h-[80vh] w-full object-cover"
-                  />
-                </div>
-                {/* Floating architectural element */}
-                <div className="absolute -bottom-10 -right-10 w-64 h-80 bg-glvt-charcoal z-0 hidden lg:block border border-white/10 p-6 flex items-end">
-                  <p className="font-sans text-[8px] tracking-[0.4em] text-white/30 uppercase leading-loose">
-                    PRECISION<br />EQUIPMENT<br />BIOMETRIC<br />INTEGRATION
-                  </p>
-                </div>
-              </Reveal>
-            </div>
-
-            <div className="space-y-16">
-              <Reveal direction="left">
-                <h2 className="font-serif text-4xl md:text-6xl text-white leading-tight">
-                  <EditableText defaultText="Curated for the" tag="div" />
-                  <span className="italic opacity-60"><EditableText defaultText="Extraordinary" tag="span" /></span>
-                </h2>
-
-                <div className="space-y-12 pt-10 border-t border-white/10">
-                  {[
-                    { icon: <Droplets size={24} />, title: "Filtered Water", desc: "Alkaline and chilled water stations throughout the club." },
-                    { icon: <Wind size={24} />, title: "Air Purification", desc: "HEPA-standard medical grade air filtration for optimal breathing." },
-                    { icon: <Snowflake size={24} />, title: "Ice Plunge", desc: "The ultimate metabolic reset after a high-intensity ritual." },
-                    { icon: <Zap size={24} />, title: "Bio-Station", desc: "Integrated biometric tracking at every specialized weight station." }
-                  ].map((item, idx) => (
-                    <div key={idx} className="flex gap-8 group">
-                      <div className="text-glvt-stone group-hover:text-white transition-colors duration-500 pt-1">{item.icon}</div>
-                      <div>
-                        <h4 className="font-sans text-xs tracking-widest font-bold uppercase text-white mb-2">{item.title}</h4>
-                        <p className="font-sans text-xs text-white/50 leading-relaxed font-light">{item.desc}</p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </Reveal>
             </div>
           </div>
         </div>
@@ -666,31 +634,41 @@ const TechnologySection: React.FC = () => {
   );
 };
 
-const ClassesSection: React.FC = () => {
+const PracticeSection: React.FC = () => {
   return (
     <section className="bg-glvt-sand pt-40 pb-40 px-6 md:px-12">
       <div className="container mx-auto max-w-[1600px]">
         <Reveal>
           <div className="mb-20">
-            <EditableText defaultText="THE TRAINING" tag="h2" className="font-serif text-5xl md:text-7xl text-glvt-black mb-6 leading-none" />
+            <EditableText defaultText="THE PRACTICE" tag="h2" className="font-serif text-5xl md:text-7xl text-glvt-black mb-6 leading-none" />
             <div className="max-w-xl">
               <EditableText
-                defaultText="Movement redefined as art. Our specialized training zones are designed to maximize both aesthetic results and physical longevity."
+                defaultText="We don’t train to exhaust the body. We move to understand it."
                 tag="p"
                 className="font-sans text-xs md:text-sm font-light text-glvt-charcoal/70 tracking-wide leading-relaxed"
               />
             </div>
+
+            <div className="mt-12 space-y-4">
+              {["Intelligent Movement", "Functional Strength", "Nervous System Regulation", "Feminine Vitality"].map(concept => (
+                <div key={concept} className="font-sans text-[10px] tracking-widest uppercase text-glvt-stone">{concept}</div>
+              ))}
+            </div>
+
+            <button className="mt-12 px-8 py-3 border border-glvt-black text-[10px] tracking-super-wide uppercase hover:bg-glvt-black hover:text-white transition-all duration-500">
+              <EditableText defaultText="Explore the practice" tag="span" />
+            </button>
           </div>
         </Reveal>
 
         <div className="space-y-32">
-          {/* Group Classes Section */}
+          {/* Practice Visuals */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <Reveal width="100%">
               <div className="relative h-[70vh] overflow-hidden group rounded-sm">
                 <EditableImage
                   defaultSrc="https://images.unsplash.com/photo-1594381898411-846e7d193883?q=80&w=2787&auto=format&fit=crop"
-                  alt="Group Training"
+                  alt="Practice Visual"
                   isBackground={true}
                   className="grayscale-[50%] hover:grayscale-0 transition-all duration-1000"
                 />
@@ -698,10 +676,9 @@ const ClassesSection: React.FC = () => {
             </Reveal>
             <Reveal delay={0.2}>
               <div className="space-y-8 max-w-lg">
-                <EditableText defaultText="THE RITUAL" tag="h3" className="font-serif text-4xl md:text-6xl text-glvt-black" />
-                <EditableText defaultText="GROUP CLASSES" tag="span" className="font-sans text-[10px] tracking-super-wide uppercase text-glvt-stone block border-b border-glvt-stone/20 pb-2" />
+                <EditableText defaultText="MOVEMENT" tag="h3" className="font-serif text-4xl md:text-6xl text-glvt-black" />
                 <EditableText
-                  defaultText="Collective energy meet specialized focus. Our small group rituals ensure personalized attention while fostering a community of powerful women."
+                  defaultText="Movement redefined as art. Our specialized training zones are designed to maximize both aesthetic results and physical longevity."
                   tag="p"
                   className="font-sans text-sm md:text-base font-light text-glvt-charcoal/80 leading-loose"
                 />
@@ -745,26 +722,36 @@ const MembershipSection: React.FC = () => {
   );
 };
 
-const ContactSection: React.FC = () => {
+const EnterSection: React.FC = () => {
   return (
-    <section className="bg-glvt-sand py-24 flex flex-col items-center justify-center">
-      <div className="text-center space-y-10 px-6 max-w-3xl">
-        <h2 className="font-serif text-4xl md:text-6xl text-glvt-black">
-          <EditableText defaultText="Begin Your Ritual" tag="span" />
-        </h2>
-        <p className="font-sans text-sm md:text-base font-light text-glvt-charcoal/70 leading-relaxed">
-          <EditableText defaultText="We invite you to experience the club. Contact us directly for a personal orientation." tag="span" />
-        </p>
+    <section className="bg-glvt-sand py-40 flex flex-col items-center justify-center min-h-[80vh]">
+      <div className="text-center space-y-12 px-6 max-w-3xl">
+        <Reveal>
+          <h2 className="font-serif text-4xl md:text-6xl text-glvt-black leading-tight">
+            <EditableText defaultText="GLVT is not for everyone." tag="span" />
+            <br />
+            <span className="opacity-60 italic text-3xl md:text-5xl mt-4 block">
+              <EditableText defaultText="It’s for those ready to return to their body." tag="span" />
+            </span>
+          </h2>
+        </Reveal>
 
-        <div className="pt-8">
-          <button
-            onClick={() => window.open('https://wa.me/8618616700279', '_blank')}
-            className="inline-flex items-center gap-4 bg-glvt-black text-white px-10 py-4 font-sans text-[10px] font-bold tracking-super-wide uppercase hover:bg-glvt-charcoal transition-all shadow-xl"
-          >
-            <MessageCircle size={16} />
-            <span>WhatsApp Inquire</span>
-          </button>
-        </div>
+        <Reveal delay={0.2}>
+          <div className="pt-12 flex flex-col md:flex-row gap-6 justify-center">
+            <button
+              onClick={() => window.location.href = 'https://glvt-web-booking.vercel.app/glvt/launch'}
+              className="px-10 py-4 bg-glvt-black text-white text-[10px] font-bold tracking-super-wide uppercase hover:bg-glvt-charcoal transition-all shadow-xl"
+            >
+              <EditableText defaultText="Begin" tag="span" />
+            </button>
+            <button
+              onClick={() => window.open('https://wa.me/8618616700279', '_blank')}
+              className="px-10 py-4 border border-glvt-black text-glvt-black text-[10px] font-bold tracking-super-wide uppercase hover:bg-glvt-stone/10 transition-all"
+            >
+              <EditableText defaultText="Request a session" tag="span" />
+            </button>
+          </div>
+        </Reveal>
       </div>
     </section>
   )
@@ -772,182 +759,32 @@ const ContactSection: React.FC = () => {
 
 const Footer: React.FC = () => {
   return (
-    <footer className="bg-glvt-black text-white pt-24 pb-12">
+    <footer className="bg-glvt-black text-white py-20 border-t border-white/5">
       <div className="container mx-auto px-6 text-center">
-        <div className="mb-16">
-          <Logo className="h-10 md:h-14 mx-auto mb-6" color="#FFFFFF" />
+        <div className="mb-12">
+          <Logo className="h-10 md:h-12 mx-auto mb-8" color="#FFFFFF" />
           <EditableText
-            defaultText="Where the body is honored"
+            defaultText="GLVT — Honor the body."
             tag="p"
-            className="font-sans text-[10px] tracking-[0.4em] uppercase mt-4 opacity-60 font-light text-white"
+            className="font-serif italic text-2xl md:text-3xl text-white/80 font-light"
           />
         </div>
 
-        {/* Contact Information */}
-        <div className="mb-12">
-          <div className="flex justify-center items-center gap-8">
-            {/* Instagram */}
-            <EditableLink
-              href="https://instagram.com/glvt_bali"
-              className="text-white opacity-90 hover:opacity-100 transition-all group"
-            >
-              <Instagram size={24} className="group-hover:scale-110 transition-transform" />
-            </EditableLink>
-
-            {/* Phone/WhatsApp */}
-            <EditableLink
-              href="https://wa.me/8618616700279"
-              className="text-white opacity-90 hover:opacity-100 transition-all group"
-            >
-              <MessageCircle size={24} className="group-hover:scale-110 transition-transform" />
-            </EditableLink>
-
-            {/* Location */}
-            <EditableLink
-              href="https://maps.google.com/?q=Bali,Indonesia"
-              className="text-white opacity-90 hover:opacity-100 transition-all group"
-            >
-              <MapPin size={24} className="group-hover:scale-110 transition-transform" />
-            </EditableLink>
-          </div>
+        {/* Minimal Socials */}
+        <div className="flex justify-center items-center gap-10 mb-12 opacity-60">
+          <EditableLink href="https://instagram.com/glvt_bali" className="hover:opacity-100 transition-opacity">
+            <span className="font-sans text-[10px] tracking-widest uppercase">Instagram</span>
+          </EditableLink>
+          <EditableLink href="https://wa.me/8618616700279" className="hover:opacity-100 transition-opacity">
+            <span className="font-sans text-[10px] tracking-widest uppercase">Construct</span>
+          </EditableLink>
         </div>
 
-        <div className="font-sans text-[9px] tracking-widest uppercase opacity-40 text-white">
-          <EditableText defaultText="© 2025 GLVT. PRIVACY & TERMS." tag="span" />
+        <div className="font-sans text-[9px] tracking-widest uppercase opacity-20">
+          <EditableText defaultText="© 2025 GLVT. PRIVACY." tag="span" />
         </div>
       </div>
     </footer>
-  );
-};
-
-
-
-
-const LadiesGymSection: React.FC = () => {
-  return (
-    <section className="bg-glvt-sand pb-40 px-6 md:px-12">
-      <div className="container mx-auto max-w-[1600px]">
-        <Reveal>
-          <div className="mb-20 text-center">
-            <EditableText defaultText="EXCLUSIVE" tag="div" className="font-sans text-[10px] tracking-super-wide uppercase text-glvt-stone mb-4" />
-            <h2 className="font-serif text-4xl md:text-7xl text-glvt-black mb-6">
-              <EditableText defaultText="LADIES LUXURY GYM" tag="span" />
-            </h2>
-            <div className="max-w-2xl mx-auto">
-              <EditableText defaultText="A sanctuary designed exclusively for women. Experience privacy, luxury, and community in our state-of-the-art facility." tag="p" className="font-sans text-sm font-light text-glvt-charcoal/70 leading-relaxed" />
-            </div>
-          </div>
-        </Reveal>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <Reveal delay={0.1}>
-            <div className="h-[60vh] relative group overflow-hidden rounded-sm">
-              <EditableImage
-                defaultSrc="/ladies-gym/gym-reception.jpg"
-                alt="Reception"
-                className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
-              />
-              <div className="absolute bottom-6 left-6 z-10">
-                <EditableText defaultText="RECEPTION" tag="span" className="font-sans text-xs tracking-widest text-white uppercase bg-black/20 backdrop-blur-sm px-3 py-1" />
-              </div>
-            </div>
-          </Reveal>
-          <Reveal delay={0.2}>
-            <div className="h-[60vh] relative group overflow-hidden rounded-sm">
-              <EditableImage
-                defaultSrc="/ladies-gym/gym-interior.jpg"
-                alt="Interior"
-                className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
-              />
-              <div className="absolute bottom-6 left-6 z-10">
-                <EditableText defaultText="INTERIOR" tag="span" className="font-sans text-xs tracking-widest text-white uppercase bg-black/20 backdrop-blur-sm px-3 py-1" />
-              </div>
-            </div>
-          </Reveal>
-          <Reveal delay={0.3}>
-            <div className="h-[60vh] relative group overflow-hidden rounded-sm">
-              <EditableImage
-                defaultSrc="/ladies-gym/gym-exterior.jpg"
-                alt="Exterior"
-                className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
-              />
-              <div className="absolute bottom-6 left-6 z-10">
-                <EditableText defaultText="EXTERIOR" tag="span" className="font-sans text-xs tracking-widest text-white uppercase bg-black/20 backdrop-blur-sm px-3 py-1" />
-              </div>
-            </div>
-          </Reveal>
-          <Reveal delay={0.4}>
-            <div className="h-[60vh] relative group overflow-hidden rounded-sm">
-              <EditableImage
-                defaultSrc="/ladies-gym/gym-lounge.jpg"
-                alt="Lounge"
-                className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
-              />
-              <div className="absolute bottom-6 left-6 z-10">
-                <EditableText defaultText="LOUNGE" tag="span" className="font-sans text-xs tracking-widest text-white uppercase bg-black/20 backdrop-blur-sm px-3 py-1" />
-              </div>
-            </div>
-          </Reveal>
-          <Reveal delay={0.5}>
-            <div className="h-[60vh] relative group overflow-hidden rounded-sm">
-              <EditableImage
-                defaultSrc="/ladies-gym/gym-lady-1.jpg"
-                alt="The Ritual"
-                className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
-              />
-              <div className="absolute bottom-6 left-6 z-10">
-                <EditableText defaultText="THE RITUAL" tag="span" className="font-sans text-xs tracking-widest text-white uppercase bg-black/20 backdrop-blur-sm px-3 py-1" />
-              </div>
-            </div>
-          </Reveal>
-          <Reveal delay={0.6}>
-            <div className="h-[60vh] relative group overflow-hidden rounded-sm">
-              <EditableImage
-                defaultSrc="/ladies-gym/gym-lady-2.jpg"
-                alt="Elegance"
-                className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
-              />
-              <div className="absolute bottom-6 left-6 z-10">
-                <EditableText defaultText="ELEGANCE" tag="span" className="font-sans text-xs tracking-widest text-white uppercase bg-black/20 backdrop-blur-sm px-3 py-1" />
-              </div>
-            </div>
-          </Reveal>
-        </div>
-      </div>
-    </section>
-  );
-};
-
-const PartnerSection: React.FC = () => {
-  return (
-    <section className="bg-glvt-sand pt-40 pb-40 min-h-screen">
-      <div className="container mx-auto px-6 mb-16">
-        <Reveal>
-          <EditableText defaultText="EXCLUSIVE PRIVILEGE" tag="div" className="font-sans text-[10px] tracking-super-wide uppercase text-glvt-stone mb-4" />
-          <h2 className="font-serif text-4xl md:text-6xl text-glvt-black mb-8">
-            <EditableText defaultText="THE #1 WELLNESS CLUB" tag="span" />
-          </h2>
-        </Reveal>
-      </div>
-
-      <div className="space-y-10 px-4 md:px-12">
-        <Reveal width="100%">
-          <div className="relative h-[60vh] w-full group overflow-hidden bg-glvt-black flex items-center justify-center">
-            <EditableImage
-              defaultSrc="https://images.unsplash.com/photo-1572331165267-854da2b00ca1?q=80&w=2940&auto=format&fit=crop"
-              alt="The Pools"
-              isBackground={true}
-              className="opacity-70 group-hover:scale-110 transition-transform duration-[2s] ease-out grayscale group-hover:grayscale-0"
-            />
-            <div className="relative z-10 w-full text-center mix-blend-overlay">
-              <h3 className="text-6xl md:text-[10rem] font-bold font-sans text-transparent text-outline tracking-tighter leading-none opacity-80">
-                <EditableText defaultText="POOLS" tag="span" />
-              </h3>
-            </div>
-          </div>
-        </Reveal>
-      </div>
-    </section>
   );
 };
 
@@ -970,22 +807,35 @@ const App: React.FC = () => {
           {showIntro && <VideoIntro onComplete={() => setShowIntro(false)} />}
 
           <Navigation />
-          <main className="flex-grow">
+
+          <main className="min-h-screen">
             {currentPage === 'home' && (
               <>
                 <HeroSection />
-                <IntroSection />
-                <LadiesGymSection />
+                <div className="bg-glvt-sand pt-40 pb-40 px-6 md:px-12 text-center">
+                  <Reveal>
+                    <div className="w-16 h-[1px] bg-glvt-stone/30 mx-auto mb-12"></div>
+                    <p className="italic font-serif text-2xl md:text-3xl text-glvt-charcoal/70 leading-[1.6]">
+                      <EditableText defaultText="GLVT — Honor the body." tag="span" />
+                    </p>
+                  </Reveal>
+                </div>
+                {/* Optional: Show teasers of other sections or keep it minimal as per "Slow scroll. Space. Silence." */}
               </>
             )}
-            {currentPage === 'club' && <ClubSection />}
-            {currentPage === 'partner' && <PartnerSection />}
-            {currentPage === 'technology' && <TechnologySection />}
-            {currentPage === 'classes' && <ClassesSection />}
-            {currentPage === 'membership' && <MembershipSection />}
-            {currentPage === 'contact' && <ContactSection />}
 
+            {currentPage === 'philosophy' && <PhilosophySection />}
+            {currentPage === 'practice' && <PracticeSection />}
+            {currentPage === 'space' && <SpaceSection />}
+            {currentPage === 'ritual' && <RitualSection />}
+            {currentPage === 'enter' && <EnterSection />}
+            {currentPage === 'journal' && (
+              <div className="h-screen flex items-center justify-center bg-glvt-sand">
+                <p className="font-serif italic text-2xl opacity-50">Journal coming soon.</p>
+              </div>
+            )}
           </main>
+
           <Footer />
 
           <button
