@@ -595,45 +595,6 @@ const SpaceSection: React.FC = () => {
   );
 };
 
-const TechnologySection: React.FC = () => {
-  return (
-    <section className="bg-glvt-black text-glvt-cream py-24 border-t border-white/5 min-h-screen">
-      <div className="container mx-auto px-6 md:px-12">
-        <Reveal>
-          <EditableText defaultText="INTELLIGENT MOVEMENT" tag="div" className="font-sans text-[10px] tracking-super-wide uppercase text-glvt-stone mb-6" />
-          <h2 className="font-serif text-4xl md:text-6xl mb-12">
-            <EditableText defaultText="THE BIO-CIRCUIT" tag="span" />
-          </h2>
-          <EditableText
-            defaultText="A visually immersive experience. Map your progress through advanced biometrics and integrated guidance."
-            tag="p"
-            className="font-sans text-sm font-light text-white/50 mb-16 max-w-2xl leading-relaxed"
-          />
-        </Reveal>
-
-        <div className="space-y-12">
-          <Reveal width="100%">
-            <div className="relative w-full aspect-[21/9] bg-glvt-charcoal rounded-sm overflow-hidden border border-white/5 shadow-3xl group">
-              <EditableImage
-                defaultSrc="https://images.unsplash.com/photo-1517836357463-d25dfeac3438?q=80&w=2940&auto=format&fit=crop"
-                alt="Visual Guidance Screen"
-                isBackground={true}
-                className="opacity-40 group-hover:opacity-60 transition-opacity duration-[1.5s]"
-              />
-              <div className="absolute inset-0 flex items-center justify-center">
-                <div className="text-center">
-                  <Monitor size={48} className="text-white mx-auto mb-4 opacity-60" />
-                  <EditableText defaultText="VISUAL GUIDANCE" tag="h3" className="font-serif text-3xl md:text-5xl text-white tracking-widest" />
-                </div>
-              </div>
-            </div>
-          </Reveal>
-        </div>
-      </div>
-    </section>
-  );
-};
-
 const PracticeSection: React.FC = () => {
   return (
     <section className="bg-glvt-sand pt-40 pb-40 px-6 md:px-12">
@@ -690,6 +651,40 @@ const PracticeSection: React.FC = () => {
     </section>
   )
 }
+
+const RitualSection: React.FC = () => {
+  return (
+    <section className="bg-glvt-black py-40 px-6 md:px-12 text-white min-h-screen flex flex-col justify-center">
+      <div className="container mx-auto max-w-4xl text-center">
+        <Reveal>
+          <EditableText defaultText="THE RITUAL" tag="div" className="font-sans text-[10px] tracking-[0.4em] uppercase text-glvt-stone mb-10" />
+          <h2 className="font-serif text-4xl md:text-5xl leading-tight mb-12">
+            <EditableText defaultText="You don’t choose a class. You choose how you want to feel." tag="span" />
+          </h2>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 my-20">
+            {[
+              "Grounding Practice",
+              "Longevity Movement",
+              "Vitality Flow",
+              "Truth Session"
+            ].map(item => (
+              <div key={item} className="border border-white/10 py-8 px-4 hover:bg-white/5 transition-colors duration-500 cursor-pointer group">
+                <h3 className="font-serif text-2xl md:text-3xl text-glvt-cream group-hover:text-white transition-colors">
+                  <EditableText defaultText={item} tag="span" />
+                </h3>
+              </div>
+            ))}
+          </div>
+
+          <button className="px-10 py-3 bg-white text-glvt-black text-[10px] font-bold tracking-super-wide uppercase hover:bg-glvt-stone transition-all duration-500">
+            <EditableText defaultText="Begin the ritual" tag="span" />
+          </button>
+        </Reveal>
+      </div>
+    </section>
+  );
+};
 
 const MembershipSection: React.FC = () => {
   return (
