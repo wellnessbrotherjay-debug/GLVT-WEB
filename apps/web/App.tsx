@@ -822,6 +822,78 @@ const Footer: React.FC = () => {
 
 
 
+
+const LadiesGymSection: React.FC = () => {
+  return (
+    <section className="bg-glvt-sand pb-40 px-6 md:px-12">
+      <div className="container mx-auto max-w-[1600px]">
+        <Reveal>
+          <div className="mb-20 text-center">
+            <EditableText defaultText="EXCLUSIVE" tag="div" className="font-sans text-[10px] tracking-super-wide uppercase text-glvt-stone mb-4" />
+            <h2 className="font-serif text-4xl md:text-7xl text-glvt-black mb-6">
+              <EditableText defaultText="LADIES LUXURY GYM" tag="span" />
+            </h2>
+            <div className="max-w-2xl mx-auto">
+              <EditableText defaultText="A sanctuary designed exclusively for women. Experience privacy, luxury, and community in our state-of-the-art facility." tag="p" className="font-sans text-sm font-light text-glvt-charcoal/70 leading-relaxed" />
+            </div>
+          </div>
+        </Reveal>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <Reveal delay={0.1}>
+            <div className="h-[60vh] relative group overflow-hidden rounded-sm">
+              <EditableImage
+                defaultSrc="/ladies-gym/gym-reception.jpg"
+                alt="Reception"
+                className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
+              />
+              <div className="absolute bottom-6 left-6 z-10">
+                <EditableText defaultText="RECEPTION" tag="span" className="font-sans text-xs tracking-widest text-white uppercase bg-black/20 backdrop-blur-sm px-3 py-1" />
+              </div>
+            </div>
+          </Reveal>
+          <Reveal delay={0.2}>
+            <div className="h-[60vh] relative group overflow-hidden rounded-sm">
+              <EditableImage
+                defaultSrc="/ladies-gym/gym-interior.jpg"
+                alt="Interior"
+                className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
+              />
+              <div className="absolute bottom-6 left-6 z-10">
+                <EditableText defaultText="INTERIOR" tag="span" className="font-sans text-xs tracking-widest text-white uppercase bg-black/20 backdrop-blur-sm px-3 py-1" />
+              </div>
+            </div>
+          </Reveal>
+          <Reveal delay={0.3}>
+            <div className="h-[60vh] relative group overflow-hidden rounded-sm">
+              <EditableImage
+                defaultSrc="/ladies-gym/gym-exterior.jpg"
+                alt="Exterior"
+                className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
+              />
+              <div className="absolute bottom-6 left-6 z-10">
+                <EditableText defaultText="EXTERIOR" tag="span" className="font-sans text-xs tracking-widest text-white uppercase bg-black/20 backdrop-blur-sm px-3 py-1" />
+              </div>
+            </div>
+          </Reveal>
+          <Reveal delay={0.4}>
+            <div className="h-[60vh] relative group overflow-hidden rounded-sm">
+              <EditableImage
+                defaultSrc="/ladies-gym/gym-lounge.jpg"
+                alt="Lounge"
+                className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
+              />
+              <div className="absolute bottom-6 left-6 z-10">
+                <EditableText defaultText="LOUNGE" tag="span" className="font-sans text-xs tracking-widest text-white uppercase bg-black/20 backdrop-blur-sm px-3 py-1" />
+              </div>
+            </div>
+          </Reveal>
+        </div>
+      </div>
+    </section>
+  );
+};
+
 const PartnerSection: React.FC = () => {
   return (
     <section className="bg-glvt-sand pt-40 pb-40 min-h-screen">
@@ -879,6 +951,7 @@ const App: React.FC = () => {
               <>
                 <HeroSection />
                 <IntroSection />
+                <LadiesGymSection />
               </>
             )}
             {currentPage === 'club' && <ClubSection />}
