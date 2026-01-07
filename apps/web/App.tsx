@@ -888,6 +888,30 @@ const LadiesGymSection: React.FC = () => {
               </div>
             </div>
           </Reveal>
+          <Reveal delay={0.5}>
+            <div className="h-[60vh] relative group overflow-hidden rounded-sm">
+              <EditableImage
+                defaultSrc="/ladies-gym/gym-lady-1.jpg"
+                alt="The Ritual"
+                className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
+              />
+              <div className="absolute bottom-6 left-6 z-10">
+                <EditableText defaultText="THE RITUAL" tag="span" className="font-sans text-xs tracking-widest text-white uppercase bg-black/20 backdrop-blur-sm px-3 py-1" />
+              </div>
+            </div>
+          </Reveal>
+          <Reveal delay={0.6}>
+            <div className="h-[60vh] relative group overflow-hidden rounded-sm">
+              <EditableImage
+                defaultSrc="/ladies-gym/gym-lady-2.jpg"
+                alt="Elegance"
+                className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
+              />
+              <div className="absolute bottom-6 left-6 z-10">
+                <EditableText defaultText="ELEGANCE" tag="span" className="font-sans text-xs tracking-widest text-white uppercase bg-black/20 backdrop-blur-sm px-3 py-1" />
+              </div>
+            </div>
+          </Reveal>
         </div>
       </div>
     </section>
