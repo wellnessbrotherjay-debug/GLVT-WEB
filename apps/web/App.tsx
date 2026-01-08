@@ -473,7 +473,7 @@ const HeroSection: React.FC = () => {
 
 const PhilosophySection: React.FC = () => {
   return (
-    <section className="bg-glvt-sand pt-32 pb-40 px-6 md:px-12">
+    <section className="bg-glvt-sand min-h-screen py-40 px-6 md:px-12 flex flex-col justify-center">
       <div className="max-w-4xl mx-auto text-center mb-32">
         <Reveal>
           <EditableText defaultText="THE PHILOSOPHY" tag="div" className="font-sans text-[10px] tracking-[0.4em] uppercase text-glvt-stone mb-8" />
@@ -527,7 +527,7 @@ const PhilosophySection: React.FC = () => {
 
 const SpaceSection: React.FC = () => {
   return (
-    <div className="bg-glvt-black text-glvt-cream">
+    <div className="bg-glvt-black text-glvt-cream w-full">
       {/* Immersive Intro */}
       <section className="relative h-screen w-full flex items-center justify-center overflow-hidden">
         <EditableImage
