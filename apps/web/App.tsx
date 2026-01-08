@@ -9,87 +9,13 @@ interface EditContextType {
 }
 const EditContext = createContext<EditContextType>({ isEditing: false });
 
+type PageType = 'home' | 'philosophy' | 'practice' | 'space' | 'ritual' | 'journal' | 'enter';
 
-// --- Expandable Section Component ---
-import { motion, AnimatePresence } from 'framer-motion';
-
-const ExpandableSection: React.FC<{
-  id: string;
-  title: string;
-  subtitle: string;
-  coverImage: string;
-  children: React.ReactNode;
-  defaultExpanded?: boolean;
-}> = ({ id, title, subtitle, coverImage, children, defaultExpanded = false }) => {
-  const [isExpanded, setIsExpanded] = useState(defaultExpanded);
-
-  return (
-    <section id={id} className={`relative transition-all duration-1000 ease-in-out border-b border-white/5`}>
-      {/* Collapsed/Cover View */}
-      <div
-        onClick={() => setIsExpanded(!isExpanded)}
-        className={`relative w-full overflow-hidden cursor-pointer group ${isExpanded ? 'h-[40vh]' : 'h-[80vh] md:h-screen'}`}
-      >
-        <EditableImage
-          defaultSrc={coverImage}
-          alt={title}
-          className={`absolute inset-0 w-full h-full opacity-60 transition-all duration-[1.5s] ease-out ${isExpanded ? 'grayscale brightness-50' : 'grayscale-[100%] brightness-40 group-hover:grayscale-0 group-hover:scale-105'}`}
-          isBackground={true}
-        />
-        <div className="absolute inset-0 flex flex-col items-center justify-center text-center z-10 p-6">
-          <div className={`transition-all duration-700 delay-100 ${isExpanded ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-80'}`}>
-            <EditableText defaultText={subtitle} tag="span" className="font-sans text-[10px] md:text-xs tracking-[0.4em] uppercase text-glvt-stone mb-4 block" />
-            <h2 className="font-serif text-5xl md:text-8xl text-white tracking-tight">
-              <EditableText defaultText={title} tag="span" />
-            </h2>
-          </div>
-
-          <div className={`mt-12 transition-all duration-500 ${isExpanded ? 'opacity-0 translate-y-4' : 'opacity-100 translate-y-0'}`}>
-            <button className="w-12 h-12 rounded-full border border-white/20 flex items-center justify-center text-white group-hover:bg-white group-hover:text-glvt-black transition-all">
-              <Plus size={20} className="transition-transform duration-500 group-hover:rotate-90" />
-            </button>
-            <span className="block mt-4 font-sans text-[9px] tracking-widest uppercase text-white/50 group-hover:text-white transition-colors">Expand</span>
-          </div>
-        </div>
-      </div>
-
-      {/* Expanded Content View */}
-      <AnimatePresence>
-        {isExpanded && (
-          <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: 'auto' }}
-            exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-            className="overflow-hidden bg-glvt-sand w-full"
-          >
-            {/* Close strip */}
-            <div onClick={() => setIsExpanded(false)} className="w-full h-12 bg-glvt-black/5 hover:bg-glvt-stone/10 cursor-pointer flex items-center justify-center transition-colors">
-              <Minus size={16} className="text-glvt-black/40" />
-            </div>
-
-            <div className="w-full">
-              {children}
-            </div>
-
-            {/* Bottom Close Button */}
-            <div className="py-20 flex justify-center bg-inherit">
-              <button
-                onClick={() => {
-                  setIsExpanded(false);
-                  document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
-                }}
-                className="px-8 py-3 border border-glvt-black/20 text-glvt-black text-[10px] tracking-super-wide uppercase hover:bg-glvt-black hover:text-white transition-all"
-              >
-                Close Section
-              </button>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </section>
-  );
-};
+interface NavContextType {
+  currentPage: PageType;
+  navigateTo: (page: PageType) => void;
+}
+const NavContext = createContext<NavContextType>({ currentPage: 'home', navigateTo: () => { } });
 
 // --- Components ---
 
@@ -363,6 +289,7 @@ const VideoIntro: React.FC<{ onComplete: () => void }> = ({ onComplete }) => {
 const Navigation: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { currentPage, navigateTo } = useContext(NavContext);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -372,71 +299,92 @@ const Navigation: React.FC = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const scrollToSection = (id: string) => {
-    const el = document.getElementById(id);
-    if (el) {
-      el.scrollIntoView({ behavior: 'smooth' });
-      setIsMenuOpen(false);
-    }
-  };
-
-  const navItems = [
-    { label: 'The State', id: 'hero' },
-    { label: 'Philosophy', id: 'philosophy' },
-    { label: 'Practice', id: 'practice' },
-    { label: 'Space', id: 'space' },
-    { label: 'Ritual', id: 'ritual' },
+  const navItems: { label: string; value: PageType }[] = [
+    { label: 'The State', value: 'home' },
+    { label: 'Philosophy', value: 'philosophy' },
+    { label: 'Practice', value: 'practice' },
+    { label: 'Space', value: 'space' },
+    { label: 'Ritual', value: 'ritual' },
+    { label: 'Journal', value: 'journal' },
   ];
+
+  const isLogoBlack = isMenuOpen || isScrolled || (currentPage !== 'home' && currentPage !== 'club');
+  const logoColor = isLogoBlack ? '#0F0F0F' : '#FFFFFF';
 
   return (
     <>
       <nav
-        className={`fixed top-0 left-0 w-full z-40 transition-all duration-700 ease-in-out border-b ${isScrolled ? 'bg-glvt-black/90 backdrop-blur-md border-white/10 py-4' : 'bg-transparent py-8 border-transparent'}`}
+        className={`fixed top-0 left-0 w-full z-40 transition-all duration-700 ease-in-out border-b ${isScrolled
+          ? 'bg-glvt-sand/95 backdrop-blur-md pt-4 pb-4 border-glvt-black/5'
+          : (currentPage === 'home') ? 'opacity-0 -translate-y-full pointer-events-none' : (currentPage === 'club') ? 'bg-transparent pt-10 pb-6 border-transparent' : 'bg-glvt-sand pt-6 pb-6 border-glvt-black/5'
+          }`}
       >
         <div className="container mx-auto px-6 md:px-12 flex justify-between items-center max-w-[1600px]">
-          <div onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="cursor-pointer z-50">
+          <div onClick={() => navigateTo('home')} className="cursor-pointer z-50">
             <Logo
-              className="h-6 md:h-8"
-              color={"#FFFFFF"}
+              className="h-6 md:h-9"
+              color={logoColor}
             />
           </div>
 
           <div className="hidden lg:flex items-center gap-12">
             {navItems.map((item) => (
               <button
-                key={item.id}
-                onClick={() => scrollToSection(item.id)}
-                className="text-[9px] font-sans font-medium tracking-super-wide uppercase text-white/70 hover:text-white transition-colors duration-300"
+                key={item.value}
+                onClick={() => navigateTo(item.value)}
+                className={`text-[9px] font-sans font-medium tracking-super-wide uppercase hover:text-glvt-stone transition-colors duration-300 
+                  ${currentPage === item.value ? 'text-glvt-stone' : (isLogoBlack ? 'text-glvt-black' : 'text-white')}`}
               >
-                {item.label}
+                <EditableText defaultText={item.label} tag="span" />
               </button>
             ))}
             <button
-              onClick={() => scrollToSection('enter')}
-              className="ml-6 px-6 py-2 border border-white text-white text-[9px] font-sans font-medium tracking-super-wide uppercase transition-all duration-500 hover:bg-white hover:text-glvt-black"
+              onClick={() => navigateTo('contact')}
+              className={`ml-6 px-6 py-2 border text-[9px] font-sans font-medium tracking-super-wide uppercase transition-all duration-500 hover:bg-glvt-stone hover:border-glvt-stone hover:text-white ${isLogoBlack ? 'border-glvt-black text-glvt-black' : 'border-white text-white'}`}
             >
-              Inquire
+              <EditableText defaultText="Inquire" tag="span" />
+            </button>
+            <button
+              onClick={() => window.location.href = 'https://glvt-web-booking.vercel.app/glvt/launch'}
+              className={`ml-2 px-6 py-2 bg-glvt-stone text-white text-[9px] font-sans font-medium tracking-super-wide uppercase transition-all duration-500 hover:bg-glvt-black flex items-center justify-center`}
+            >
+              <EditableText defaultText="Enter Portal" tag="span" />
             </button>
           </div>
 
           <button className="lg:hidden z-50 p-2" onClick={() => setIsMenuOpen(!isMenuOpen)}>
-            {isMenuOpen ? <X className="w-6 h-6 text-white" /> : <Menu className="w-6 h-6 text-white" />}
+            {isMenuOpen ? (
+              <X className="w-6 h-6 text-glvt-black" />
+            ) : (
+              <Menu className={`w-6 h-6 ${isLogoBlack ? 'text-glvt-black' : 'text-white'}`} />
+            )}
           </button>
         </div>
       </nav>
 
-      {/* Mobile Menu */}
-      <div className={`fixed inset-0 bg-glvt-black z-30 flex items-center justify-center transition-all duration-500 ${isMenuOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}>
-        <div className="flex flex-col items-center gap-8">
-          {navItems.map((item) => (
+      <div className={`fixed inset-0 bg-glvt-sand z-40 flex items-center justify-center transition-all duration-1000 cubic-bezier(0.7, 0, 0.3, 1) ${isMenuOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}>
+        <div className="flex flex-col items-center justify-center w-full max-w-sm px-10">
+          {navItems.map((item, idx) => (
             <button
-              key={item.id}
-              onClick={() => scrollToSection(item.id)}
-              className="font-serif text-3xl text-white tracking-widest uppercase hover:text-glvt-stone"
+              key={item.value}
+              onClick={() => { navigateTo(item.value); setIsMenuOpen(false); }}
+              className={`w-full group py-4 transition-all duration-700 ease-out border-b border-glvt-black/5 last:border-0 ${isMenuOpen ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'}`}
+              style={{ transitionDelay: `${idx * 0.08}s` }}
             >
-              {item.label}
+              <span className="block text-lg md:text-xl font-serif text-glvt-black tracking-[0.25em] uppercase group-hover:text-glvt-stone transition-colors">
+                {item.label}
+              </span>
             </button>
           ))}
+          <button
+            onClick={() => window.location.href = 'https://glvt-web-booking.vercel.app/glvt/launch'}
+            className={`w-full group py-4 transition-all duration-700 ease-out border-b border-glvt-black/5 last:border-0 ${isMenuOpen ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'}`}
+            style={{ transitionDelay: `${navItems.length * 0.08}s` }}
+          >
+            <span className="block text-lg md:text-xl font-serif text-glvt-black tracking-[0.25em] uppercase group-hover:text-glvt-stone transition-colors">
+              ENTER PORTAL
+            </span>
+          </button>
         </div>
       </div>
     </>
@@ -473,7 +421,7 @@ const HeroSection: React.FC = () => {
 
 const PhilosophySection: React.FC = () => {
   return (
-    <section className="bg-glvt-sand min-h-screen py-40 px-6 md:px-12 flex flex-col justify-center">
+    <section className="bg-glvt-sand pt-32 pb-40 px-6 md:px-12">
       <div className="max-w-4xl mx-auto text-center mb-32">
         <Reveal>
           <EditableText defaultText="THE PHILOSOPHY" tag="div" className="font-sans text-[10px] tracking-[0.4em] uppercase text-glvt-stone mb-8" />
@@ -527,7 +475,7 @@ const PhilosophySection: React.FC = () => {
 
 const SpaceSection: React.FC = () => {
   return (
-    <div className="bg-glvt-black text-glvt-cream w-full">
+    <div className="bg-glvt-black text-glvt-cream">
       {/* Immersive Intro */}
       <section className="relative h-screen w-full flex items-center justify-center overflow-hidden">
         <EditableImage
@@ -855,87 +803,63 @@ const Footer: React.FC = () => {
 
 const App: React.FC = () => {
   const [isEditing, setIsEditing] = useState(false);
+  const [currentPage, setCurrentPage] = useState<PageType>('home');
   const [showIntro, setShowIntro] = useState(true);
+  const scrollRef = useRef<HTMLDivElement>(null);
 
-  // Toggle visual editor with 'e' key
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'e' && (e.metaKey || e.ctrlKey)) {
-        e.preventDefault();
-        setIsEditing(prev => !prev);
-      }
-    };
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, []);
+  const navigateTo = (page: PageType) => {
+    setCurrentPage(page);
+    window.scrollTo(0, 0);
+  };
 
   return (
     <EditContext.Provider value={{ isEditing }}>
-      <div className={`min-h-screen bg-glvt-black text-glvt-black font-sans selection:bg-glvt-stone selection:text-white ${isEditing ? 'ring-4 ring-blue-500' : ''}`}>
+      <NavContext.Provider value={{ currentPage, navigateTo }}>
+        <div className="bg-glvt-sand min-h-screen flex flex-col" ref={scrollRef}>
 
-        {showIntro && <VideoIntro onComplete={() => setShowIntro(false)} />}
+          {showIntro && <VideoIntro onComplete={() => setShowIntro(false)} />}
 
-        <Navigation />
+          <Navigation />
 
-        <main className="min-h-screen">
-          <div id="hero">
-            <HeroSection />
-          </div>
+          <main className="min-h-screen">
+            {currentPage === 'home' && (
+              <>
+                <HeroSection />
+                <div className="bg-glvt-sand pt-40 pb-40 px-6 md:px-12 text-center">
+                  <Reveal>
+                    <div className="w-16 h-[1px] bg-glvt-stone/30 mx-auto mb-12"></div>
+                    <p className="italic font-serif text-2xl md:text-3xl text-glvt-charcoal/70 leading-[1.6]">
+                      <EditableText defaultText="GLVT — Honor the body." tag="span" />
+                    </p>
+                  </Reveal>
+                </div>
+                {/* Optional: Show teasers of other sections or keep it minimal as per "Slow scroll. Space. Silence." */}
+              </>
+            )}
 
-          <ExpandableSection
-            id="philosophy"
-            title="Philosophy"
-            subtitle="The Core"
-            coverImage="https://images.unsplash.com/photo-1550345332-09e3ac987658?q=80&w=2787&auto=format&fit=crop"
+            {currentPage === 'philosophy' && <PhilosophySection />}
+            {currentPage === 'practice' && <PracticeSection />}
+            {currentPage === 'space' && <SpaceSection />}
+            {currentPage === 'ritual' && <RitualSection />}
+            {currentPage === 'enter' && <EnterSection />}
+            {currentPage === 'journal' && (
+              <div className="h-screen flex items-center justify-center bg-glvt-sand">
+                <p className="font-serif italic text-2xl opacity-50">Journal coming soon.</p>
+              </div>
+            )}
+          </main>
+
+          <Footer />
+
+          <button
+            onClick={() => setIsEditing(!isEditing)}
+            className={`fixed bottom-10 right-10 z-[100] flex items-center justify-center w-14 h-14 rounded-full shadow-3xl transition-all duration-300 ${isEditing ? 'bg-glvt-stone text-white' : 'bg-glvt-black text-white hover:bg-glvt-charcoal'}`}
           >
-            <PhilosophySection />
-          </ExpandableSection>
-
-          <ExpandableSection
-            id="practice"
-            title="Practice"
-            subtitle="The Movement"
-            coverImage="https://images.unsplash.com/photo-1594381898411-846e7d193883?q=80&w=2787&auto=format&fit=crop"
-          >
-            <PracticeSection />
-          </ExpandableSection>
-
-          <ExpandableSection
-            id="space"
-            title="THE SPACE"
-            subtitle="The Sanctuary"
-            coverImage="/ladies-gym/gym-interior.jpg"
-          >
-            <SpaceSection />
-          </ExpandableSection>
-
-          <ExpandableSection
-            id="ritual"
-            title="Ritual"
-            subtitle="The Experience"
-            coverImage="https://images.unsplash.com/photo-1519664824562-b4bc73f9713c?q=80&w=2760&auto=format&fit=crop"
-          >
-            <RitualSection />
-          </ExpandableSection>
-
-          <div id="enter">
-            <EnterSection />
-          </div>
-
-        </main>
-
-        <Footer />
-
-        <button
-          onClick={() => setIsEditing(!isEditing)}
-          className={`fixed bottom-6 right-6 z-50 p-3 rounded-full shadow-2xl transition-all duration-300 ${isEditing ? 'bg-blue-600 text-white rotate-0' : 'bg-white text-black/50 hover:bg-black hover:text-white -rotate-12'}`}
-          title="Toggle Visual Editor (Cmd+E)"
-        >
-          <Edit3 size={20} />
-        </button>
-
-      </div >
-    </EditContext.Provider >
+            {isEditing ? <X size={24} /> : <Edit3 size={24} />}
+          </button>
+        </div>
+      </NavContext.Provider>
+    </EditContext.Provider>
   );
 };
 
