@@ -61,14 +61,16 @@ const ExpandableSection: React.FC<{
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-            className="overflow-hidden bg-glvt-sand"
+            className="overflow-hidden bg-glvt-sand w-full"
           >
             {/* Close strip */}
             <div onClick={() => setIsExpanded(false)} className="w-full h-12 bg-glvt-black/5 hover:bg-glvt-stone/10 cursor-pointer flex items-center justify-center transition-colors">
               <Minus size={16} className="text-glvt-black/40" />
             </div>
 
-            {children}
+            <div className="w-full">
+              {children}
+            </div>
 
             {/* Bottom Close Button */}
             <div className="py-20 flex justify-center bg-inherit">
@@ -853,63 +855,87 @@ const Footer: React.FC = () => {
 
 const App: React.FC = () => {
   const [isEditing, setIsEditing] = useState(false);
-  const [currentPage, setCurrentPage] = useState<PageType>('home');
   const [showIntro, setShowIntro] = useState(true);
-  const scrollRef = useRef<HTMLDivElement>(null);
 
-  const navigateTo = (page: PageType) => {
-    setCurrentPage(page);
-    window.scrollTo(0, 0);
-  };
+  // Toggle visual editor with 'e' key
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'e' && (e.metaKey || e.ctrlKey)) {
+        e.preventDefault();
+        setIsEditing(prev => !prev);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
 
   return (
     <EditContext.Provider value={{ isEditing }}>
-      <NavContext.Provider value={{ currentPage, navigateTo }}>
-        <div className="bg-glvt-sand min-h-screen flex flex-col" ref={scrollRef}>
+      <div className={`min-h-screen bg-glvt-black text-glvt-black font-sans selection:bg-glvt-stone selection:text-white ${isEditing ? 'ring-4 ring-blue-500' : ''}`}>
 
-          {showIntro && <VideoIntro onComplete={() => setShowIntro(false)} />}
+        {showIntro && <VideoIntro onComplete={() => setShowIntro(false)} />}
 
-          <Navigation />
+        <Navigation />
 
-          <main className="min-h-screen">
-            {currentPage === 'home' && (
-              <>
-                <HeroSection />
-                <div className="bg-glvt-sand pt-40 pb-40 px-6 md:px-12 text-center">
-                  <Reveal>
-                    <div className="w-16 h-[1px] bg-glvt-stone/30 mx-auto mb-12"></div>
-                    <p className="italic font-serif text-2xl md:text-3xl text-glvt-charcoal/70 leading-[1.6]">
-                      <EditableText defaultText="GLVT — Honor the body." tag="span" />
-                    </p>
-                  </Reveal>
-                </div>
-                {/* Optional: Show teasers of other sections or keep it minimal as per "Slow scroll. Space. Silence." */}
-              </>
-            )}
+        <main className="min-h-screen">
+          <div id="hero">
+            <HeroSection />
+          </div>
 
-            {currentPage === 'philosophy' && <PhilosophySection />}
-            {currentPage === 'practice' && <PracticeSection />}
-            {currentPage === 'space' && <SpaceSection />}
-            {currentPage === 'ritual' && <RitualSection />}
-            {currentPage === 'enter' && <EnterSection />}
-            {currentPage === 'journal' && (
-              <div className="h-screen flex items-center justify-center bg-glvt-sand">
-                <p className="font-serif italic text-2xl opacity-50">Journal coming soon.</p>
-              </div>
-            )}
-          </main>
-
-          <Footer />
-
-          <button
-            onClick={() => setIsEditing(!isEditing)}
-            className={`fixed bottom-10 right-10 z-[100] flex items-center justify-center w-14 h-14 rounded-full shadow-3xl transition-all duration-300 ${isEditing ? 'bg-glvt-stone text-white' : 'bg-glvt-black text-white hover:bg-glvt-charcoal'}`}
+          <ExpandableSection
+            id="philosophy"
+            title="Philosophy"
+            subtitle="The Core"
+            coverImage="https://images.unsplash.com/photo-1550345332-09e3ac987658?q=80&w=2787&auto=format&fit=crop"
           >
-            {isEditing ? <X size={24} /> : <Edit3 size={24} />}
-          </button>
-        </div>
-      </NavContext.Provider>
-    </EditContext.Provider>
+            <PhilosophySection />
+          </ExpandableSection>
+
+          <ExpandableSection
+            id="practice"
+            title="Practice"
+            subtitle="The Movement"
+            coverImage="https://images.unsplash.com/photo-1594381898411-846e7d193883?q=80&w=2787&auto=format&fit=crop"
+          >
+            <PracticeSection />
+          </ExpandableSection>
+
+          <ExpandableSection
+            id="space"
+            title="THE SPACE"
+            subtitle="The Sanctuary"
+            coverImage="/ladies-gym/gym-interior.jpg"
+          >
+            <SpaceSection />
+          </ExpandableSection>
+
+          <ExpandableSection
+            id="ritual"
+            title="Ritual"
+            subtitle="The Experience"
+            coverImage="https://images.unsplash.com/photo-1519664824562-b4bc73f9713c?q=80&w=2760&auto=format&fit=crop"
+          >
+            <RitualSection />
+          </ExpandableSection>
+
+          <div id="enter">
+            <EnterSection />
+          </div>
+
+        </main>
+
+        <Footer />
+
+        <button
+          onClick={() => setIsEditing(!isEditing)}
+          className={`fixed bottom-6 right-6 z-50 p-3 rounded-full shadow-2xl transition-all duration-300 ${isEditing ? 'bg-blue-600 text-white rotate-0' : 'bg-white text-black/50 hover:bg-black hover:text-white -rotate-12'}`}
+          title="Toggle Visual Editor (Cmd+E)"
+        >
+          <Edit3 size={20} />
+        </button>
+
+      </div >
+    </EditContext.Provider >
   );
 };
 
