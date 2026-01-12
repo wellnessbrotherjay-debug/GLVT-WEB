@@ -7,8 +7,8 @@ interface RevealProps {
   direction?: "up" | "down" | "left" | "right";
 }
 
-export const Reveal: React.FC<RevealProps> = ({ 
-  children, 
+export const Reveal: React.FC<RevealProps> = ({
+  children,
   width = "fit-content",
   delay = 0,
   direction = "up"
@@ -57,7 +57,7 @@ export const Reveal: React.FC<RevealProps> = ({
         style={{
           transform: isVisible ? "translate(0)" : getTransform(),
           opacity: isVisible ? 1 : 0,
-          transition: `all 0.9s cubic-bezier(0.17, 0.55, 0.55, 1) ${delay}s`,
+          transition: `all 1.4s cubic-bezier(0.16, 1, 0.3, 1) ${delay}s`,
         }}
       >
         {children}

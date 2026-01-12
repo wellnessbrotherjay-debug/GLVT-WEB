@@ -363,9 +363,9 @@ const HeroSection: React.FC = () => {
         {/* Safari supports HLS natively. For other browsers, we'd need hls.js, but since the user is on Mac, this prioritizes their experience. */}
       </video>
       <div className="absolute inset-0 flex flex-col items-center justify-center text-center text-glvt-sand z-10 p-6">
-        <h1 className="font-serif text-[15vw] leading-none tracking-tighter opacity-90 mb-4 mix-blend-overlay animate-fade-in">GLVT</h1>
+        <h1 className="font-serif text-6xl md:text-[15vw] leading-none tracking-tighter opacity-90 mb-4 mix-blend-overlay animate-fade-in">GLVT</h1>
         <div className="w-12 h-[1px] bg-glvt-sand/50 mb-6"></div>
-        <p className="font-sans text-xs md:text-sm tracking-[0.4em] uppercase opacity-80 animate-fade-in-up delay-700">
+        <p className="font-sans text-[10px] md:text-sm tracking-[0.4em] uppercase opacity-80 animate-fade-in-up delay-700">
           <EditableText defaultText="Grounded. Longevity. Vitality. Truth." tag="span" />
         </p>
       </div>
@@ -377,19 +377,19 @@ const IdentitySection: React.FC = () => {
   return (
     <section id="identity" className="min-h-screen bg-glvt-sand flex items-center justify-center py-20 px-6">
       <div className="max-w-[1600px] w-full grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-24 items-center">
-        <div className="relative h-[70vh] w-full overflow-hidden">
+        <div className="relative h-[50vh] md:h-[70vh] w-full overflow-hidden">
           <EditableImage
             defaultSrc="/gym-4.jpg"
             alt="Identity"
             className="w-full h-full object-cover grayscale-[10%]"
           />
         </div>
-        <div className="space-y-12">
+        <div className="space-y-8 md:space-y-12">
           <Reveal>
-            <h2 className="font-serif text-4xl md:text-6xl text-glvt-obsidian leading-tight">
+            <h2 className="font-serif text-3xl md:text-6xl text-glvt-obsidian leading-tight">
               <EditableText defaultText="GLVT is a women-only space." tag="span" />
             </h2>
-            <div className="space-y-4 font-sans text-sm md:text-base tracking-wide text-glvt-charcoal opacity-80 mt-8">
+            <div className="space-y-4 font-sans text-xs md:text-base tracking-wide text-glvt-charcoal opacity-80 mt-8">
               <p><EditableText defaultText="Built to honor the body." tag="span" /></p>
               <p><EditableText defaultText="Built to respect time." tag="span" /></p>
               <p><EditableText defaultText="Built for truth." tag="span" /></p>
@@ -412,9 +412,9 @@ const FashionSection: React.FC = () => {
         isBackground={true}
       />
       <div className="absolute inset-0 bg-black/10"></div>
-      <div className="absolute bottom-20 left-6 md:left-20 text-white max-w-xl">
+      <div className="absolute bottom-10 left-6 md:bottom-20 md:left-20 text-white max-w-xl pr-6">
         <Reveal>
-          <h2 className="font-serif text-5xl md:text-7xl leading-tight mb-8">
+          <h2 className="font-serif text-4xl md:text-7xl leading-tight mb-4 md:mb-8">
             <EditableText defaultText="What you wear becomes part of the ritual." tag="span" />
           </h2>
         </Reveal>
@@ -434,9 +434,9 @@ const SpaceSection: React.FC = () => {
         isBackground={true}
       />
       <div className="absolute inset-0 bg-black/20"></div>
-      <div className="absolute bottom-20 right-6 md:right-20 text-white text-right max-w-xl">
+      <div className="absolute bottom-10 right-6 md:bottom-20 md:right-20 text-white text-right max-w-xl pl-6">
         <Reveal>
-          <p className="font-serif text-4xl md:text-6xl leading-tight">
+          <p className="font-serif text-3xl md:text-6xl leading-tight">
             <EditableText defaultText="Designed by women." tag="span" /><br />
             <EditableText defaultText="Built for women." tag="span" />
           </p>
@@ -457,10 +457,10 @@ const StorytellingSection: React.FC = () => {
       />
       <div className="relative z-10 text-center text-white mix-blend-difference px-6">
         <Reveal>
-          <h2 className="font-serif text-5xl md:text-7xl mb-8">
+          <h2 className="font-serif text-4xl md:text-7xl mb-4 md:mb-8">
             <EditableText defaultText="This is not performance." tag="span" />
           </h2>
-          <p className="font-sans text-sm tracking-[0.3em] uppercase opacity-90">
+          <p className="font-sans text-[10px] md:text-sm tracking-[0.3em] uppercase opacity-90">
             <EditableText defaultText="This is presence." tag="span" />
           </p>
         </Reveal>
@@ -471,31 +471,31 @@ const StorytellingSection: React.FC = () => {
 
 const RitualsSection: React.FC = () => {
   return (
-    <section id="rituals" className="bg-glvt-sand py-40 px-6">
+    <section id="rituals" className="bg-glvt-sand py-20 px-6 md:py-40">
       <div className="max-w-[1600px] mx-auto grid grid-cols-1 md:grid-cols-3 gap-12">
         {/* Ritual 01 */}
         <div className="group">
-          <div className="h-[60vh] overflow-hidden mb-8 bg-glvt-greige relative">
+          <div className="h-[40vh] md:h-[60vh] overflow-hidden mb-4 md:mb-8 bg-glvt-greige relative">
             <video className="w-full h-full object-cover opacity-80 grayscale transition-transform duration-1000 group-hover:scale-105" autoPlay muted loop playsInline src="https://assets.mixkit.co/videos/preview/mixkit-young-woman-stretching-her-legs-in-a-park-41312-large.mp4" />
           </div>
-          <h3 className="font-serif text-2xl mb-2 text-glvt-black">Movement</h3>
-          <p className="font-sans text-xs tracking-wide text-glvt-charcoal/70"><EditableText defaultText="Movement without punishment." tag="span" /></p>
+          <h3 className="font-serif text-xl md:text-2xl mb-2 text-glvt-black">Movement</h3>
+          <p className="font-sans text-[10px] md:text-xs tracking-wide text-glvt-charcoal/70"><EditableText defaultText="Movement without punishment." tag="span" /></p>
         </div>
         {/* Ritual 02 */}
         <div className="group">
-          <div className="h-[60vh] overflow-hidden mb-8 bg-glvt-greige relative">
+          <div className="h-[40vh] md:h-[60vh] overflow-hidden mb-4 md:mb-8 bg-glvt-greige relative">
             <EditableImage defaultSrc="/ladies-gym/gym-lounge.jpg" alt="Recovery" className="w-full h-full object-cover grayscale transition-transform duration-1000 group-hover:scale-105" />
           </div>
-          <h3 className="font-serif text-2xl mb-2 text-glvt-black">Recovery</h3>
-          <p className="font-sans text-xs tracking-wide text-glvt-charcoal/70"><EditableText defaultText="Recovery as respect." tag="span" /></p>
+          <h3 className="font-serif text-xl md:text-2xl mb-2 text-glvt-black">Recovery</h3>
+          <p className="font-sans text-[10px] md:text-xs tracking-wide text-glvt-charcoal/70"><EditableText defaultText="Recovery as respect." tag="span" /></p>
         </div>
         {/* Ritual 03 */}
         <div className="group">
-          <div className="h-[60vh] overflow-hidden mb-8 bg-glvt-greige relative">
+          <div className="h-[40vh] md:h-[60vh] overflow-hidden mb-4 md:mb-8 bg-glvt-greige relative">
             <video className="w-full h-full object-cover opacity-80 grayscale transition-transform duration-1000 group-hover:scale-105" autoPlay muted loop playsInline src="https://assets.mixkit.co/videos/preview/mixkit-woman-meditating-in-nature-41300-large.mp4" />
           </div>
-          <h3 className="font-serif text-2xl mb-2 text-glvt-black">Presence</h3>
-          <p className="font-sans text-xs tracking-wide text-glvt-charcoal/70"><EditableText defaultText="Presence as power." tag="span" /></p>
+          <h3 className="font-serif text-xl md:text-2xl mb-2 text-glvt-black">Presence</h3>
+          <p className="font-sans text-[10px] md:text-xs tracking-wide text-glvt-charcoal/70"><EditableText defaultText="Presence as power." tag="span" /></p>
         </div>
       </div>
     </section>
