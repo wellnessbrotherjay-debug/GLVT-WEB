@@ -358,8 +358,11 @@ const HeroSection: React.FC = () => {
       <video
         className="absolute inset-0 w-full h-full object-cover opacity-60 grayscale-[20%]"
         autoPlay muted loop playsInline
-        src="https://assets.mixkit.co/videos/preview/mixkit-woman-doing-exercises-on-the-simulator-in-the-gym-41315-large.mp4"
-      />
+        src="https://customer-625e9kfx1zh9uf3o.cloudflarestream.com/b85db180d8cb003e98d5abbacc4bbb5a/downloads/default.mp4"
+      >
+        <source src="https://customer-625e9kfx1zh9uf3o.cloudflarestream.com/b85db180d8cb003e98d5abbacc4bbb5a/downloads/default.mp4" type="video/mp4" />
+        {/* Fallback to m3u8 or other formats if needed, but MP4 is safest for background video loop */}
+      </video>
       <div className="absolute inset-0 flex flex-col items-center justify-center text-center text-glvt-sand z-10 p-6">
         <h1 className="font-serif text-[15vw] leading-none tracking-tighter opacity-90 mb-4 mix-blend-overlay animate-fade-in">GLVT</h1>
         <div className="w-12 h-[1px] bg-glvt-sand/50 mb-6"></div>
@@ -506,7 +509,7 @@ const PhilosophySection: React.FC = () => {
       {['Grounded', 'Longevity', 'Vitality', 'Truth'].map((word, i) => (
         <div key={word} className="h-screen flex items-center justify-center sticky top-0 bg-glvt-sand border-t border-glvt-greige/20">
           <Reveal>
-            <h2 className="font-serif text-[12vw] md:text-[15vw] text-glvt-greige/40 tracking-tight leading-none text-center mix-blend-multiply">
+            <h2 className="font-serif text-[12vw] md:text-[15vw] text-glvt-obsidian/90 tracking-tight leading-none text-center mix-blend-multiply">
               {word}
             </h2>
           </Reveal>
@@ -523,12 +526,20 @@ const ClosingSection: React.FC = () => {
         <h2 className="font-serif text-5xl md:text-8xl text-white mb-16">
           <EditableText defaultText="A place to return to." tag="span" />
         </h2>
-        <button
-          onClick={() => window.location.href = 'https://glvt-web-booking.vercel.app/glvt/launch'}
-          className="px-12 py-4 border border-white text-white text-xs tracking-[0.25em] uppercase hover:bg-white hover:text-glvt-greige transition-all duration-500"
-        >
-          Visit GLVT
-        </button>
+        <div className="flex flex-col md:flex-row gap-6">
+          <button
+            onClick={() => window.location.href = 'https://glvt-web-booking.vercel.app/glvt/launch'}
+            className="px-12 py-4 border border-white text-white text-xs tracking-[0.25em] uppercase hover:bg-white hover:text-glvt-greige transition-all duration-500"
+          >
+            Visit GLVT
+          </button>
+          <button
+            onClick={() => window.open('https://wa.me/8618616700279', '_blank')}
+            className="px-12 py-4 border border-glvt-obsidian text-glvt-obsidian text-xs tracking-[0.25em] uppercase hover:bg-glvt-obsidian hover:text-white transition-all duration-500"
+          >
+            Contact Studio
+          </button>
+        </div>
       </Reveal>
     </section>
   );
