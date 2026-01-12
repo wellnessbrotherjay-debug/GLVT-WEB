@@ -9,14 +9,6 @@ interface EditContextType {
 }
 const EditContext = createContext<EditContextType>({ isEditing: false });
 
-type PageType = 'home' | 'philosophy' | 'practice' | 'space' | 'ritual' | 'journal' | 'enter';
-
-interface NavContextType {
-  currentPage: PageType;
-  navigateTo: (page: PageType) => void;
-}
-const NavContext = createContext<NavContextType>({ currentPage: 'home', navigateTo: () => { } });
-
 // --- Components ---
 
 const Logo: React.FC<{ className?: string; color?: string }> = ({ className = "h-8 md:h-12", color = "currentColor" }) => (
@@ -289,7 +281,6 @@ const VideoIntro: React.FC<{ onComplete: () => void }> = ({ onComplete }) => {
 const Navigation: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const { currentPage, navigateTo } = useContext(NavContext);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -299,92 +290,61 @@ const Navigation: React.FC = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const navItems: { label: string; value: PageType }[] = [
-    { label: 'The State', value: 'home' },
-    { label: 'Philosophy', value: 'philosophy' },
-    { label: 'Practice', value: 'practice' },
-    { label: 'Space', value: 'space' },
-    { label: 'Ritual', value: 'ritual' },
-    { label: 'Journal', value: 'journal' },
+  const navItems = [
+    { id: 'identity', label: 'Identity' },
+    { id: 'rituals', label: 'Rituals' },
+    { id: 'space', label: 'Space' },
+    { id: 'philosophy', label: 'Philosophy' },
   ];
 
-  const isLogoBlack = isMenuOpen || isScrolled || (currentPage !== 'home' && currentPage !== 'club');
-  const logoColor = isLogoBlack ? '#0F0F0F' : '#FFFFFF';
+  const scrollToSection = (id: string) => {
+    const element = document.getElementById(id);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+    setIsMenuOpen(false);
+  };
 
   return (
     <>
-      <nav
-        className={`fixed top-0 left-0 w-full z-40 transition-all duration-700 ease-in-out border-b ${isScrolled
-          ? 'bg-glvt-sand/95 backdrop-blur-md pt-4 pb-4 border-glvt-black/5'
-          : (currentPage === 'home') ? 'opacity-0 -translate-y-full pointer-events-none' : (currentPage === 'club') ? 'bg-transparent pt-10 pb-6 border-transparent' : 'bg-glvt-sand pt-6 pb-6 border-glvt-black/5'
-          }`}
-      >
-        <div className="container mx-auto px-6 md:px-12 flex justify-between items-center max-w-[1600px]">
-          <div onClick={() => navigateTo('home')} className="cursor-pointer z-50">
-            <Logo
-              className="h-6 md:h-9"
-              color={logoColor}
-            />
-          </div>
+      <nav className={`fixed top-0 left-0 w-full z-50 transition-all duration-700 ${isScrolled || isMenuOpen ? 'bg-glvt-sand/90 backdrop-blur-md py-4' : 'bg-transparent py-8'} px-6 md:px-12 flex justify-between items-center mix-blend-difference text-white`}>
+        <div className="flex-1">
+          <button onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
+            <Logo className={`h-6 md:h-8 transition-all duration-500`} color="currentColor" />
+          </button>
+        </div>
 
-          <div className="hidden lg:flex items-center gap-12">
-            {navItems.map((item) => (
-              <button
-                key={item.value}
-                onClick={() => navigateTo(item.value)}
-                className={`text-[9px] font-sans font-medium tracking-super-wide uppercase hover:text-glvt-stone transition-colors duration-300 
-                  ${currentPage === item.value ? 'text-glvt-stone' : (isLogoBlack ? 'text-glvt-black' : 'text-white')}`}
-              >
-                <EditableText defaultText={item.label} tag="span" />
-              </button>
-            ))}
+        <div className="hidden md:flex gap-12">
+          {navItems.map((item) => (
             <button
-              onClick={() => navigateTo('contact')}
-              className={`ml-6 px-6 py-2 border text-[9px] font-sans font-medium tracking-super-wide uppercase transition-all duration-500 hover:bg-glvt-stone hover:border-glvt-stone hover:text-white ${isLogoBlack ? 'border-glvt-black text-glvt-black' : 'border-white text-white'}`}
+              key={item.id}
+              onClick={() => scrollToSection(item.id)}
+              className="font-sans text-[10px] tracking-super-wide uppercase hover:opacity-50 transition-opacity"
             >
-              <EditableText defaultText="Inquire" tag="span" />
+              {item.label}
             </button>
-            <button
-              onClick={() => window.location.href = 'https://glvt-web-booking.vercel.app/glvt/launch'}
-              className={`ml-2 px-6 py-2 bg-glvt-stone text-white text-[9px] font-sans font-medium tracking-super-wide uppercase transition-all duration-500 hover:bg-glvt-black flex items-center justify-center`}
-            >
-              <EditableText defaultText="Enter Portal" tag="span" />
-            </button>
-          </div>
+          ))}
+        </div>
 
-          <button className="lg:hidden z-50 p-2" onClick={() => setIsMenuOpen(!isMenuOpen)}>
-            {isMenuOpen ? (
-              <X className="w-6 h-6 text-glvt-black" />
-            ) : (
-              <Menu className={`w-6 h-6 ${isLogoBlack ? 'text-glvt-black' : 'text-white'}`} />
-            )}
+        <div className="flex-1 flex justify-end">
+          <button className="md:hidden z-50" onClick={() => setIsMenuOpen(!isMenuOpen)}>
+            {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
         </div>
       </nav>
 
-      <div className={`fixed inset-0 bg-glvt-sand z-40 flex items-center justify-center transition-all duration-1000 cubic-bezier(0.7, 0, 0.3, 1) ${isMenuOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}>
-        <div className="flex flex-col items-center justify-center w-full max-w-sm px-10">
-          {navItems.map((item, idx) => (
+      {/* Mobile Menu */}
+      <div className={`fixed inset-0 bg-glvt-sand z-40 flex items-center justify-center transition-all duration-500 ${isMenuOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}>
+        <div className="flex flex-col items-center gap-8">
+          {navItems.map((item) => (
             <button
-              key={item.value}
-              onClick={() => { navigateTo(item.value); setIsMenuOpen(false); }}
-              className={`w-full group py-4 transition-all duration-700 ease-out border-b border-glvt-black/5 last:border-0 ${isMenuOpen ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'}`}
-              style={{ transitionDelay: `${idx * 0.08}s` }}
+              key={item.id}
+              onClick={() => scrollToSection(item.id)}
+              className="font-serif text-3xl text-glvt-black tracking-widest uppercase hover:text-glvt-stone transition-colors"
             >
-              <span className="block text-lg md:text-xl font-serif text-glvt-black tracking-[0.25em] uppercase group-hover:text-glvt-stone transition-colors">
-                {item.label}
-              </span>
+              {item.label}
             </button>
           ))}
-          <button
-            onClick={() => window.location.href = 'https://glvt-web-booking.vercel.app/glvt/launch'}
-            className={`w-full group py-4 transition-all duration-700 ease-out border-b border-glvt-black/5 last:border-0 ${isMenuOpen ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'}`}
-            style={{ transitionDelay: `${navItems.length * 0.08}s` }}
-          >
-            <span className="block text-lg md:text-xl font-serif text-glvt-black tracking-[0.25em] uppercase group-hover:text-glvt-stone transition-colors">
-              ENTER PORTAL
-            </span>
-          </button>
         </div>
       </div>
     </>
@@ -393,81 +353,69 @@ const Navigation: React.FC = () => {
 
 const HeroSection: React.FC = () => {
   return (
-    <section className="relative h-screen w-full flex items-center justify-center bg-glvt-black overflow-hidden">
-      <EditableImage
-        defaultSrc="/ladies-gym/gym-exterior.jpg"
-        alt="Hero Background"
-        className="absolute inset-0 w-full h-full opacity-40"
-        isBackground={true}
-        parallaxSpeed={3}
+    <section className="relative h-screen w-full overflow-hidden bg-glvt-obsidian">
+      {/* HERO (0:00–0:05) - Full screen, video loop, no sound, slow */}
+      <video
+        className="absolute inset-0 w-full h-full object-cover opacity-60 grayscale-[20%]"
+        autoPlay muted loop playsInline
+        src="https://assets.mixkit.co/videos/preview/mixkit-woman-doing-exercises-on-the-simulator-in-the-gym-41315-large.mp4"
       />
-
-      <div className="relative z-10 text-center px-6 max-w-6xl">
-        <Reveal direction="up" delay={0.3}>
-          <h1 className="text-white font-serif text-6xl md:text-9xl lg:text-[12rem] leading-[0.9] tracking-tight">
-            <EditableText defaultText="GLVT" tag="div" className="mb-8 font-light tracking-[0.2em]" />
-            <span className="italic font-light opacity-60 block text-4xl md:text-6xl tracking-normal mt-4"><EditableText defaultText="Where the body is honored." tag="span" /></span>
-          </h1>
-          <button className="mt-12 group cursor-pointer py-4 px-12 transition-all duration-700 relative overflow-hidden inline-block">
-            <span className="font-sans text-[11px] md:text-sm text-white tracking-[0.4em] uppercase border-b border-white/20 group-hover:border-white pb-4 transition-all relative z-10">
-              Enter GLVT
-            </span>
-          </button>
-        </Reveal>
+      <div className="absolute inset-0 flex flex-col items-center justify-center text-center text-glvt-sand z-10 p-6">
+        <h1 className="font-serif text-[15vw] leading-none tracking-tighter opacity-90 mb-4 mix-blend-overlay animate-fade-in">GLVT</h1>
+        <div className="w-12 h-[1px] bg-glvt-sand/50 mb-6"></div>
+        <p className="font-sans text-xs md:text-sm tracking-[0.4em] uppercase opacity-80 animate-fade-in-up delay-700">
+          <EditableText defaultText="Grounded. Longevity. Vitality. Truth." tag="span" />
+        </p>
       </div>
     </section>
   );
 };
 
-const PhilosophySection: React.FC = () => {
+const IdentitySection: React.FC = () => {
   return (
-    <section className="bg-glvt-sand pt-32 pb-40 px-6 md:px-12">
-      <div className="max-w-4xl mx-auto text-center mb-32">
-        <Reveal>
-          <EditableText defaultText="THE PHILOSOPHY" tag="div" className="font-sans text-[10px] tracking-[0.4em] uppercase text-glvt-stone mb-8" />
-          <h2 className="font-serif text-4xl md:text-5xl text-glvt-black leading-tight mb-8">
-            <EditableText defaultText="GLVT is not a method. It is a return." tag="span" />
-          </h2>
-        </Reveal>
-      </div>
-
-      <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 md:gap-8">
-        {[
-          {
-            letter: "G",
-            title: "GROUNDED",
-            desc: "Presence. Root. Calm. Strength begins when you are grounded. Nothing aggressive. Nothing loud."
-          },
-          {
-            letter: "L",
-            title: "LONGEVITY",
-            desc: "Movement that honors time. Built for a long life. We do not train for today."
-          },
-          {
-            letter: "V",
-            title: "VITALITY",
-            desc: "Real energy. Vitality is the new power. You leave more alive than you arrived."
-          },
-          {
-            letter: "T",
-            title: "TRUTH",
-            desc: "Honoring the body. Train in truth. No punishment. No pressure. No masks."
-          }
-        ].map((item, idx) => (
-          <Reveal key={idx} delay={idx * 0.1}>
-            <div className="text-center group hover:-translate-y-2 transition-transform duration-700">
-              <div className="font-serif text-8xl md:text-9xl text-glvt-stone/10 mb-6 group-hover:text-glvt-stone/20 transition-colors duration-500">
-                {item.letter}
-              </div>
-              <h3 className="font-sans text-xs font-bold tracking-[0.3em] text-glvt-black uppercase mb-4">
-                <EditableText defaultText={item.title} tag="span" />
-              </h3>
-              <p className="font-sans text-[11px] leading-relaxed text-glvt-charcoal/70 max-w-[200px] mx-auto">
-                <EditableText defaultText={item.desc} tag="span" />
-              </p>
+    <section id="identity" className="min-h-screen bg-glvt-sand flex items-center justify-center py-20 px-6">
+      <div className="max-w-[1600px] w-full grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-24 items-center">
+        <div className="relative h-[70vh] w-full overflow-hidden">
+          <EditableImage
+            defaultSrc="/gym-4.jpg"
+            alt="Identity"
+            className="w-full h-full object-cover grayscale-[10%]"
+          />
+        </div>
+        <div className="space-y-12">
+          <Reveal>
+            <h2 className="font-serif text-4xl md:text-6xl text-glvt-obsidian leading-tight">
+              <EditableText defaultText="GLVT is a women-only space." tag="span" />
+            </h2>
+            <div className="space-y-4 font-sans text-sm md:text-base tracking-wide text-glvt-charcoal opacity-80 mt-8">
+              <p><EditableText defaultText="Built to honor the body." tag="span" /></p>
+              <p><EditableText defaultText="Built to respect time." tag="span" /></p>
+              <p><EditableText defaultText="Built for truth." tag="span" /></p>
             </div>
           </Reveal>
-        ))}
+        </div>
+      </div>
+    </section>
+  );
+};
+// ... (PhilosophySection remains unchanged) ...
+const FashionSection: React.FC = () => {
+  return (
+    <section className="h-screen w-full relative group overflow-hidden">
+      {/* FASHION × WELLNESS (Porsche Lifestyle → GLVT) */}
+      <EditableImage
+        defaultSrc="/gym-4.jpg"
+        alt="Fashion"
+        className="absolute inset-0 w-full h-full object-cover grayscale-[20%] transition-transform duration-[2s] group-hover:scale-105"
+        isBackground={true}
+      />
+      <div className="absolute inset-0 bg-black/10"></div>
+      <div className="absolute bottom-20 left-6 md:left-20 text-white max-w-xl">
+        <Reveal>
+          <h2 className="font-serif text-5xl md:text-7xl leading-tight mb-8">
+            <EditableText defaultText="What you wear becomes part of the ritual." tag="span" />
+          </h2>
+        </Reveal>
       </div>
     </section>
   );
@@ -475,300 +423,116 @@ const PhilosophySection: React.FC = () => {
 
 const SpaceSection: React.FC = () => {
   return (
-    <div className="bg-glvt-black text-glvt-cream">
-      {/* Immersive Intro */}
-      <section className="relative h-screen w-full flex items-center justify-center overflow-hidden">
-        <EditableImage
-          defaultSrc="https://images.unsplash.com/photo-1519664824562-b4bc73f9713c?q=80&w=2760&auto=format&fit=crop"
-          alt="Club Architecture"
-          className="absolute inset-0 w-full h-full opacity-40 grayscale group-hover:grayscale-0 transition-all duration-1000"
-          isBackground={true}
-          parallaxSpeed={3}
-        />
-        <div className="relative z-10 text-center px-6 max-w-5xl">
-          <Reveal direction="up">
-            <EditableText defaultText="THE SANCTUARY" tag="div" className="font-sans text-[10px] tracking-[0.8em] uppercase text-glvt-stone mb-10" />
-            <h1 className="font-serif text-5xl md:text-[10rem] leading-none tracking-tighter mb-12">
-              <EditableText defaultText="THE SPACE" tag="div" />
-            </h1>
-            <p className="font-sans text-sm md:text-lg font-light tracking-wide max-w-2xl mx-auto opacity-60 leading-relaxed">
-              <EditableText defaultText="The space holds you so your body can let go." tag="span" />
-            </p>
-            <button className="mt-12 px-8 py-3 border border-glvt-stone text-glvt-stone text-[10px] tracking-super-wide uppercase hover:bg-glvt-stone hover:text-glvt-black transition-all duration-500">
-              <EditableText defaultText="Arrange your visit" tag="span" />
-            </button>
-          </Reveal>
-        </div>
-        <div className="absolute bottom-12 left-1/2 -translate-x-1/2 animate-bounce opacity-20">
-          <div className="w-[1px] h-20 bg-white"></div>
-        </div>
-      </section>
+    <section id="space" className="h-screen w-full relative group overflow-hidden">
+      {/* THE SPACE (Emotional architecture) */}
+      <EditableImage
+        defaultSrc="/gym-1.jpg"
+        alt="Space"
+        className="absolute inset-0 w-full h-full object-cover grayscale-[30%] transition-transform duration-[2s] group-hover:scale-105"
+        isBackground={true}
+      />
+      <div className="absolute inset-0 bg-black/20"></div>
+      <div className="absolute bottom-20 right-6 md:right-20 text-white text-right max-w-xl">
+        <Reveal>
+          <p className="font-serif text-4xl md:text-6xl leading-tight">
+            <EditableText defaultText="Designed by women." tag="span" /><br />
+            <EditableText defaultText="Built for women." tag="span" />
+          </p>
+        </Reveal>
+      </div>
+    </section>
+  );
+};
 
-      {/* Facility Grid - Editorial Inspired */}
-      <section className="py-40 px-6 md:px-12 bg-[#0A0A0A]">
-        <div className="container mx-auto max-w-[1600px]">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2 px-4">
-            {/* Merged Visuals from Ladies Gym & Club */}
-            {/* Row 1 */}
-            <div className="lg:col-span-2 group relative h-[70vh] overflow-hidden bg-glvt-charcoal cursor-pointer">
-              <EditableImage
-                defaultSrc="/ladies-gym/gym-reception.jpg"
-                alt="Reception"
-                className="opacity-60 grayscale-[30%] group-hover:grayscale-0 group-hover:scale-102 transition-all duration-[2s]"
-                isBackground={true}
-              />
-              <div className="absolute bottom-10 left-10 z-10">
-                <Reveal delay={0.2}>
-                  <h3 className="font-serif text-4xl text-white tracking-widest uppercase opacity-80">
-                    <EditableText defaultText="ARRIVAL" tag="span" />
-                  </h3>
-                </Reveal>
-              </div>
-            </div>
+const StorytellingSection: React.FC = () => {
+  return (
+    <section className="relative h-screen w-full bg-glvt-greige overflow-hidden flex items-center justify-center">
+      {/* STORYTELLING — MOVEMENT (0:16–0:30) */}
+      <video
+        className="absolute inset-0 w-full h-full object-cover opacity-80 grayscale"
+        autoPlay muted loop playsInline
+        src="https://assets.mixkit.co/videos/preview/mixkit-athletic-woman-executing-a-sequence-of-yoga-asanas-41306-large.mp4"
+      />
+      <div className="relative z-10 text-center text-white mix-blend-difference px-6">
+        <Reveal>
+          <h2 className="font-serif text-5xl md:text-7xl mb-8">
+            <EditableText defaultText="This is not performance." tag="span" />
+          </h2>
+          <p className="font-sans text-sm tracking-[0.3em] uppercase opacity-90">
+            <EditableText defaultText="This is presence." tag="span" />
+          </p>
+        </Reveal>
+      </div>
+    </section>
+  );
+};
 
-            <div className="group relative h-[70vh] overflow-hidden bg-glvt-charcoal cursor-pointer">
-              <EditableImage
-                defaultSrc="/ladies-gym/gym-interior.jpg"
-                alt="Interior"
-                className="opacity-60 grayscale-[30%] group-hover:scale-102 transition-all duration-[2s]"
-                isBackground={true}
-              />
-              <div className="absolute bottom-10 left-10 z-10">
-                <Reveal delay={0.3}>
-                  <h3 className="font-serif text-3xl text-white tracking-widest uppercase opacity-80">
-                    <EditableText defaultText="INTERIOR" tag="span" />
-                  </h3>
-                </Reveal>
-              </div>
-            </div>
-
-            {/* Row 2 */}
-            <div className="group relative h-[70vh] overflow-hidden bg-glvt-charcoal cursor-pointer">
-              <EditableImage
-                defaultSrc="/ladies-gym/gym-lady-1.jpg"
-                alt="Ritual"
-                className="opacity-50 grayscale-[30%] group-hover:scale-102 transition-all duration-[2s]"
-                isBackground={true}
-              />
-              <div className="absolute bottom-10 left-10 z-10">
-                <Reveal delay={0.4}>
-                  <h3 className="font-serif text-3xl text-white tracking-widest uppercase opacity-80">
-                    <EditableText defaultText="RITUAL" tag="span" />
-                  </h3>
-                </Reveal>
-              </div>
-            </div>
-
-            <div className="group relative h-[70vh] overflow-hidden bg-glvt-charcoal cursor-pointer">
-              <EditableImage
-                defaultSrc="/ladies-gym/gym-lady-2.jpg"
-                alt="Elegance"
-                className="opacity-50 grayscale-[30%] group-hover:scale-102 transition-all duration-[2s]"
-                isBackground={true}
-              />
-              <div className="absolute bottom-10 left-10 z-10">
-                <Reveal delay={0.5}>
-                  <h3 className="font-serif text-3xl text-white tracking-widest uppercase opacity-80">
-                    <EditableText defaultText="ELEGANCE" tag="span" />
-                  </h3>
-                </Reveal>
-              </div>
-            </div>
-
-            <div className="group relative h-[70vh] overflow-hidden bg-glvt-charcoal cursor-pointer">
-              <EditableImage
-                defaultSrc="/ladies-gym/gym-lounge.jpg"
-                alt="Lounge"
-                className="opacity-50 grayscale-[30%] group-hover:grayscale-0 group-hover:scale-102 transition-all duration-[2s]"
-                isBackground={true}
-              />
-              <div className="absolute bottom-10 left-10 z-10">
-                <Reveal delay={0.6}>
-                  <h3 className="font-serif text-3xl text-white tracking-widest uppercase opacity-80">
-                    <EditableText defaultText="REST" tag="span" />
-                  </h3>
-                </Reveal>
-              </div>
-            </div>
+const RitualsSection: React.FC = () => {
+  return (
+    <section id="rituals" className="bg-glvt-sand py-40 px-6">
+      <div className="max-w-[1600px] mx-auto grid grid-cols-1 md:grid-cols-3 gap-12">
+        {/* Ritual 01 */}
+        <div className="group">
+          <div className="h-[60vh] overflow-hidden mb-8 bg-glvt-greige relative">
+            <video className="w-full h-full object-cover opacity-80 grayscale transition-transform duration-1000 group-hover:scale-105" autoPlay muted loop playsInline src="https://assets.mixkit.co/videos/preview/mixkit-young-woman-stretching-her-legs-in-a-park-41312-large.mp4" />
           </div>
+          <h3 className="font-serif text-2xl mb-2 text-glvt-black">Movement</h3>
+          <p className="font-sans text-xs tracking-wide text-glvt-charcoal/70"><EditableText defaultText="Movement without punishment." tag="span" /></p>
         </div>
-      </section>
+        {/* Ritual 02 */}
+        <div className="group">
+          <div className="h-[60vh] overflow-hidden mb-8 bg-glvt-greige relative">
+            <EditableImage defaultSrc="/ladies-gym/gym-lounge.jpg" alt="Recovery" className="w-full h-full object-cover grayscale transition-transform duration-1000 group-hover:scale-105" />
+          </div>
+          <h3 className="font-serif text-2xl mb-2 text-glvt-black">Recovery</h3>
+          <p className="font-sans text-xs tracking-wide text-glvt-charcoal/70"><EditableText defaultText="Recovery as respect." tag="span" /></p>
+        </div>
+        {/* Ritual 03 */}
+        <div className="group">
+          <div className="h-[60vh] overflow-hidden mb-8 bg-glvt-greige relative">
+            <video className="w-full h-full object-cover opacity-80 grayscale transition-transform duration-1000 group-hover:scale-105" autoPlay muted loop playsInline src="https://assets.mixkit.co/videos/preview/mixkit-woman-meditating-in-nature-41300-large.mp4" />
+          </div>
+          <h3 className="font-serif text-2xl mb-2 text-glvt-black">Presence</h3>
+          <p className="font-sans text-xs tracking-wide text-glvt-charcoal/70"><EditableText defaultText="Presence as power." tag="span" /></p>
+        </div>
+      </div>
+    </section>
+  );
+};
 
-      {/* Large Statement Image */}
-      <section className="h-[90vh] w-full relative overflow-hidden flex items-center justify-center">
-        <EditableImage
-          defaultSrc="https://images.unsplash.com/photo-1542332213-9b5a5a3fab35?q=80&w=2940&auto=format&fit=crop"
-          alt="Interior Statement"
-          isBackground={true}
-          parallaxSpeed={2}
-          className="brightness-[0.4] grayscale"
-        />
-        <div className="relative z-10 text-center">
+const PhilosophySection: React.FC = () => {
+  return (
+    <section id="philosophy" className="bg-glvt-sand">
+      {['Grounded', 'Longevity', 'Vitality', 'Truth'].map((word, i) => (
+        <div key={word} className="h-screen flex items-center justify-center sticky top-0 bg-glvt-sand border-t border-glvt-greige/20">
           <Reveal>
-            <h2 className="text-white/20 font-serif text-[6rem] md:text-[18rem] tracking-tighter leading-none italic select-none">Sanctuary</h2>
+            <h2 className="font-serif text-[12vw] md:text-[15vw] text-glvt-greige/40 tracking-tight leading-none text-center mix-blend-multiply">
+              {word}
+            </h2>
           </Reveal>
         </div>
-      </section>
-    </div>
-  );
-};
-
-const PracticeSection: React.FC = () => {
-  return (
-    <section className="bg-glvt-sand pt-40 pb-40 px-6 md:px-12">
-      <div className="container mx-auto max-w-[1600px]">
-        <Reveal>
-          <div className="mb-20">
-            <EditableText defaultText="THE PRACTICE" tag="h2" className="font-serif text-5xl md:text-7xl text-glvt-black mb-6 leading-none" />
-            <div className="max-w-xl">
-              <EditableText
-                defaultText="We don’t train to exhaust the body. We move to understand it."
-                tag="p"
-                className="font-sans text-xs md:text-sm font-light text-glvt-charcoal/70 tracking-wide leading-relaxed"
-              />
-            </div>
-
-            <div className="mt-12 space-y-4">
-              {["Intelligent Movement", "Functional Strength", "Nervous System Regulation", "Feminine Vitality"].map(concept => (
-                <div key={concept} className="font-sans text-[10px] tracking-widest uppercase text-glvt-stone">{concept}</div>
-              ))}
-            </div>
-
-            <button className="mt-12 px-8 py-3 border border-glvt-black text-[10px] tracking-super-wide uppercase hover:bg-glvt-black hover:text-white transition-all duration-500">
-              <EditableText defaultText="Explore the practice" tag="span" />
-            </button>
-          </div>
-        </Reveal>
-
-        <div className="space-y-32">
-          {/* Practice Visuals */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <Reveal width="100%">
-              <div className="relative h-[70vh] overflow-hidden group rounded-sm">
-                <EditableImage
-                  defaultSrc="https://images.unsplash.com/photo-1594381898411-846e7d193883?q=80&w=2787&auto=format&fit=crop"
-                  alt="Practice Visual"
-                  isBackground={true}
-                  className="grayscale-[50%] hover:grayscale-0 transition-all duration-1000"
-                />
-              </div>
-            </Reveal>
-            <Reveal delay={0.2}>
-              <div className="space-y-8 max-w-lg">
-                <EditableText defaultText="MOVEMENT" tag="h3" className="font-serif text-4xl md:text-6xl text-glvt-black" />
-                <EditableText
-                  defaultText="Movement redefined as art. Our specialized training zones are designed to maximize both aesthetic results and physical longevity."
-                  tag="p"
-                  className="font-sans text-sm md:text-base font-light text-glvt-charcoal/80 leading-loose"
-                />
-              </div>
-            </Reveal>
-          </div>
-        </div>
-      </div>
-    </section>
-  )
-}
-
-const RitualSection: React.FC = () => {
-  return (
-    <section className="bg-glvt-black py-40 px-6 md:px-12 text-white min-h-screen flex flex-col justify-center">
-      <div className="container mx-auto max-w-4xl text-center">
-        <Reveal>
-          <EditableText defaultText="THE RITUAL" tag="div" className="font-sans text-[10px] tracking-[0.4em] uppercase text-glvt-stone mb-10" />
-          <h2 className="font-serif text-4xl md:text-5xl leading-tight mb-12">
-            <EditableText defaultText="You don’t choose a class. You choose how you want to feel." tag="span" />
-          </h2>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 my-20">
-            {[
-              "Grounding Practice",
-              "Longevity Movement",
-              "Vitality Flow",
-              "Truth Session"
-            ].map(item => (
-              <div key={item} className="border border-white/10 py-8 px-4 hover:bg-white/5 transition-colors duration-500 cursor-pointer group">
-                <h3 className="font-serif text-2xl md:text-3xl text-glvt-cream group-hover:text-white transition-colors">
-                  <EditableText defaultText={item} tag="span" />
-                </h3>
-              </div>
-            ))}
-          </div>
-
-          <button className="px-10 py-3 bg-white text-glvt-black text-[10px] font-bold tracking-super-wide uppercase hover:bg-glvt-stone transition-all duration-500">
-            <EditableText defaultText="Begin the ritual" tag="span" />
-          </button>
-        </Reveal>
-      </div>
+      ))}
     </section>
   );
 };
 
-const MembershipSection: React.FC = () => {
+const ClosingSection: React.FC = () => {
   return (
-    <section id="membership" className="bg-glvt-linen py-40 border-t border-glvt-stone/10">
-      <div className="container mx-auto px-6 text-center">
-        <Reveal>
-          <h2 className="font-serif text-5xl md:text-7xl text-glvt-black mb-20">
-            <EditableText defaultText="MEMBERSHIP" tag="span" />
-          </h2>
-        </Reveal>
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-          {[
-            { name: "Drop In", sub: "Single Session" },
-            { name: "5 Pack", sub: "Class Package" },
-            { name: "10 Pack", sub: "Class Package" }
-          ].map((tier, i) => (
-            <div key={i} className="py-12 px-8 border border-glvt-stone/20 hover:border-glvt-black transition-all duration-1000 hover:bg-white/30 backdrop-blur-sm group rounded-sm">
-              <span className="font-sans text-[10px] tracking-super-wide uppercase text-glvt-stone mb-4 block group-hover:text-glvt-black transition-colors">
-                <EditableText defaultText={tier.sub} tag="span" />
-              </span>
-              <h3 className="font-serif text-3xl text-glvt-black">
-                <EditableText defaultText={tier.name} tag="span" />
-              </h3>
-            </div>
-          ))}
-        </div>
-      </div>
+    <section className="h-[80vh] bg-glvt-greige flex flex-col items-center justify-center text-center px-6">
+      <Reveal>
+        <h2 className="font-serif text-5xl md:text-8xl text-white mb-16">
+          <EditableText defaultText="A place to return to." tag="span" />
+        </h2>
+        <button
+          onClick={() => window.location.href = 'https://glvt-web-booking.vercel.app/glvt/launch'}
+          className="px-12 py-4 border border-white text-white text-xs tracking-[0.25em] uppercase hover:bg-white hover:text-glvt-greige transition-all duration-500"
+        >
+          Visit GLVT
+        </button>
+      </Reveal>
     </section>
   );
 };
-
-const EnterSection: React.FC = () => {
-  return (
-    <section className="bg-glvt-sand py-40 flex flex-col items-center justify-center min-h-[80vh]">
-      <div className="text-center space-y-12 px-6 max-w-3xl">
-        <Reveal>
-          <h2 className="font-serif text-4xl md:text-6xl text-glvt-black leading-tight">
-            <EditableText defaultText="GLVT is not for everyone." tag="span" />
-            <br />
-            <span className="opacity-60 italic text-3xl md:text-5xl mt-4 block">
-              <EditableText defaultText="It’s for those ready to return to their body." tag="span" />
-            </span>
-          </h2>
-        </Reveal>
-
-        <Reveal delay={0.2}>
-          <div className="pt-12 flex flex-col md:flex-row gap-6 justify-center">
-            <button
-              onClick={() => window.location.href = 'https://glvt-web-booking.vercel.app/glvt/launch'}
-              className="px-10 py-4 bg-glvt-black text-white text-[10px] font-bold tracking-super-wide uppercase hover:bg-glvt-charcoal transition-all shadow-xl"
-            >
-              <EditableText defaultText="Begin" tag="span" />
-            </button>
-            <button
-              onClick={() => window.open('https://wa.me/8618616700279', '_blank')}
-              className="px-10 py-4 border border-glvt-black text-glvt-black text-[10px] font-bold tracking-super-wide uppercase hover:bg-glvt-stone/10 transition-all"
-            >
-              <EditableText defaultText="Request a session" tag="span" />
-            </button>
-          </div>
-        </Reveal>
-      </div>
-    </section>
-  )
-}
 
 const Footer: React.FC = () => {
   return (
@@ -803,62 +567,56 @@ const Footer: React.FC = () => {
 
 const App: React.FC = () => {
   const [isEditing, setIsEditing] = useState(false);
-  const [currentPage, setCurrentPage] = useState<PageType>('home');
-  const [showIntro, setShowIntro] = useState(true);
-  const scrollRef = useRef<HTMLDivElement>(null);
 
-  const navigateTo = (page: PageType) => {
-    setCurrentPage(page);
-    window.scrollTo(0, 0);
-  };
+  // Toggle visual editor with 'e' key
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'e' && (e.metaKey || e.ctrlKey)) {
+        e.preventDefault();
+        setIsEditing(prev => !prev);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
 
   return (
     <EditContext.Provider value={{ isEditing }}>
-      <NavContext.Provider value={{ currentPage, navigateTo }}>
-        <div className="bg-glvt-sand min-h-screen flex flex-col" ref={scrollRef}>
+      <div className={`min-h-screen bg-glvt-sand text-glvt-charcoal font-sans selection:bg-glvt-greige selection:text-white ${isEditing ? 'ring-4 ring-blue-500' : ''}`}>
 
-          {showIntro && <VideoIntro onComplete={() => setShowIntro(false)} />}
+        <Navigation />
 
-          <Navigation />
+        <main>
+          <div id="hero">
+            <HeroSection />
+          </div>
 
-          <main className="min-h-screen">
-            {currentPage === 'home' && (
-              <>
-                <HeroSection />
-                <div className="bg-glvt-sand pt-40 pb-40 px-6 md:px-12 text-center">
-                  <Reveal>
-                    <div className="w-16 h-[1px] bg-glvt-stone/30 mx-auto mb-12"></div>
-                    <p className="italic font-serif text-2xl md:text-3xl text-glvt-charcoal/70 leading-[1.6]">
-                      <EditableText defaultText="GLVT — Honor the body." tag="span" />
-                    </p>
-                  </Reveal>
-                </div>
-                {/* Optional: Show teasers of other sections or keep it minimal as per "Slow scroll. Space. Silence." */}
-              </>
-            )}
+          <IdentitySection />
 
-            {currentPage === 'philosophy' && <PhilosophySection />}
-            {currentPage === 'practice' && <PracticeSection />}
-            {currentPage === 'space' && <SpaceSection />}
-            {currentPage === 'ritual' && <RitualSection />}
-            {currentPage === 'enter' && <EnterSection />}
-            {currentPage === 'journal' && (
-              <div className="h-screen flex items-center justify-center bg-glvt-sand">
-                <p className="font-serif italic text-2xl opacity-50">Journal coming soon.</p>
-              </div>
-            )}
-          </main>
+          <StorytellingSection />
 
-          <Footer />
+          <RitualsSection />
 
-          <button
-            onClick={() => setIsEditing(!isEditing)}
-            className={`fixed bottom-10 right-10 z-[100] flex items-center justify-center w-14 h-14 rounded-full shadow-3xl transition-all duration-300 ${isEditing ? 'bg-glvt-stone text-white' : 'bg-glvt-black text-white hover:bg-glvt-charcoal'}`}
-          >
-            {isEditing ? <X size={24} /> : <Edit3 size={24} />}
-          </button>
-        </div>
-      </NavContext.Provider>
+          <FashionSection />
+
+          <SpaceSection />
+
+          <PhilosophySection />
+
+          <ClosingSection />
+        </main>
+
+        <Footer />
+
+        <button
+          onClick={() => setIsEditing(!isEditing)}
+          className={`fixed bottom-6 right-6 z-50 p-3 rounded-full shadow-2xl transition-all duration-300 ${isEditing ? 'bg-blue-600 text-white rotate-0' : 'bg-white text-black/50 hover:bg-black hover:text-white -rotate-12'}`}
+          title="Toggle Visual Editor (Cmd+E)"
+        >
+          <Edit3 size={20} />
+        </button>
+
+      </div>
     </EditContext.Provider>
   );
 };
