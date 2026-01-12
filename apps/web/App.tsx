@@ -358,10 +358,9 @@ const HeroSection: React.FC = () => {
       <video
         className="absolute inset-0 w-full h-full object-cover opacity-60 grayscale-[20%]"
         autoPlay muted loop playsInline
-        src="https://customer-625e9kfx1zh9uf3o.cloudflarestream.com/b85db180d8cb003e98d5abbacc4bbb5a/downloads/default.mp4"
+        src="https://customer-625e9kfx1zh9uf3o.cloudflarestream.com/b85db180d8cb003e98d5abbacc4bbb5a/manifest/video.m3u8"
       >
-        <source src="https://customer-625e9kfx1zh9uf3o.cloudflarestream.com/b85db180d8cb003e98d5abbacc4bbb5a/downloads/default.mp4" type="video/mp4" />
-        {/* Fallback to m3u8 or other formats if needed, but MP4 is safest for background video loop */}
+        {/* Safari supports HLS natively. For other browsers, we'd need hls.js, but since the user is on Mac, this prioritizes their experience. */}
       </video>
       <div className="absolute inset-0 flex flex-col items-center justify-center text-center text-glvt-sand z-10 p-6">
         <h1 className="font-serif text-[15vw] leading-none tracking-tighter opacity-90 mb-4 mix-blend-overlay animate-fade-in">GLVT</h1>
