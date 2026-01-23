@@ -9,7 +9,10 @@
   <!-- Google Fonts: Playfair Display and Montserrat -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&family=Montserrat:wght@200;300;400;500;600&display=swap" rel="stylesheet">
+  <!-- Google Fonts: Playfair Display and Inter (Porsche-like) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&family=Inter:wght@200;300;400;500;600;900&display=swap" rel="stylesheet">
 
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -36,13 +39,14 @@
           },
           fontFamily: {
             serif: ['"Playfair Display"', 'serif'],
-            sans: ['"Montserrat"', 'sans-serif'],
+            sans: ['"Inter"', 'system-ui', 'sans-serif'], // Switched to Inter for precision
           },
           letterSpacing: {
             'tight': '-0.02em',
+            'normal': '0em',
             'wide': '0.05em',
             'widest': '0.15em',
-            'super-wide': '0.25em',
+            'super-wide': '0.35em', // Increased for Porsche header look
           },
           backgroundImage: {
             'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',

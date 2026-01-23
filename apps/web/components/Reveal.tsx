@@ -57,7 +57,7 @@ export const Reveal: React.FC<RevealProps> = ({
         style={{
           transform: isVisible ? "translate(0)" : getTransform(),
           opacity: isVisible ? 1 : 0,
-          transition: `all 1.4s cubic-bezier(0.16, 1, 0.3, 1) ${delay}s`,
+          transition: `all 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) ${delay}s`,
         }}
       >
         {children}
