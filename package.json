@@ -5,9 +5,16 @@
     "scripts": {
         "dev:web": "npm run dev --workspace=@glvt/web",
         "dev:booking": "npm run dev --workspace=@glvt/booking",
+        "dev:ops": "npm run dev --workspace=@glvt/ops",
+        "dev:api": "npm run dev --workspace=@glvt/api",
         "build": "npm run build --workspace=glvt-booking"
     },
     "workspaces": [
-        "apps/*"
-    ]
+        "apps/*",
+        "packages/*"
+    ],
+    "dependencies": {
+        "drizzle-kit": "^0.31.8",
+        "drizzle-orm": "^0.45.1"
+    }
 }
